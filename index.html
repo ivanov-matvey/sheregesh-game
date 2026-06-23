@@ -2172,7 +2172,7 @@
       }
       if (foundArtifact) showArtifactPopup(player, foundArtifact);
       if (reachedMid) showGreenMountainPopup(player);
-      if (reachedGoal) tutorialPopup("goal", "Финиш игрока", "Участник дошёл до Мустагa после горы Зелёной. Партия закончится, когда так сделают все участники.");
+      if (reachedGoal) showMustagPopup(player, won);
       if (reachedGoal && !won) endTurn(true);
     }
 
@@ -2438,6 +2438,34 @@
           <p class="place-next">Теперь этот участник может финишировать на Мустаге. Остальным тоже нужно посетить гору Зелёную.</p>
           <div class="row">
             <button onclick="closeModal()">Продолжить поход</button>
+          </div>
+        </div>
+      `;
+      modal.classList.add("open");
+    }
+
+    function showMustagPopup(player, teamComplete) {
+      const stars = state.round <= 8 ? 3 : state.round <= 12 ? 2 : 1;
+      dialog.classList.add("place-dialog");
+      dialog.innerHTML = `
+        <div class="place-popup">
+          <h2>Мустаг</h2>
+          <img
+            class="place-photo"
+            src="mustag.jpeg"
+            alt="Гора Мустаг в Горной Шории"
+            loading="lazy"
+          >
+          <div class="place-fact">
+            <b>${player.name} дошёл до финальной вершины.</b><br>
+            Факт: Мустаг — одна из заметных вершин Горной Шории рядом с Шерегешем. Название часто связывают со снежной горой: даже в тёплый сезон вершина ассоциируется с суровым горным рельефом и панорамами тайги.
+          </div>
+          <p class="place-next">${teamComplete
+            ? `Вся команда завершила маршрут. Итог: ${"⭐".repeat(stars)}${"☆".repeat(3 - stars)}.`
+            : "Этот участник завершил маршрут. Остальным тоже нужно посетить гору Зелёную и дойти до Мустагa."
+          }</p>
+          <div class="row">
+            <button onclick="closeModal()">${teamComplete ? "Смотреть карту" : "Продолжить поход"}</button>
           </div>
         </div>
       `;
