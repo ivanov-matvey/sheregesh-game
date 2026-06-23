@@ -373,6 +373,10 @@
     .role-card b { color: var(--line); }
     .role-card span { color: var(--muted); font-size: 12px; }
 
+    .player-name-input {
+      margin-top: 6px;
+    }
+
     .role-card select { margin-top: 5px; }
 
     .role-icon {
@@ -580,6 +584,31 @@
       font-size: 12px;
       font-weight: 800;
       border: 2px solid var(--line);
+    }
+
+    .artifact-popup {
+      display: grid;
+      gap: 10px;
+    }
+
+    .artifact-popup-head {
+      display: grid;
+      grid-template-columns: 54px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+    }
+
+    .artifact-popup-icon {
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border: 3px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--sun);
+      color: var(--line);
+      font-size: 30px;
+      box-shadow: 0 4px 0 var(--line);
     }
 
     .board-wrap {
@@ -894,6 +923,56 @@
     .dialog h2 { margin: 0 0 8px; color: var(--line); text-transform: uppercase; }
     .dialog p { margin: 8px 0; }
 
+    .place-dialog {
+      width: min(560px, calc(100vw - 24px));
+      max-height: calc(100dvh - 24px);
+      overflow: hidden;
+      padding: 14px;
+    }
+
+    .place-popup {
+      display: grid;
+      gap: 9px;
+    }
+
+    .place-popup h2 {
+      margin-bottom: 0;
+    }
+
+    .place-photo {
+      width: 100%;
+      height: min(260px, 34dvh);
+      object-fit: cover;
+      display: block;
+      border: 3px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+      box-shadow: 0 3px 0 rgba(106, 86, 56, .2);
+    }
+
+    .place-fact {
+      padding: 9px 11px;
+      border: 3px solid var(--line);
+      border-radius: var(--radius);
+      background: #fffdf7;
+      color: var(--line);
+      font-weight: 850;
+      line-height: 1.26;
+      box-shadow: 0 2px 0 rgba(106, 86, 56, .16);
+    }
+
+    .place-next {
+      margin: 0;
+      font-weight: 800;
+      line-height: 1.24;
+    }
+
+    .photo-source {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
     .rules-dialog {
       width: min(1120px, calc(100vw - 28px));
       height: min(860px, calc(100vh - 28px));
@@ -1114,6 +1193,38 @@
         padding: 14px;
         max-height: 86vh;
         box-shadow: 0 7px 0 var(--line), 0 22px 60px rgba(0, 0, 0, .28);
+      }
+      .place-dialog {
+        width: calc(100vw - 18px);
+        max-height: calc(100dvh - 18px);
+        padding: 10px;
+        overflow: hidden;
+      }
+      .place-popup {
+        gap: 7px;
+      }
+      .place-popup h2 {
+        font-size: 18px;
+        line-height: 1;
+      }
+      .place-photo {
+        height: min(190px, 31dvh);
+        border-width: 2px;
+      }
+      .place-fact {
+        padding: 8px;
+        border-width: 2px;
+        font-size: 13px;
+        line-height: 1.18;
+      }
+      .place-next {
+        font-size: 12px;
+        line-height: 1.16;
+      }
+      .place-popup .row button {
+        min-height: 38px;
+        padding: 6px 10px;
+        font-size: 12px;
       }
       .rules-dialog {
         width: calc(100vw - 18px);
@@ -1586,10 +1697,10 @@
     ];
 
     const artifacts = [
-      { id: "compass", icon: "🧭", name: "Компас", text: "Открывает соседние плитки вокруг владельца и снимает скрытость тайги." },
-      { id: "raft", icon: "🛶", name: "Плавсредство", text: "Ручей стоит 1 очко." },
-      { id: "hat", icon: "🧢", name: "Головной убор", text: "Игнорирует жару." },
-      { id: "gear", icon: "🎒", name: "Снаряжение", text: "Болото стоит 2 очка вместо 6." }
+      { id: "compass", icon: "🧭", name: "Компас", text: "Открывает соседние плитки вокруг владельца и снимает скрытость тайги.", details: "Полезен разведчикам маршрута: с компасом игрок видит, что находится рядом, и тайга больше не скрывает соседние закрытые клетки." },
+      { id: "raft", icon: "🛶", name: "Плавсредство", text: "Ручей стоит 1 очко.", details: "Помогает быстро проходить водные клетки. Без него ручей стоит 2 очка движения, с ним — только 1." },
+      { id: "hat", icon: "🧢", name: "Головной убор", text: "Игнорирует жару.", details: "Защищает от погодной карты «Жара». Если игрок стоит на открытой местности, его бросок не уменьшается на 1." },
+      { id: "gear", icon: "🎒", name: "Снаряжение", text: "Болото стоит 2 очка вместо 6.", details: "Позволяет проходить болото без натуральной 6. Стоимость болота для владельца снижается до 2 очков движения." }
     ];
 
     let places = {
@@ -1626,18 +1737,28 @@
     const dialog = $("dialog");
 
     function renderSetupRoles() {
+      const previousNames = [...document.querySelectorAll(".player-name-input")].map(input => input.value);
+      const previousRoles = [...document.querySelectorAll(".role-select")].map(select => select.value);
       setupRoles.innerHTML = "";
       const count = Number($("playerCount").value);
       for (let index = 0; index < count; index += 1) {
-        const defaultRole = roles[index];
+        const defaultRole = roles.find(role => role.id === previousRoles[index]) || roles[index];
         const card = document.createElement("div");
         card.className = "role-card";
         card.innerHTML = `
           <div class="role-icon" id="roleIcon${index}">${defaultRole.icon}</div>
           <div>
             <b>Участник ${index + 1}</b>
+            <input
+              class="player-name-input"
+              data-player="${index}"
+              maxlength="18"
+              placeholder="Имя участника"
+              aria-label="Имя участника ${index + 1}"
+              value="${escapeHtml(previousNames[index] || "")}"
+            >
             <select class="role-select" data-player="${index}" aria-label="Роль участника ${index + 1}">
-              ${roles.map((role, roleIndex) => `<option value="${role.id}"${roleIndex === index ? " selected" : ""}>${role.icon} ${role.name}</option>`).join("")}
+              ${roles.map((role) => `<option value="${role.id}"${role.id === defaultRole.id ? " selected" : ""}>${role.icon} ${role.name}</option>`).join("")}
             </select>
             <span id="roleHint${index}">${defaultRole.passive}</span>
           </div>
@@ -1650,6 +1771,14 @@
         });
         setupRoles.appendChild(card);
       }
+    }
+
+    function escapeHtml(text) {
+      return text
+        .replaceAll("&", "&amp;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
     }
 
     function rngPick(items) {
@@ -1750,11 +1879,14 @@
     function createPlayers() {
       const count = Number($("playerCount").value);
       const selectedRoleIds = [...document.querySelectorAll(".role-select")].slice(0, count).map(select => select.value);
+      const playerNames = [...document.querySelectorAll(".player-name-input")]
+        .slice(0, count)
+        .map((input, index) => input.value.trim() || `Участник ${index + 1}`);
       state.players = selectedRoleIds.map((roleId, index) => {
         const role = roles.find(item => item.id === roleId);
         return ({
         id: index + 1,
-        name: `Участник ${index + 1}`,
+        name: playerNames[index],
         role,
         x: places.base.x,
         y: places.base.y,
@@ -2038,8 +2170,8 @@
           `Игрок потратил ${cost} очков движения. Если очки ещё остались, можно кликнуть следующую жёлтую клетку; если нет, передайте ход.`
         );
       }
-      if (foundArtifact) tutorialPopup("artifact", "Артефакт найден", `${foundArtifact.icon} ${foundArtifact.name} теперь у игрока. Артефакты можно передавать через кнопку «Обмен», чтобы помогать команде.`);
-      if (reachedMid) tutorialPopup("mid", "Промежуточная цель", "Этот участник посетил гору Зелёную. Теперь именно он может финишировать на Мустаге. Остальным тоже нужно зайти на гору Зелёную.");
+      if (foundArtifact) showArtifactPopup(player, foundArtifact);
+      if (reachedMid) showGreenMountainPopup(player);
       if (reachedGoal) tutorialPopup("goal", "Финиш игрока", "Участник дошёл до Мустагa после горы Зелёной. Партия закончится, когда так сделают все участники.");
       if (reachedGoal && !won) endTurn(true);
     }
@@ -2151,10 +2283,11 @@
             player.usedSpecial = 1;
             target.x = tile.x;
             target.y = tile.y;
-            updatePlayerGoalProgress(target);
+            const { reachedMid } = updatePlayerGoalProgress(target);
             log(`Спасатель переместил ${target.name} на соседнюю клетку.`);
             checkWin();
             render();
+            if (reachedMid) showGreenMountainPopup(target);
             tutorialPopup("role", "Особое действие роли", "Кнопка «Роль» применяет сильное действие персонажа. Обычно оно ограничено одним или двумя применениями за партию.");
           });
         });
@@ -2269,6 +2402,48 @@
       modal.classList.add("open");
     }
 
+    function showArtifactPopup(player, artifact) {
+      dialog.innerHTML = `
+        <div class="artifact-popup">
+          <div class="artifact-popup-head">
+            <div class="artifact-popup-icon">${artifact.icon}</div>
+            <div>
+              <h2>Артефакт найден</h2>
+              <p><b>${player.name}</b> забирает: <b>${artifact.name}</b>.</p>
+            </div>
+          </div>
+          <div class="place-fact">${artifact.details}</div>
+          <p>Артефакт остаётся у игрока, но его можно передать через кнопку «Обмен», если предмет нужнее другому участнику.</p>
+          <div class="row"><button onclick="closeModal()">Понятно</button></div>
+        </div>
+      `;
+      modal.classList.add("open");
+    }
+
+    function showGreenMountainPopup(player) {
+      dialog.classList.add("place-dialog");
+      dialog.innerHTML = `
+        <div class="place-popup">
+          <h2>Гора Зелёная</h2>
+          <img
+            class="place-photo"
+            src="zelenaya.jpeg"
+            alt="Гора Зелёная в Шерегеше"
+            loading="lazy"
+          >
+          <div class="place-fact">
+            <b>${player.name} достиг промежуточной цели.</b><br>
+            Факт: гора Зелёная — главная туристическая вершина Шерегеша. На её склонах расположены основные трассы курорта, а с вершины открывается вид на Горную Шорию.
+          </div>
+          <p class="place-next">Теперь этот участник может финишировать на Мустаге. Остальным тоже нужно посетить гору Зелёную.</p>
+          <div class="row">
+            <button onclick="closeModal()">Продолжить поход</button>
+          </div>
+        </div>
+      `;
+      modal.classList.add("open");
+    }
+
     function showHintPopup() {
       const player = state.started && !state.gameOver ? currentPlayer() : null;
       const text = getActionHint(player, state.started && !state.gameOver);
@@ -2312,6 +2487,7 @@
     function closeModal() {
       modal.classList.remove("open");
       dialog.classList.remove("rules-dialog");
+      dialog.classList.remove("place-dialog");
     }
 
     function log(text) {
