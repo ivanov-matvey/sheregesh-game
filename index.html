@@ -23,9 +23,14 @@
       --shadow: 0 4px 0 rgba(106, 86, 56, .16), 0 12px 24px rgba(106, 86, 56, .14);
       --button-shadow: 0 7px 0 var(--line), 0 12px 18px rgba(106, 86, 56, .18);
       --radius: 8px;
+      --map-size: 6;
     }
 
     * { box-sizing: border-box; }
+
+    p, li, h1, h2, h3, button, a, span, label, select, .panel, .card {
+      overflow-wrap: anywhere;
+    }
 
     body {
       margin: 0;
@@ -415,6 +420,10 @@
       font-weight: 750;
     }
 
+    .mobile-hud {
+      display: none;
+    }
+
     .players {
       display: grid;
       gap: 8px;
@@ -467,7 +476,10 @@
       color: var(--line);
       background: var(--sun);
       border: 2px solid var(--line);
-      white-space: nowrap;
+      line-height: 1.05;
+      text-align: center;
+      white-space: normal;
+      overflow-wrap: anywhere;
     }
 
     .artifacts {
@@ -501,8 +513,8 @@
       min-width: 320px;
       aspect-ratio: 1;
       display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      grid-template-rows: repeat(6, 1fr);
+      grid-template-columns: repeat(var(--map-size, 6), 1fr);
+      grid-template-rows: repeat(var(--map-size, 6), 1fr);
       gap: 8px;
       padding: 12px;
       border-radius: var(--radius);
@@ -554,17 +566,23 @@
       position: absolute;
       left: 5px;
       right: 5px;
-      bottom: 4px;
-      padding: 2px 4px;
+      bottom: 3px;
+      min-height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 3px;
       border-radius: 5px;
       color: var(--line);
       background: rgba(255, 248, 232, .92);
-      font-size: clamp(9px, 1.3vw, 11px);
+      font-size: clamp(8px, 1.05vw, 10px);
+      line-height: 1.05;
       text-align: center;
       font-weight: 900;
-      white-space: nowrap;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: normal;
       overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .occupants {
@@ -964,6 +982,192 @@
       .rules-popup {
         font-size: 14px;
       }
+
+      body.game-started {
+        height: 100dvh;
+        min-height: 100dvh;
+        overflow: hidden;
+      }
+
+      body.game-started .app {
+        height: 100dvh;
+        min-height: 0;
+        display: block;
+        overflow: hidden;
+      }
+
+      body.game-started .side {
+        display: none;
+      }
+
+      body.game-started .main {
+        height: 100dvh;
+        min-height: 0;
+        display: grid;
+        grid-template-rows: auto auto minmax(0, 1fr) auto;
+        gap: 7px;
+        padding: 8px;
+        overflow: hidden;
+      }
+
+      body.game-started .title h1 {
+        font-size: 18px;
+        line-height: 1;
+      }
+
+      body.game-started .title p {
+        display: none;
+      }
+
+      body.game-started .mobile-hud {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 7px;
+        align-items: stretch;
+      }
+
+      .mobile-metrics {
+        min-width: 0;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 5px;
+      }
+
+      .mobile-metrics div {
+        min-width: 0;
+        min-height: 42px;
+        padding: 5px 6px;
+        border: 2px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--paper);
+        box-shadow: 0 2px 0 rgba(106, 86, 56, .2);
+      }
+
+      .mobile-metrics b {
+        display: block;
+        font-size: 9px;
+        line-height: 1;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .mobile-metrics span {
+        display: block;
+        margin-top: 3px;
+        font-size: 11px;
+        line-height: 1.05;
+        font-weight: 950;
+        color: var(--line);
+      }
+
+      body.game-started .mobile-hud .rules-mini {
+        min-height: 42px;
+        padding: 5px 7px;
+        font-size: 10px;
+        box-shadow: 0 2px 0 rgba(106, 86, 56, .2);
+      }
+
+      body.game-started .board-wrap {
+        min-height: 0;
+        align-content: center;
+      }
+
+      body.game-started .board {
+        width: min(calc(100vw - 16px), calc(100dvh - 290px));
+        min-width: 0;
+        max-height: 100%;
+        gap: 4px;
+        padding: 6px;
+        border-width: 4px;
+        transform: none;
+      }
+
+      body.game-started .tile-icon {
+        font-size: clamp(22px, 8.2vw, 34px);
+      }
+
+      body.game-started .pawn {
+        width: 17px;
+        height: 17px;
+        font-size: 10px;
+      }
+
+      body.game-started .found {
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+      }
+
+      body.game-started .controls {
+        min-height: 0;
+        display: block;
+      }
+
+      body.game-started .controls > .panel:first-child {
+        padding: 8px;
+        box-shadow: 0 4px 0 rgba(106, 86, 56, .2);
+      }
+
+      body.game-started .controls > .panel:last-child {
+        display: none;
+      }
+
+      body.game-started .turn-head {
+        margin-bottom: 5px;
+      }
+
+      body.game-started .turn-head h2 {
+        font-size: 14px;
+        line-height: 1.05;
+      }
+
+      body.game-started .turn-head .rules-mini {
+        display: none;
+      }
+
+      body.game-started .toast {
+        min-height: 32px;
+        margin-top: 0;
+        padding: 6px 8px;
+        font-size: 12px;
+        line-height: 1.15;
+        border-width: 2px;
+      }
+
+      body.game-started .turn-tools {
+        grid-template-columns: 70px minmax(0, 1fr);
+        gap: 8px;
+        margin-top: 7px;
+      }
+
+      body.game-started .die-label {
+        font-size: 9px;
+      }
+
+      body.game-started .die {
+        width: 62px;
+        height: 62px;
+        font-size: 30px;
+        border-width: 3px;
+        box-shadow: 0 4px 0 var(--line), inset -6px -6px 0 rgba(106, 86, 56, .12);
+      }
+
+      body.game-started .action-panel {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px;
+      }
+
+      body.game-started .action-panel button {
+        min-height: 48px;
+        padding: 7px 6px;
+        font-size: 12px;
+        border-width: 2px;
+        box-shadow: 0 4px 0 var(--line), 0 8px 12px rgba(106, 86, 56, .14);
+      }
+
+      body.game-started .hint {
+        display: none;
+      }
     }
 
     @media (max-width: 380px) {
@@ -972,6 +1176,12 @@
       .action-panel { grid-template-columns: 1fr; }
       .board { width: calc(100vw - 16px); gap: 3px; padding: 5px; }
       .tile-icon { font-size: clamp(17px, 7vw, 26px); }
+      body.game-started .board {
+        width: min(calc(100vw - 16px), calc(100dvh - 290px));
+      }
+      body.game-started .action-panel {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
   </style>
 </head>
@@ -998,6 +1208,14 @@
             <option value="hard">Большой подъём</option>
           </select>
         </div>
+        <div class="field">
+          <label for="mapSize">Размер карты</label>
+          <select id="mapSize">
+            <option value="4">Малая 4×4</option>
+            <option value="5">Средняя 5×5</option>
+            <option value="6" selected>Большая 6×6</option>
+          </select>
+        </div>
         <div class="roles" id="setupRoles"></div>
         <div class="setup-actions">
           <button id="startTutorial">Пройти обучение</button>
@@ -1010,7 +1228,7 @@
         <h2>Стоимость клеток</h2>
         <div class="terrain-guide">
           <div class="terrain-item">🟩 Поляна: 1</div>
-          <div class="terrain-item">🌲 Тайга: 1</div>
+          <div class="terrain-item">🌲 Тайга: 1, скрывает соседей</div>
           <div class="terrain-item">💧 Ручей: 2</div>
           <div class="terrain-item">🟫 Болото: 6</div>
           <div class="terrain-item">⛰️ Подъём: 2</div>
@@ -1048,6 +1266,16 @@
         <h1>Карта маршрута</h1>
         <p id="brief">Откройте маршрут, используйте роли и обменивайтесь артефактами. Все игроки должны посетить гору Зелёную и дойти до вершины Мустаг.</p>
       </header>
+
+      <section class="mobile-hud" id="mobileHud" aria-label="Краткое состояние партии">
+        <div class="mobile-metrics">
+          <div><b>Погода</b><span id="mobileWeatherNow">-</span></div>
+          <div><b>Раунд</b><span id="mobileRoundNow">-</span></div>
+          <div><b>История</b><span id="mobileStoryNow">0</span></div>
+          <div><b>Цель</b><span id="mobileGoalNow">База</span></div>
+        </div>
+        <button type="button" class="rules-mini" id="openRulesMobile">Правила</button>
+      </section>
 
       <section class="board-wrap">
         <div class="board" id="board" aria-label="Игровая карта"></div>
@@ -1091,8 +1319,8 @@
       { id: "scout", icon: "🧭", name: "Разведчик", passive: "Открывает соседнюю плитку в начале хода.", special: "Быстрый марш: один раз получает второй бросок шага." },
       { id: "researcher", icon: "🔬", name: "Исследователь", passive: "Игнорирует один штраф сложной местности.", special: "Разведка карты: один раз открывает любую плитку." },
       { id: "camp", icon: "🏕️", name: "Хранитель лагеря", passive: "Снимает усталость у любого участника.", special: "Тёплый привал: отменяет погоду на один раунд." },
-      { id: "mood", icon: "🎶", name: "Хранитель атмосферы", passive: "Раз в раунд даёт +1 к шагу другому игроку.", special: "Поддержка: дважды снимает штраф с игрока." },
-      { id: "memory", icon: "📸", name: "Хранитель впечатлений", passive: "Новые плитки дают жетоны истории.", special: "Памятный кадр: 3 жетона истории дают +2 к шагу." },
+      { id: "mood", icon: "🎶", name: "Хранитель атмосферы", passive: "Раз в раунд даёт +1 к шагу другому игроку.", special: "Поддержка: дважды отменяет негативный эффект." },
+      { id: "memory", icon: "📸", name: "Хранитель впечатлений", passive: "Новые плитки дают жетоны истории.", special: "Памятный кадр: 3 жетона истории дают бонус команде." },
       { id: "rescue", icon: "⛑️", name: "Спасатель", passive: "Отменяет серьёзный штраф раз в ход.", special: "Спасательная операция: перемещает игрока на соседнюю плитку." }
     ];
 
@@ -1105,22 +1333,22 @@
     };
 
     const weather = [
-      { icon: "☀️", name: "Ясно", effect: "Первый шаг раунда получает +1.", type: "clear" },
+      { icon: "☀️", name: "Ясно", effect: "Первый шаг каждого участника в раунде получает +1.", type: "clear" },
       { icon: "☁️", name: "Облачно", effect: "Без эффекта.", type: "cloudy" },
       { icon: "🌧️", name: "Дождь", effect: "Сложная местность стоит на 1 дороже.", type: "rain" },
-      { icon: "🔥", name: "Жара", effect: "Без головного убора шаг -1.", type: "heat" },
+      { icon: "🔥", name: "Жара", effect: "На открытой местности без головного убора шаг -1.", type: "heat" },
       { icon: "🌬️", name: "Ветер", effect: "Нельзя возвращаться на предыдущую клетку.", type: "wind" },
       { icon: "🌫️", name: "Туман", effect: "Шаг -1, минимум 1.", type: "fog" }
     ];
 
     const artifacts = [
-      { id: "compass", icon: "🧭", name: "Компас", text: "Открывает соседние плитки вокруг владельца." },
+      { id: "compass", icon: "🧭", name: "Компас", text: "Открывает соседние плитки вокруг владельца и снимает скрытость тайги." },
       { id: "raft", icon: "🛶", name: "Плавсредство", text: "Ручей стоит 1 очко." },
       { id: "hat", icon: "🧢", name: "Головной убор", text: "Игнорирует жару." },
       { id: "gear", icon: "🎒", name: "Снаряжение", text: "Болото стоит 2 очка вместо 6." }
     ];
 
-    const places = {
+    let places = {
       base: { x: 0, y: 5, label: "Посёлок", icon: "🏠" },
       mid: { x: 3, y: 2, label: "Гора Зелёная", icon: "⛳" },
       goal: { x: 5, y: 0, label: "Мустаг", icon: "🏁" }
@@ -1136,9 +1364,10 @@
       weatherSuppressed: false,
       story: 0,
       step: 0,
+      lastRoll: 0,
       rolled: false,
       gameOver: false,
-      firstStepThisRound: true,
+      mapSize: 6,
       rolling: false,
       mode: "normal",
       tutorialSeen: new Set(),
@@ -1183,7 +1412,7 @@
     }
 
     function xyToIndex(x, y) {
-      return y * 6 + x;
+      return y * state.mapSize + x;
     }
 
     function tileAt(x, y) {
@@ -1191,19 +1420,24 @@
     }
 
     function neighbors(x, y) {
-      return [[x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]].filter(([nx, ny]) => nx >= 0 && nx < 6 && ny >= 0 && ny < 6);
+      return [[x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]].filter(([nx, ny]) => nx >= 0 && nx < state.mapSize && ny >= 0 && ny < state.mapSize);
     }
 
     function buildMap() {
       const difficulty = $("difficulty").value;
+      const size = Number($("mapSize").value);
       const hardRatio = difficulty === "hard" ? .34 : difficulty === "easy" ? .2 : .27;
       const tiles = [];
-      const route = new Set(["0,5", "1,5", "1,4", "2,4", "2,3", "3,3", "3,2", "4,2", "4,1", "5,1", "5,0"]);
+      state.mapSize = size;
+      board.style.setProperty("--map-size", size);
+      places = createPlaces(size);
+      const route = buildRoute(size);
 
-      for (let y = 0; y < 6; y += 1) {
-        for (let x = 0; x < 6; x += 1) {
+      for (let y = 0; y < size; y += 1) {
+        for (let x = 0; x < size; x += 1) {
           let type = "plain";
-          const center = Math.abs(x - 2.5) + Math.abs(y - 2.5);
+          const mapCenter = (size - 1) / 2;
+          const center = Math.abs(x - mapCenter) + Math.abs(y - mapCenter);
           const hardChance = Math.max(.08, hardRatio - center * .035);
           if (route.has(`${x},${y}`)) {
             type = rngPick(["plain", "forest", "mountain"]);
@@ -1234,6 +1468,36 @@
       state.tiles = tiles;
     }
 
+    function createPlaces(size) {
+      return {
+        base: { x: 0, y: size - 1, label: "Посёлок", icon: "🏠" },
+        mid: { x: Math.floor(size / 2), y: Math.floor((size - 1) / 2), label: "Гора Зелёная", icon: "⛳" },
+        goal: { x: size - 1, y: 0, label: "Мустаг", icon: "🏁" }
+      };
+    }
+
+    function buildRoute(size) {
+      const route = new Set();
+      const points = [places.base, places.mid, places.goal];
+      let x = points[0].x;
+      let y = points[0].y;
+      route.add(`${x},${y}`);
+      for (let index = 1; index < points.length; index += 1) {
+        const target = points[index];
+        let preferHorizontal = true;
+        while (x !== target.x || y !== target.y) {
+          if ((preferHorizontal && x !== target.x) || y === target.y) {
+            x += x < target.x ? 1 : -1;
+          } else {
+            y += y < target.y ? 1 : -1;
+          }
+          route.add(`${x},${y}`);
+          preferHorizontal = !preferHorizontal;
+        }
+      }
+      return route;
+    }
+
     function tileAtDraft(tiles, x, y) {
       return tiles[xyToIndex(x, y)];
     }
@@ -1253,6 +1517,9 @@
         lastY: null,
         energy: 0,
         tired: false,
+        weatherShield: 0,
+        clearUsed: false,
+        usedTerrainIgnore: false,
         visitedMid: false,
         finished: false,
         artifacts: role.id === "rescue" ? ["gear"] : [],
@@ -1274,9 +1541,9 @@
       state.round = 1;
       state.story = 0;
       state.step = 0;
+      state.lastRoll = 0;
       state.rolled = false;
       state.gameOver = false;
-      state.firstStepThisRound = true;
       state.weatherSuppressed = false;
       state.tutorialSeen = new Set();
       state.log = [];
@@ -1284,6 +1551,7 @@
       createPlayers();
       revealAround(places.base.x, places.base.y);
       drawWeather();
+      beginTurnEffects(currentPlayer());
       log("Команда вышла из посёлка Шерегеш.");
       $("setupPanel").style.display = "none";
       document.body.classList.add("game-started");
@@ -1330,8 +1598,10 @@
     function drawWeather() {
       state.weather = rngPick(weather);
       state.weatherSuppressed = false;
-      state.firstStepThisRound = true;
-      state.players.forEach(p => { p.usedPassiveRound = false; });
+      state.players.forEach(p => {
+        p.usedPassiveRound = false;
+        p.clearUsed = false;
+      });
       log(`Погода раунда: ${state.weather.icon} ${state.weather.name}. ${state.weather.effect}`);
       animateWeatherCard();
     }
@@ -1357,6 +1627,7 @@
     }
 
     function beginTurnEffects(player) {
+      player.usedTerrainIgnore = false;
       if (player.role.id === "scout") revealBestNeighbor(player);
       if (player.role.id === "camp") {
         const tired = state.players.find(p => p.tired);
@@ -1365,9 +1636,20 @@
           log(`${player.role.icon} ${player.role.name} снял усталость у ${tired.name}.`);
         }
       }
-      if (player.role.id === "rescue" && player.tired) {
-        player.tired = false;
-        log(`${player.role.icon} Спасатель отменил усталость у себя.`);
+      if (player.role.id === "mood" && !player.usedPassiveRound) {
+        const target = state.players.find(p => p.id !== player.id && !p.finished);
+        if (target) {
+          target.energy += 1;
+          player.usedPassiveRound = true;
+          log(`${player.role.icon} Хранитель атмосферы дал ${target.name} +1 к следующему броску.`);
+        }
+      }
+      if (player.role.id === "rescue") {
+        const tired = state.players.find(p => p.tired);
+        if (tired) {
+          tired.tired = false;
+          log(`${player.role.icon} Спасатель отменил усталость у ${tired.name}.`);
+        }
       }
       if (player.artifacts.includes("compass")) revealAround(player.x, player.y);
     }
@@ -1402,15 +1684,24 @@
         player.energy = 0;
       }
       if (!state.weatherSuppressed) {
-        if (state.weather.type === "clear" && state.firstStepThisRound) value += 1;
-        if (state.weather.type === "heat" && !player.artifacts.includes("hat")) value -= 1;
-        if (state.weather.type === "fog") value -= 1;
+        if (state.weather.type === "clear" && !player.clearUsed) {
+          value += 1;
+          player.clearUsed = true;
+        }
+        if (state.weather.type === "heat" && isOpenTerrain(tileAt(player.x, player.y)) && !player.artifacts.includes("hat")) {
+          if (player.weatherShield) player.weatherShield -= 1;
+          else value -= 1;
+        }
+        if (state.weather.type === "fog") {
+          if (player.weatherShield) player.weatherShield -= 1;
+          else value -= 1;
+        }
       }
       value = Math.max(1, value);
       state.step = value;
+      state.lastRoll = original;
       state.rolled = true;
       state.rolling = false;
-      state.firstStepThisRound = false;
       log(`${player.name} бросает кубик: ${original}, доступный шаг: ${value}.`);
       render();
       tutorialPopup(
@@ -1424,9 +1715,21 @@
       let cost = terrain[tile.type].cost;
       if (tile.type === "water" && player.artifacts.includes("raft")) cost = 1;
       if (tile.type === "bog" && player.artifacts.includes("gear")) cost = 2;
-      if (tile.type === "mountain" && player.role.id === "researcher") cost = 1;
-      if (!state.weatherSuppressed && state.weather.type === "rain" && (tile.type === "bog" || tile.type === "mountain")) cost += 1;
+      if (canIgnoreDifficult(player, tile)) cost = Math.max(1, cost - 1);
+      if (!state.weatherSuppressed && state.weather.type === "rain" && isDifficult(tile) && !player.weatherShield) cost += 1;
       return cost;
+    }
+
+    function isDifficult(tile) {
+      return tile.type === "bog" || tile.type === "mountain";
+    }
+
+    function isOpenTerrain(tile) {
+      return tile.type === "plain" || tile.type === "water" || tile.type === "bog";
+    }
+
+    function canIgnoreDifficult(player, tile) {
+      return player.role.id === "researcher" && isDifficult(tile) && !player.usedTerrainIgnore;
     }
 
     function isReachable(tile, player) {
@@ -1434,6 +1737,7 @@
       const near = Math.abs(tile.x - player.x) + Math.abs(tile.y - player.y) === 1;
       if (!near) return false;
       if (!state.weatherSuppressed && state.weather.type === "wind" && tile.x === player.lastX && tile.y === player.lastY) return false;
+      if (tile.type === "bog" && !player.artifacts.includes("gear") && !canIgnoreDifficult(player, tile) && state.lastRoll !== 6) return false;
       return costFor(tile, player) <= state.step;
     }
 
@@ -1443,6 +1747,8 @@
       let foundArtifact = null;
       let reachedMid = false;
       let reachedGoal = false;
+      const ignoredDifficult = canIgnoreDifficult(player, tile);
+      const shieldedRain = !state.weatherSuppressed && state.weather.type === "rain" && isDifficult(tile) && player.weatherShield > 0;
       const cost = costFor(tile, player);
       player.lastX = player.x;
       player.lastY = player.y;
@@ -1456,8 +1762,16 @@
       }
       tile.visited = true;
       if (tile.artifact) foundArtifact = collectArtifact(tile, player);
+      if (ignoredDifficult) {
+        player.usedTerrainIgnore = true;
+        log("Исследователь проигнорировал один эффект сложной местности.");
+      }
+      if (shieldedRain) {
+        player.weatherShield -= 1;
+        log(`${player.name} избежал штрафа дождя благодаря поддержке.`);
+      }
       if (tile.type === "mountain") {
-        if (state.step > 0) {
+        if (state.step > 0 && !ignoredDifficult) {
           log("Подъём останавливает ход: оставшиеся очки сгорают.");
           state.step = 0;
         }
@@ -1477,17 +1791,24 @@
         reachedGoal = true;
         log(`${player.name} дошёл до вершины Мустаг.`);
       }
-      revealAround(player.x, player.y);
+      if (tile.type !== "forest" || player.artifacts.includes("compass")) {
+        revealAround(player.x, player.y);
+      } else {
+        log("Тайга скрыла соседние закрытые клетки.");
+      }
       checkWin();
       render();
-      tutorialPopup(
-        "move",
-        "Движение по клеткам",
-        `Игрок потратил ${cost} очков движения. Если очки ещё остались, можно кликнуть следующую жёлтую клетку; если нет, передайте ход.`
-      );
+      if (!reachedGoal) {
+        tutorialPopup(
+          "move",
+          "Движение по клеткам",
+          `Игрок потратил ${cost} очков движения. Если очки ещё остались, можно кликнуть следующую жёлтую клетку; если нет, передайте ход.`
+        );
+      }
       if (foundArtifact) tutorialPopup("artifact", "Артефакт найден", `${foundArtifact.icon} ${foundArtifact.name} теперь у игрока. Артефакты можно передавать через кнопку «Обмен», чтобы помогать команде.`);
       if (reachedMid) tutorialPopup("mid", "Промежуточная цель", "Этот участник посетил гору Зелёную. Теперь именно он может финишировать на Мустаге. Остальным тоже нужно зайти на гору Зелёную.");
       if (reachedGoal) tutorialPopup("goal", "Финиш игрока", "Участник дошёл до Мустагa после горы Зелёной. Партия закончится, когда так сделают все участники.");
+      if (reachedGoal && !state.gameOver) endTurn(true);
     }
 
     function collectArtifact(tile, player) {
@@ -1554,21 +1875,20 @@
         choosePlayer("Кому помочь?", state.players.filter(p => p.id !== player.id), (target) => {
           player.usedSpecial += 1;
           if (target.tired) target.tired = false;
-          else target.energy += 1;
-          log(`Хранитель атмосферы поддержал ${target.name}.`);
+          else target.weatherShield += 1;
+          log(`Хранитель атмосферы отменит следующий негативный эффект у ${target.name}.`);
           render();
           tutorialPopup("role", "Особое действие роли", "Кнопка «Роль» применяет сильное действие персонажа. Обычно оно ограничено одним или двумя применениями за партию.");
         });
       } else if (role.id === "memory") {
         if (player.usedSpecial) return showInfo("Памятный кадр уже использован.");
         if (state.story < 3) return showInfo("Нужно минимум 3 жетона истории.");
-        if (!state.rolled) return showInfo("Сначала бросьте основной шаг.");
         player.usedSpecial = 1;
         state.story -= 3;
-        state.step += 2;
-        log("Памятный кадр превратил историю в +2 к шагу.");
+        state.players.filter(p => !p.finished).forEach(p => { p.energy += 1; });
+        log("Памятный кадр превратил историю в командный бонус: +1 к следующему броску каждого участника.");
         render();
-        tutorialPopup("story", "Жетоны истории", "История копится за открытия, находки и важные точки. Хранитель впечатлений умеет превращать её в бонус к движению.");
+        tutorialPopup("story", "Жетоны истории", "История копится за открытия, находки и важные точки. Хранитель впечатлений умеет превращать её в бонус для всей команды.");
       } else if (role.id === "rescue") {
         if (player.usedSpecial) return showInfo("Спасательная операция уже использована.");
         choosePlayer("Кого переместить?", state.players, (target) => {
@@ -1610,22 +1930,31 @@
       });
     }
 
-    function endTurn() {
+    function endTurn(auto = false) {
       if (!state.started || state.gameOver) return;
+      const finishedPlayer = currentPlayer();
       state.step = 0;
+      state.lastRoll = 0;
       state.rolled = false;
-      let next = state.current + 1;
-      if (next >= state.players.length) {
-        next = 0;
-        state.round += 1;
-        drawWeather();
+      let next = state.current;
+      let newRound = false;
+      for (let attempts = 0; attempts < state.players.length; attempts += 1) {
+        next += 1;
+        if (next >= state.players.length) {
+          next = 0;
+          state.round += 1;
+          newRound = true;
+          drawWeather();
+        }
+        if (!state.players[next].finished) break;
       }
       state.current = next;
       $("stepDie").textContent = "🎲";
       beginTurnEffects(currentPlayer());
+      if (auto) log(`${finishedPlayer.name} завершил маршрут, ход автоматически передан следующему участнику.`);
       render();
-      tutorialPopup("endTurn", "Передача хода", "Ход перешёл к следующему участнику. Следите, чтобы каждый сначала посетил гору Зелёную, а потом дошёл до Мустагa.");
-      if (state.current === 0) tutorialPopup("newRound", "Новый раунд и погода", `Начался новый раунд. Новая погода: ${state.weather.icon} ${state.weather.name}. Она действует на всю команду.`);
+      if (!auto) tutorialPopup("endTurn", "Передача хода", "Ход перешёл к следующему участнику. Следите, чтобы каждый сначала посетил гору Зелёную, а потом дошёл до Мустагa.");
+      if (!auto && newRound) tutorialPopup("newRound", "Новый раунд и погода", `Начался новый раунд. Новая погода: ${state.weather.icon} ${state.weather.name}. Она действует на всю команду.`);
     }
 
     function checkWin() {
@@ -1732,19 +2061,27 @@
             </div>
             <span class="badge">${player.finished ? "Финиш" : player.visitedMid ? "Цель 2" : "Цель 1"}</span>
           </div>
-          <div class="artifacts">${player.tired ? `<span class="artifact">⚠️ усталость</span>` : ""}${player.energy ? `<span class="artifact">🎶 +${player.energy}</span>` : ""}${player.artifacts.map(artifactChip).join("") || (!player.tired && !player.energy ? `<span class="player-meta">без артефактов</span>` : "")}</div>
+          <div class="artifacts">${player.tired ? `<span class="artifact">⚠️ усталость</span>` : ""}${player.energy ? `<span class="artifact">🎶 +${player.energy}</span>` : ""}${player.weatherShield ? `<span class="artifact">🎶 защита</span>` : ""}${player.artifacts.map(artifactChip).join("") || (!player.tired && !player.energy && !player.weatherShield ? `<span class="player-meta">без артефактов</span>` : "")}</div>
         `;
         box.appendChild(el);
       });
     }
 
     function renderStatus() {
-      $("weatherNow").textContent = state.started ? `${state.weatherSuppressed ? "🏕️ " : state.weather.icon} ${state.weatherSuppressed ? "Привал" : state.weather.name}` : "-";
-      $("roundNow").textContent = state.started ? state.round : "-";
-      $("storyNow").textContent = state.story;
+      const weatherText = state.started ? `${state.weatherSuppressed ? "🏕️ " : state.weather.icon} ${state.weatherSuppressed ? "Привал" : state.weather.name}` : "-";
+      const roundText = state.started ? state.round : "-";
+      const storyText = state.story;
       const finishedMid = state.players.filter(p => p.visitedMid).length;
       const finishedGoal = state.players.filter(p => p.finished).length;
-      $("goalNow").textContent = state.started ? `${finishedMid}/${state.players.length} Зелёная · ${finishedGoal}/${state.players.length} Мустаг` : "База";
+      const goalText = state.started ? `${finishedMid}/${state.players.length} Зелёная · ${finishedGoal}/${state.players.length} Мустаг` : "База";
+      $("weatherNow").textContent = weatherText;
+      $("roundNow").textContent = roundText;
+      $("storyNow").textContent = storyText;
+      $("goalNow").textContent = goalText;
+      $("mobileWeatherNow").textContent = weatherText;
+      $("mobileRoundNow").textContent = roundText;
+      $("mobileStoryNow").textContent = storyText;
+      $("mobileGoalNow").textContent = goalText;
     }
 
     function renderTurn() {
@@ -1757,14 +2094,14 @@
       $("actionHint").textContent = getActionHint(player, active);
       $("actionHint").classList.toggle("hidden", !isTutorial());
       $("rollStep").disabled = !active || state.rolled || player.finished || state.rolling;
-      $("useRole").disabled = !active || state.rolling;
-      $("trade").disabled = !active || state.rolling;
-      $("endTurn").disabled = !active || state.rolling;
+      $("useRole").disabled = !active || player.finished || state.rolling;
+      $("trade").disabled = !active || player.finished || state.rolling;
+      $("endTurn").disabled = !active || player.finished || state.rolling;
     }
 
     function getActionHint(player, active) {
       if (!active) return state.gameOver ? "Партия завершена. Можно смотреть карту или начать новую через обновление страницы." : "Начните партию. Игра сама назначит роли и покажет доступную карту.";
-      if (player.finished) return `${player.name} уже на финише. Передайте ход следующему участнику.`;
+      if (player.finished) return `${player.name} уже на финише и больше не тратит ходы команды.`;
       if (state.rolling) return "Кубик катится. Когда он остановится, появятся очки хода и подсветятся доступные клетки.";
       if (!state.rolled) return "Сейчас нажмите «Бросить шаг». После броска соседние доступные клетки подсветятся жёлтым.";
       const reachable = state.tiles.filter(tile => isReachable(tile, player));
@@ -1785,11 +2122,20 @@
       renderLog();
     }
 
+    function refreshPreviewMap() {
+      if (state.started) return;
+      buildMap();
+      drawBoard();
+    }
+
     $("playerCount").addEventListener("change", renderSetupRoles);
+    $("difficulty").addEventListener("change", refreshPreviewMap);
+    $("mapSize").addEventListener("change", refreshPreviewMap);
     $("startTutorial").addEventListener("click", () => startGame("tutorial"));
     $("startGame").addEventListener("click", () => startGame("normal"));
     $("openRulesStart").addEventListener("click", showRulesPopup);
     $("openRulesTurn").addEventListener("click", showRulesPopup);
+    $("openRulesMobile").addEventListener("click", showRulesPopup);
     $("rollStep").addEventListener("click", rollStep);
     $("useRole").addEventListener("click", useRole);
     $("trade").addEventListener("click", openTrade);
