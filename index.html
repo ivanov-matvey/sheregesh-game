@@ -2,7 +2,8 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#eadbbf">
   <title>Экспедиция Шерегеш</title>
   <style>
     :root {
@@ -32,9 +33,15 @@
       overflow-wrap: anywhere;
     }
 
+    html {
+      min-height: 100%;
+      background: #eadbbf;
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
+      min-height: 100dvh;
       color: var(--ink);
       font-family: Inter, "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
       background:
@@ -109,7 +116,7 @@
     .app {
       display: grid;
       grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
-      min-height: 100vh;
+      min-height: 100dvh;
     }
 
     .side {
@@ -130,6 +137,61 @@
       padding: 18px;
       min-width: 0;
       position: relative;
+    }
+
+    .title {
+      display: none;
+    }
+
+    body.game-started {
+      height: 100dvh;
+      min-height: 100dvh;
+      overflow: hidden;
+    }
+
+    body.game-started .app {
+      height: 100dvh;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    body.game-started .side {
+      min-height: 0;
+      gap: 12px;
+      padding: 14px;
+    }
+
+    body.game-started .main {
+      height: 100dvh;
+      min-height: 0;
+      grid-template-rows: minmax(0, 1fr) 270px;
+      gap: 12px;
+      padding: 14px;
+      overflow: hidden;
+    }
+
+    body.game-started .side .panel {
+      padding: 12px;
+    }
+
+    body.game-started .board {
+      width: min(100%, calc(100dvh - 320px));
+      max-height: 100%;
+    }
+
+    body.game-started .controls {
+      grid-template-columns: minmax(0, 1fr) minmax(360px, 1fr);
+      gap: 10px;
+      min-height: 0;
+    }
+
+    body.game-started .controls .panel {
+      padding: 12px;
+      min-height: 0;
+    }
+
+    body.game-started .log {
+      max-height: 202px;
     }
 
     .title h1 {
@@ -321,6 +383,14 @@
       gap: 8px;
     }
 
+    .weather-metric {
+      display: none;
+    }
+
+    .goal-metric {
+      grid-column: 1 / -1;
+    }
+
     .metric {
       min-height: 66px;
       padding: 10px;
@@ -356,7 +426,7 @@
       border: 3px solid var(--line);
       border-radius: var(--radius);
       background: #fffdf7;
-      box-shadow: 0 5px 0 var(--line);
+      box-shadow: 0 2px 0 rgba(106, 86, 56, .18);
     }
 
     .weather-deck {
@@ -434,13 +504,13 @@
       border-radius: var(--radius);
       background: #fffdf7;
       padding: 9px;
-      box-shadow: 0 4px 0 var(--line);
+      box-shadow: 0 2px 0 rgba(106, 86, 56, .22), 0 8px 12px rgba(106, 86, 56, .08);
     }
 
     .player.active {
       border-color: var(--sun);
       background: #fff1a8;
-      box-shadow: 0 5px 0 var(--line), inset 0 0 0 3px rgba(255, 255, 255, .55);
+      box-shadow: 0 2px 0 rgba(106, 86, 56, .24), inset 0 0 0 3px rgba(255, 255, 255, .55);
     }
 
     .player-top {
@@ -646,21 +716,24 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 30px;
-      padding: 4px 9px;
-      border: 2px solid var(--line);
+      min-height: 42px;
+      padding: 8px 12px;
+      border: 3px solid var(--line);
       border-radius: var(--radius);
       color: var(--line);
       background: var(--paper);
-      font-size: 12px;
-      font-weight: 900;
+      font-size: 13px;
+      font-weight: 950;
       text-decoration: none;
       text-transform: uppercase;
-      box-shadow: 0 2px 0 rgba(106, 86, 56, .18);
+      white-space: nowrap;
+      box-shadow: 0 5px 0 var(--line), 0 10px 14px rgba(106, 86, 56, .14);
     }
 
     .rules-mini:hover {
       background: var(--snow);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 0 var(--line), 0 12px 16px rgba(106, 86, 56, .14);
     }
 
     .action-panel {
@@ -742,6 +815,39 @@
     }
 
     .log p + p { margin-top: 6px; }
+
+    .log-popup {
+      display: grid;
+      gap: 8px;
+      max-height: 58vh;
+      overflow: auto;
+    }
+
+    .log-popup p {
+      margin: 0;
+      padding: 9px 10px;
+      border: 2px solid var(--line);
+      border-radius: var(--radius);
+      background: #fffdf7;
+      color: var(--line);
+      font-weight: 750;
+      line-height: 1.25;
+    }
+
+    .mobile-secondary-actions {
+      display: none;
+    }
+
+    .team-popup {
+      display: grid;
+      gap: 8px;
+      max-height: 58vh;
+      overflow: auto;
+    }
+
+    .mobile-team-player {
+      margin: 0;
+    }
 
     .modal {
       position: fixed;
@@ -961,11 +1067,6 @@
       .turn-head {
         align-items: flex-start;
       }
-      .rules-mini {
-        min-height: 28px;
-        padding: 4px 7px;
-        font-size: 11px;
-      }
       .log { max-height: 132px; }
       .choice { grid-template-columns: 30px minmax(0, 1fr); }
       .choice button { grid-column: 1 / -1; }
@@ -984,14 +1085,10 @@
       }
 
       body.game-started {
-        height: 100dvh;
-        min-height: 100dvh;
         overflow: hidden;
       }
 
       body.game-started .app {
-        height: 100dvh;
-        min-height: 0;
         display: block;
         overflow: hidden;
       }
@@ -1001,70 +1098,129 @@
       }
 
       body.game-started .main {
-        height: 100dvh;
-        min-height: 0;
         display: grid;
-        grid-template-rows: auto auto minmax(0, 1fr) auto;
-        gap: 7px;
-        padding: 8px;
+        grid-template-rows: auto minmax(0, 1fr) auto;
+        gap: 8px;
+        padding: max(8px, env(safe-area-inset-top)) 8px max(8px, env(safe-area-inset-bottom));
         overflow: hidden;
-      }
-
-      body.game-started .title h1 {
-        font-size: 18px;
-        line-height: 1;
-      }
-
-      body.game-started .title p {
-        display: none;
       }
 
       body.game-started .mobile-hud {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        gap: 7px;
-        align-items: stretch;
+        grid-template-columns: minmax(0, 1fr) 98px;
+        gap: 8px;
+        align-items: center;
       }
 
       .mobile-metrics {
         min-width: 0;
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 5px;
+        grid-template-columns: .72fr .82fr 1.8fr;
+        gap: 4px;
+        height: 58px;
+        padding: 6px;
+        border: 3px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 253, 247, .92);
+        box-shadow: 0 2px 0 rgba(106, 86, 56, .22), 0 8px 12px rgba(106, 86, 56, .08);
       }
 
       .mobile-metrics div {
         min-width: 0;
-        min-height: 42px;
+        height: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         padding: 5px 6px;
-        border: 2px solid var(--line);
-        border-radius: var(--radius);
-        background: var(--paper);
-        box-shadow: 0 2px 0 rgba(106, 86, 56, .2);
+        border: 0;
+        border-radius: 6px;
+        background: #f4ead1;
+        box-shadow: inset 0 -2px 0 rgba(106, 86, 56, .16);
       }
 
       .mobile-metrics b {
         display: block;
-        font-size: 9px;
+        font-size: 10px;
         line-height: 1;
         text-transform: uppercase;
         color: var(--muted);
+        letter-spacing: 0;
       }
 
       .mobile-metrics span {
         display: block;
         margin-top: 3px;
-        font-size: 11px;
+        font-size: 13px;
         line-height: 1.05;
         font-weight: 950;
         color: var(--line);
       }
 
+      .mobile-metrics .mobile-goal span {
+        font-size: 11px;
+        line-height: 1.05;
+      }
+
       body.game-started .mobile-hud .rules-mini {
-        min-height: 42px;
-        padding: 5px 7px;
-        font-size: 10px;
-        box-shadow: 0 2px 0 rgba(106, 86, 56, .2);
+        width: 100%;
+        height: 58px;
+        padding: 5px 6px;
+        border: 3px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--paper);
+        color: var(--line);
+        font-size: 12px;
+        line-height: 1.05;
+        box-shadow: 0 4px 0 var(--line), 0 8px 12px rgba(106, 86, 56, .14);
+      }
+
+      body.game-started .mobile-hud .rules-mini:active {
+        transform: translateY(2px);
+        box-shadow: 0 2px 0 var(--line);
+      }
+
+      body.game-started .mobile-weather-card {
+        grid-column: 1 / -1;
+        min-height: 66px;
+        display: grid;
+        grid-template-columns: 48px minmax(0, 1fr);
+        gap: 10px;
+        align-items: center;
+        padding: 8px 10px;
+        border: 3px solid var(--line);
+        border-radius: var(--radius);
+        background: #fffdf7;
+        box-shadow: 0 2px 0 rgba(106, 86, 56, .18);
+      }
+
+      .mobile-weather-icon {
+        width: 44px;
+        height: 48px;
+        display: grid;
+        place-items: center;
+        border: 3px solid var(--line);
+        border-radius: 7px;
+        background: linear-gradient(145deg, var(--cedar), var(--pine));
+        color: #fff;
+        font-size: 25px;
+        box-shadow: 0 3px 0 rgba(106, 86, 56, .42);
+      }
+
+      .mobile-weather-card b {
+        display: block;
+        color: var(--line);
+        font-size: 14px;
+        line-height: 1;
+        text-transform: uppercase;
+      }
+
+      .mobile-weather-card span {
+        display: block;
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.15;
+        font-weight: 850;
       }
 
       body.game-started .board-wrap {
@@ -1073,17 +1229,33 @@
       }
 
       body.game-started .board {
-        width: min(calc(100vw - 16px), calc(100dvh - 290px));
+        width: min(calc(100vw - 16px), calc(100dvh - 424px));
         min-width: 0;
         max-height: 100%;
-        gap: 4px;
-        padding: 6px;
+        gap: 5px;
+        padding: 8px;
         border-width: 4px;
+        border-radius: 10px;
         transform: none;
+        background:
+          linear-gradient(135deg, rgba(255, 248, 232, .96), rgba(224, 206, 163, .9)),
+          radial-gradient(circle at 18% 15%, rgba(217, 169, 58, .22), transparent 28%);
+      }
+
+      body.game-started .tile {
+        border-radius: 9px;
+        border-width: 2px;
+        box-shadow: inset 0 -5px 0 rgba(106, 86, 56, .12), 0 3px 0 rgba(106, 86, 56, .52);
+      }
+
+      body.game-started .tile.hidden {
+        background:
+          linear-gradient(145deg, #b1ad9f, #8f8a7b);
       }
 
       body.game-started .tile-icon {
-        font-size: clamp(22px, 8.2vw, 34px);
+        font-size: clamp(21px, 7.7vw, 32px);
+        text-shadow: 2px 2px 0 rgba(106, 86, 56, .28);
       }
 
       body.game-started .pawn {
@@ -1117,8 +1289,8 @@
       }
 
       body.game-started .turn-head h2 {
-        font-size: 14px;
-        line-height: 1.05;
+        font-size: 16px;
+        line-height: 1.1;
       }
 
       body.game-started .turn-head .rules-mini {
@@ -1126,11 +1298,11 @@
       }
 
       body.game-started .toast {
-        min-height: 32px;
+        min-height: 38px;
         margin-top: 0;
-        padding: 6px 8px;
-        font-size: 12px;
-        line-height: 1.15;
+        padding: 8px 10px;
+        font-size: 14px;
+        line-height: 1.18;
         border-width: 2px;
       }
 
@@ -1141,7 +1313,7 @@
       }
 
       body.game-started .die-label {
-        font-size: 9px;
+        font-size: 11px;
       }
 
       body.game-started .die {
@@ -1160,9 +1332,26 @@
       body.game-started .action-panel button {
         min-height: 48px;
         padding: 7px 6px;
-        font-size: 12px;
+        font-size: 13px;
         border-width: 2px;
         box-shadow: 0 4px 0 var(--line), 0 8px 12px rgba(106, 86, 56, .14);
+      }
+
+      body.game-started .mobile-secondary-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px;
+        margin-top: 7px;
+      }
+
+      body.game-started .mobile-secondary-actions button {
+        min-height: 38px;
+        padding: 6px 8px;
+        border: 2px solid var(--line);
+        background: var(--paper);
+        color: var(--line);
+        font-size: 12px;
+        box-shadow: 0 2px 0 rgba(106, 86, 56, .28);
       }
 
       body.game-started .hint {
@@ -1177,7 +1366,22 @@
       .board { width: calc(100vw - 16px); gap: 3px; padding: 5px; }
       .tile-icon { font-size: clamp(17px, 7vw, 26px); }
       body.game-started .board {
-        width: min(calc(100vw - 16px), calc(100dvh - 290px));
+        width: min(calc(100vw - 16px), calc(100dvh - 434px));
+      }
+      body.game-started .mobile-metrics b {
+        font-size: 9px;
+      }
+      body.game-started .mobile-metrics span {
+        font-size: 12px;
+      }
+      body.game-started .mobile-metrics .mobile-goal span {
+        font-size: 10px;
+      }
+      body.game-started .mobile-weather-card span {
+        font-size: 12px;
+      }
+      body.game-started .action-panel button {
+        font-size: 12px;
       }
       body.game-started .action-panel {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1239,10 +1443,10 @@
       <section class="panel">
         <h2>Состояние</h2>
         <div class="status-grid">
-          <div class="metric"><b>Погода</b><span id="weatherNow">-</span></div>
+          <div class="metric weather-metric"><b>Погода</b><span id="weatherNow">-</span></div>
           <div class="metric"><b>Раунд</b><span id="roundNow">-</span></div>
           <div class="metric"><b>История</b><span id="storyNow">0</span></div>
-          <div class="metric"><b>Цель</b><span id="goalNow">База</span></div>
+          <div class="metric goal-metric"><b>Цель</b><span id="goalNow">База</span></div>
         </div>
         <div class="weather-table">
           <div class="weather-deck" aria-label="Колода погоды">
@@ -1269,12 +1473,18 @@
 
       <section class="mobile-hud" id="mobileHud" aria-label="Краткое состояние партии">
         <div class="mobile-metrics">
-          <div><b>Погода</b><span id="mobileWeatherNow">-</span></div>
           <div><b>Раунд</b><span id="mobileRoundNow">-</span></div>
           <div><b>История</b><span id="mobileStoryNow">0</span></div>
-          <div><b>Цель</b><span id="mobileGoalNow">База</span></div>
+          <div class="mobile-goal"><b>Цель</b><span id="mobileGoalNow">База</span></div>
         </div>
-        <button type="button" class="rules-mini" id="openRulesMobile">Правила</button>
+        <button type="button" class="rules-mini mobile-rules-button" id="openRulesMobile">📖 Правила</button>
+        <div class="mobile-weather-card" aria-label="Текущая погода">
+          <div class="mobile-weather-icon" id="mobileWeatherIcon">?</div>
+          <div>
+            <b id="mobileWeatherTitle">Колода погоды</b>
+            <span id="mobileWeatherEffect">В начале раунда вытягивается одна карта.</span>
+          </div>
+        </div>
       </section>
 
       <section class="board-wrap">
@@ -1285,7 +1495,7 @@
         <div class="panel">
           <div class="turn-head">
             <h2 id="turnTitle">Партия не начата</h2>
-            <button type="button" class="rules-mini" id="openRulesTurn">Правила</button>
+            <button type="button" class="rules-mini" id="openRulesTurn">📖 Правила</button>
           </div>
           <div class="toast" id="turnText">Выберите участников и начните поход.</div>
           <div class="turn-tools">
@@ -1299,6 +1509,10 @@
               <button id="trade" class="secondary" disabled>Обмен</button>
               <button id="endTurn" class="secondary" disabled>Передать ход</button>
             </div>
+          </div>
+          <div class="mobile-secondary-actions">
+            <button type="button" class="secondary" id="openTeamMobile">Команда</button>
+            <button type="button" class="secondary" id="openLogMobile">Журнал</button>
           </div>
           <div class="hint hidden" id="actionHint">Начните партию. Игра сама назначит роли и покажет доступную карту.</div>
         </div>
@@ -2006,6 +2220,38 @@
       modal.classList.add("open");
     }
 
+    function showLogPopup() {
+      const items = state.log.length ? state.log : ["Журнал появится после начала партии."];
+      dialog.innerHTML = `
+        <h2>Журнал похода</h2>
+        <div class="log-popup">${items.map(item => `<p>${item}</p>`).join("")}</div>
+        <div class="row" style="margin-top:12px"><button onclick="closeModal()">Закрыть</button></div>
+      `;
+      modal.classList.add("open");
+    }
+
+    function showTeamPopup() {
+      const items = state.players.length ? state.players.map((player, index) => `
+        <div class="player mobile-team-player${index === state.current && state.started && !state.gameOver ? " active" : ""}">
+          <div class="player-top">
+            <div class="avatar">${player.id}</div>
+            <div>
+              <div class="player-name">${player.name}</div>
+              <div class="player-meta">${player.role.icon} ${player.role.name}</div>
+            </div>
+            <span class="badge">${player.finished ? "Финиш" : player.visitedMid ? "Цель 2" : "Цель 1"}</span>
+          </div>
+          <div class="artifacts">${player.tired ? `<span class="artifact">⚠️ усталость</span>` : ""}${player.energy ? `<span class="artifact">🎶 +${player.energy}</span>` : ""}${player.weatherShield ? `<span class="artifact">🎶 защита</span>` : ""}${player.artifacts.map(artifactChip).join("") || (!player.tired && !player.energy && !player.weatherShield ? `<span class="player-meta">без артефактов</span>` : "")}</div>
+        </div>
+      `).join("") : "<p>Команда появится после начала партии.</p>";
+      dialog.innerHTML = `
+        <h2>Команда</h2>
+        <div class="team-popup">${items}</div>
+        <div class="row" style="margin-top:12px"><button onclick="closeModal()">Закрыть</button></div>
+      `;
+      modal.classList.add("open");
+    }
+
     function closeModal() {
       modal.classList.remove("open");
       dialog.classList.remove("rules-dialog");
@@ -2074,14 +2320,20 @@
       const finishedMid = state.players.filter(p => p.visitedMid).length;
       const finishedGoal = state.players.filter(p => p.finished).length;
       const goalText = state.started ? `${finishedMid}/${state.players.length} Зелёная · ${finishedGoal}/${state.players.length} Мустаг` : "База";
+      const mobileGoalText = state.started ? `${finishedMid}/${state.players.length} Зел. · ${finishedGoal}/${state.players.length} Мустаг` : "База";
+      const weatherTitle = state.started ? state.weatherSuppressed ? "Привал" : state.weather.name : "Колода погоды";
+      const weatherEffect = state.started ? state.weatherSuppressed ? "Погода отменена до конца раунда." : state.weather.effect : "В начале раунда вытягивается одна карта.";
+      const weatherIcon = state.started ? state.weatherSuppressed ? "🏕️" : state.weather.icon : "?";
       $("weatherNow").textContent = weatherText;
       $("roundNow").textContent = roundText;
       $("storyNow").textContent = storyText;
       $("goalNow").textContent = goalText;
-      $("mobileWeatherNow").textContent = weatherText;
       $("mobileRoundNow").textContent = roundText;
       $("mobileStoryNow").textContent = storyText;
-      $("mobileGoalNow").textContent = goalText;
+      $("mobileGoalNow").textContent = mobileGoalText;
+      $("mobileWeatherIcon").textContent = weatherIcon;
+      $("mobileWeatherTitle").textContent = weatherTitle;
+      $("mobileWeatherEffect").textContent = weatherEffect;
     }
 
     function renderTurn() {
@@ -2136,6 +2388,8 @@
     $("openRulesStart").addEventListener("click", showRulesPopup);
     $("openRulesTurn").addEventListener("click", showRulesPopup);
     $("openRulesMobile").addEventListener("click", showRulesPopup);
+    $("openLogMobile").addEventListener("click", showLogPopup);
+    $("openTeamMobile").addEventListener("click", showTeamPopup);
     $("rollStep").addEventListener("click", rollStep);
     $("useRole").addEventListener("click", useRole);
     $("trade").addEventListener("click", openTrade);
