@@ -6,21 +6,22 @@
   <title>Экспедиция Шерегеш</title>
   <style>
     :root {
-      --pine: #1f7a4d;
-      --pine-dark: #174834;
-      --cedar: #2f8a53;
+      --pine: #6f7f45;
+      --pine-dark: #5c4930;
+      --cedar: #7f8f52;
       --snow: #fff8e8;
       --paper: #fffdf7;
       --cream-2: #eadbbf;
-      --ice: #e8f6d1;
-      --mist: #6f7c8b;
-      --sun: #f4c542;
-      --leaf: #a8d85a;
-      --ink: #10221f;
-      --muted: #5d6b69;
-      --line: #183d30;
+      --ice: #f2ead2;
+      --mist: #8f826e;
+      --sun: #d9a93a;
+      --leaf: #b7bf73;
+      --ink: #4b3b27;
+      --muted: #7d705e;
+      --line: #6a5638;
       --card: #fff8e8;
-      --shadow: 0 10px 0 rgba(24, 61, 48, .18), 0 20px 38px rgba(24, 61, 48, .18);
+      --shadow: 0 4px 0 rgba(106, 86, 56, .16), 0 12px 24px rgba(106, 86, 56, .14);
+      --button-shadow: 0 7px 0 var(--line), 0 12px 18px rgba(106, 86, 56, .18);
       --radius: 8px;
     }
 
@@ -32,8 +33,8 @@
       color: var(--ink);
       font-family: Inter, "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
       background:
-        radial-gradient(circle at 12% 16%, rgba(244, 197, 66, .2) 0 11%, transparent 12%),
-        radial-gradient(circle at 88% 12%, rgba(168, 216, 90, .16) 0 10%, transparent 11%),
+        radial-gradient(circle at 12% 16%, rgba(217, 169, 58, .2) 0 11%, transparent 12%),
+        radial-gradient(circle at 88% 12%, rgba(183, 191, 115, .16) 0 10%, transparent 11%),
         linear-gradient(135deg, #eadbbf, #ddcca8),
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 700'%3E%3Crect width='900' height='700' fill='%23eadbbf'/%3E%3Cg opacity='.12' fill='%23183d30'%3E%3Cpath d='M62 110h94v46H62z' transform='rotate(-22 109 133)'/%3E%3Cpath d='M705 58h110v48H705z' transform='rotate(17 760 82)'/%3E%3Cpath d='M90 520h140v55H90z' transform='rotate(12 160 547)'/%3E%3Ccircle cx='790' cy='540' r='78'/%3E%3C/g%3E%3Cg opacity='.2' fill='%23f4c542'%3E%3Ccircle cx='207' cy='72' r='9'/%3E%3Ccircle cx='650' cy='170' r='7'/%3E%3Ccircle cx='415' cy='610' r='8'/%3E%3Cpath d='M500 105l10 22 24 3-18 16 5 24-21-12-21 12 5-24-18-16 24-3z'/%3E%3C/g%3E%3Cg opacity='.18' stroke='%23fff8e8' stroke-width='10' fill='none' stroke-linecap='round'%3E%3Cpath d='M-30 360c95-65 182-65 263 0s167 65 258 0 188-65 291 0 158 59 220-5'/%3E%3Cpath d='M-50 430c95-65 182-65 263 0s167 65 258 0 188-65 291 0 158 59 220-5'/%3E%3C/g%3E%3C/svg%3E") center/cover fixed;
     }
@@ -49,21 +50,27 @@
       padding: 9px 14px;
       font-weight: 950;
       cursor: pointer;
-      box-shadow: 0 5px 0 var(--line);
+      box-shadow: var(--button-shadow);
       text-transform: uppercase;
       letter-spacing: .02em;
       transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
     }
 
-    button:hover { background: #ffe07d; transform: translateY(-2px); box-shadow: 0 7px 0 var(--line); }
+    button:hover { background: #e7bd5c; transform: translateY(-2px); box-shadow: 0 9px 0 var(--line), 0 15px 20px rgba(106, 86, 56, .16); }
     button:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--line); }
-    button:disabled { cursor: not-allowed; opacity: .45; box-shadow: none; }
+    button:disabled {
+      cursor: not-allowed;
+      opacity: .52;
+      background: #d9d1b8;
+      box-shadow: 0 3px 0 rgba(106, 86, 56, .35);
+      transform: none;
+    }
 
     button.secondary {
       color: var(--line);
       background: var(--leaf);
       border: 3px solid var(--line);
-      box-shadow: 0 5px 0 var(--line);
+      box-shadow: var(--button-shadow);
     }
 
     button.warn { background: var(--sun); }
@@ -80,18 +87,18 @@
       border: 3px solid var(--line);
       font-weight: 950;
       text-decoration: none;
-      box-shadow: 0 5px 0 var(--line);
+      box-shadow: var(--button-shadow);
       text-transform: uppercase;
       transition: transform .12s ease, box-shadow .12s ease;
     }
 
-    a.button-link:hover { background: var(--snow); transform: translateY(-2px); box-shadow: 0 7px 0 var(--line); }
+    a.button-link:hover { background: var(--snow); transform: translateY(-2px); box-shadow: 0 9px 0 var(--line), 0 15px 20px rgba(106, 86, 56, .16); }
 
     a.button-link.secondary {
       color: var(--line);
       background: #fff8e8;
       border: 3px solid var(--line);
-      box-shadow: 0 5px 0 var(--line);
+      box-shadow: var(--button-shadow);
     }
 
     .app {
@@ -126,7 +133,7 @@
       line-height: 1;
       color: var(--line);
       letter-spacing: 0;
-      text-shadow: 3px 3px 0 rgba(255, 248, 232, .75), 0 0 18px rgba(244, 197, 66, .34);
+      text-shadow: 3px 3px 0 rgba(255, 248, 232, .75), 0 0 18px rgba(217, 169, 58, .28);
       text-transform: uppercase;
     }
 
@@ -140,7 +147,7 @@
       color: var(--line);
       background: #fff8e8;
       font-weight: 850;
-      box-shadow: 0 5px 0 var(--line);
+      box-shadow: 0 2px 0 rgba(106, 86, 56, .18);
     }
 
     .panel {
@@ -178,6 +185,18 @@
       min-height: 48px;
     }
 
+    .setup-actions .rules-action {
+      background: var(--paper);
+      color: var(--muted);
+      box-shadow: var(--button-shadow);
+    }
+
+    .setup-actions .rules-action:hover {
+      background: var(--snow);
+      box-shadow: 0 9px 0 var(--line), 0 15px 20px rgba(106, 86, 56, .16);
+      transform: translateY(-2px);
+    }
+
     .rules {
       display: grid;
       gap: 9px;
@@ -194,7 +213,7 @@
       border: 3px solid var(--line);
       border-radius: var(--radius);
       background: #fffdf7;
-      box-shadow: 0 4px 0 var(--line);
+      box-shadow: 0 2px 0 rgba(106, 86, 56, .18);
     }
 
     .rule b {
@@ -221,7 +240,7 @@
       font-size: 12px;
       font-weight: 800;
       color: var(--line);
-      box-shadow: 0 3px 0 var(--line);
+      box-shadow: 0 2px 0 rgba(106, 86, 56, .18);
     }
 
     .row {
@@ -252,7 +271,7 @@
       color: var(--ink);
       padding: 8px 10px;
       font-weight: 850;
-      box-shadow: 0 3px 0 var(--line);
+      box-shadow: inset 0 2px 0 rgba(106, 86, 56, .08);
     }
 
     .roles {
@@ -269,7 +288,7 @@
       border: 3px solid var(--line);
       border-radius: var(--radius);
       background: linear-gradient(135deg, var(--paper), #f5eac7);
-      box-shadow: 0 5px 0 var(--line);
+      box-shadow: 0 2px 0 rgba(106, 86, 56, .18);
     }
 
     .role-card:nth-child(2n) { background: linear-gradient(135deg, var(--paper), #eef4df); }
@@ -285,10 +304,10 @@
       display: grid;
       place-items: center;
       border-radius: var(--radius);
-      background: #eef5ed;
+      background: #f2ead2;
       font-size: 22px;
       border: 3px solid var(--line);
-      box-shadow: 0 3px 0 var(--line);
+      box-shadow: 0 2px 0 rgba(106, 86, 56, .18);
     }
 
     .status-grid {
@@ -303,7 +322,7 @@
       border: 3px solid var(--line);
       border-radius: var(--radius);
       background: #fffdf7;
-      box-shadow: 0 5px 0 var(--line);
+      box-shadow: 0 2px 0 rgba(106, 86, 56, .18);
     }
 
     .metric b {
@@ -488,10 +507,10 @@
       padding: 12px;
       border-radius: var(--radius);
       background:
-        linear-gradient(135deg, rgba(255, 248, 232, .94), rgba(119, 216, 232, .82)),
-        radial-gradient(circle at 18% 15%, rgba(255, 199, 54, .4), transparent 26%);
+        linear-gradient(135deg, rgba(255, 248, 232, .94), rgba(232, 214, 172, .86)),
+        radial-gradient(circle at 18% 15%, rgba(217, 169, 58, .34), transparent 26%);
       border: 5px solid var(--line);
-      box-shadow: 0 12px 0 rgba(8, 47, 43, .55), 0 28px 55px rgba(0, 0, 0, .24);
+      box-shadow: 0 12px 0 rgba(106, 86, 56, .45), 0 28px 55px rgba(106, 86, 56, .2);
       transform: rotate(-1deg);
     }
 
@@ -515,12 +534,12 @@
       background: linear-gradient(145deg, #9a9f91, #66705f);
       filter: saturate(.72) brightness(.9);
     }
-    .tile.reachable { border-color: var(--sun); box-shadow: inset 0 0 0 4px rgba(255, 255, 255, .6), 0 7px 0 var(--line), 0 0 0 4px rgba(255, 199, 54, .45); }
+    .tile.reachable { border-color: var(--sun); box-shadow: inset 0 0 0 4px rgba(255, 255, 255, .6), 0 7px 0 var(--line), 0 0 0 4px rgba(217, 169, 58, .38); }
     .tile.goal { border-color: var(--sun); box-shadow: inset 0 0 0 4px rgba(255, 255, 255, .6), 0 5px 0 var(--line); }
     .tile.mid { border-color: var(--sun); box-shadow: inset 0 0 0 4px rgba(255, 255, 255, .55), 0 5px 0 var(--line); }
 
     .plain { background: linear-gradient(145deg, #cfe8a0, #8fc66a); }
-    .forest { background: linear-gradient(145deg, #83bd6c, #2f8a53); color: #fff; }
+    .forest { background: linear-gradient(145deg, #9cac63, #6f7f45); color: #fff; }
     .water { background: linear-gradient(145deg, #d9ead0, #8ebf86); color: #fff; }
     .bog { background: linear-gradient(145deg, #d6c493, #9d8655); color: #fff; }
     .mountain { background: linear-gradient(145deg, #f1ead7, #b6aa8c); color: #fff; }
@@ -528,7 +547,7 @@
     .tile-icon {
       font-size: clamp(20px, 4.6vw, 42px);
       line-height: 1;
-      text-shadow: 3px 3px 0 rgba(8, 47, 43, .7);
+      text-shadow: 3px 3px 0 rgba(106, 86, 56, .45);
     }
 
     .tile-label {
@@ -593,6 +612,39 @@
       align-items: stretch;
     }
 
+    .turn-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .turn-head h2 {
+      margin: 0;
+    }
+
+    .rules-mini {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 30px;
+      padding: 4px 9px;
+      border: 2px solid var(--line);
+      border-radius: var(--radius);
+      color: var(--line);
+      background: var(--paper);
+      font-size: 12px;
+      font-weight: 900;
+      text-decoration: none;
+      text-transform: uppercase;
+      box-shadow: 0 2px 0 rgba(106, 86, 56, .18);
+    }
+
+    .rules-mini:hover {
+      background: var(--snow);
+    }
+
     .action-panel {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -604,6 +656,7 @@
       padding-inline: 9px;
       min-height: 54px;
       white-space: normal;
+      border-radius: 10px;
     }
 
     .turn-tools {
@@ -611,6 +664,7 @@
       grid-template-columns: 84px minmax(0, 1fr);
       gap: 10px;
       align-items: center;
+      margin-top: 12px;
     }
 
     .die-box {
@@ -637,7 +691,7 @@
       color: var(--line);
       font-size: 34px;
       font-weight: 950;
-      box-shadow: 0 7px 0 var(--line), inset -8px -8px 0 rgba(19, 181, 189, .18);
+      box-shadow: 0 7px 0 var(--line), inset -8px -8px 0 rgba(106, 86, 56, .12);
     }
 
     .die.rolling {
@@ -666,7 +720,7 @@
       border: 2px solid var(--line);
       border-radius: var(--radius);
       background: #fffdf7;
-      box-shadow: 0 3px 0 var(--line);
+      box-shadow: 0 2px 0 rgba(106, 86, 56, .14);
     }
 
     .log p + p { margin-top: 6px; }
@@ -677,7 +731,7 @@
       display: none;
       place-items: center;
       padding: 20px;
-      background: rgba(8, 47, 43, .72);
+      background: rgba(75, 59, 39, .58);
       z-index: 20;
     }
 
@@ -697,6 +751,30 @@
     .dialog h2 { margin: 0 0 8px; color: var(--line); text-transform: uppercase; }
     .dialog p { margin: 8px 0; }
 
+    .rules-dialog {
+      width: min(1120px, calc(100vw - 28px));
+      height: min(860px, calc(100vh - 28px));
+      padding: 10px;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: 8px;
+    }
+
+    .rules-dialog-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .rules-frame {
+      width: 100%;
+      height: 100%;
+      border: 3px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--snow);
+    }
+
     .choices {
       display: grid;
       gap: 8px;
@@ -712,23 +790,46 @@
       border-radius: var(--radius);
       background: #fffdf7;
       padding: 9px;
-      box-shadow: 0 4px 0 var(--line);
+      box-shadow: 0 2px 0 rgba(106, 86, 56, .16);
     }
 
     .choice small { display: block; color: var(--muted); }
 
+    .rules-popup {
+      display: grid;
+      gap: 8px;
+      color: var(--line);
+    }
+
+    .rules-popup h3 {
+      margin: 8px 0 0;
+      font-size: 15px;
+      text-transform: uppercase;
+    }
+
+    .rules-popup p,
+    .rules-popup ol {
+      margin: 0;
+    }
+
+    .rules-popup ol {
+      padding-left: 22px;
+    }
+
     .toast {
-      min-height: 42px;
+      min-height: 46px;
       color: var(--line);
       font-weight: 900;
       display: flex;
       align-items: center;
       width: 100%;
+      margin: 8px 0 0;
       padding: 10px 12px;
       border: 3px solid var(--line);
       border-radius: var(--radius);
       background: #fffdf7;
-      box-shadow: 0 4px 0 var(--line);
+      box-shadow: 0 2px 0 rgba(106, 86, 56, .16);
+      line-height: 1.25;
     }
 
     .hint {
@@ -738,7 +839,7 @@
       background: #fff1a8;
       color: var(--line);
       border: 3px solid var(--line);
-      box-shadow: 0 4px 0 var(--line);
+      box-shadow: 0 2px 0 rgba(106, 86, 56, .16);
       font-size: 13px;
       font-weight: 750;
     }
@@ -750,14 +851,55 @@
 
     @media (max-width: 980px) {
       .app { grid-template-columns: 1fr; }
-      .side { border-right: 0; border-bottom: 1px solid var(--line); }
+      .side { border-right: 0; border-bottom: 3px solid var(--line); }
       .main { min-height: auto; }
       .board { width: min(100%, 680px); }
       .controls { grid-template-columns: 1fr; }
+      body.game-started .main { order: 1; }
+      body.game-started .side { order: 2; }
     }
 
     @media (max-width: 620px) {
-      .side, .main { padding: 12px; }
+      body { background-attachment: scroll; }
+      .side, .main { padding: 10px; }
+      .side { gap: 10px; }
+      .main { gap: 10px; }
+      .panel {
+        padding: 10px;
+        box-shadow: 0 5px 0 rgba(106, 86, 56, .18), 0 12px 22px rgba(106, 86, 56, .12);
+      }
+      .panel h2 { font-size: 16px; }
+      .title h1 {
+        font-size: 30px;
+        text-shadow: 2px 2px 0 rgba(255, 248, 232, .75);
+      }
+      .title p {
+        width: 100%;
+        font-size: 13px;
+        line-height: 1.25;
+        padding: 8px 10px;
+      }
+      button,
+      a.button-link {
+        min-height: 44px;
+        padding: 8px 10px;
+        font-size: 13px;
+      }
+      select, input {
+        min-height: 36px;
+        padding: 6px 8px;
+      }
+      .role-card {
+        grid-template-columns: 30px minmax(0, 1fr);
+        gap: 8px;
+        padding: 8px;
+      }
+      .role-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 18px;
+      }
+      .role-card span { font-size: 11px; }
       .status-grid { grid-template-columns: 1fr 1fr; }
       .terrain-guide { grid-template-columns: 1fr; }
       .weather-table { grid-template-columns: 64px minmax(0, 1fr); }
@@ -765,10 +907,71 @@
       .turn-tools { grid-template-columns: 1fr; }
       .die { width: 64px; height: 64px; }
       .action-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .board { gap: 4px; padding: 5px; min-width: 0; }
+      .action-panel button { min-height: 48px; font-size: 12px; }
+      .board {
+        width: calc(100vw - 20px);
+        gap: 4px;
+        padding: 6px;
+        min-width: 0;
+        transform: none;
+        border-width: 4px;
+        box-shadow: 0 7px 0 rgba(106, 86, 56, .36), 0 18px 32px rgba(106, 86, 56, .16);
+      }
+      .tile {
+        border-width: 2px;
+        box-shadow: inset 0 -5px 0 rgba(0, 0, 0, .1), 0 2px 0 var(--line);
+      }
+      .tile:hover { transform: none; }
+      .tile-icon { font-size: clamp(19px, 7vw, 30px); }
       .tile-label { display: none; }
+      .pawn {
+        width: 15px;
+        height: 15px;
+        font-size: 9px;
+      }
+      .found {
+        width: 18px;
+        height: 18px;
+        font-size: 11px;
+      }
+      .toast {
+        min-height: 40px;
+        font-size: 13px;
+        line-height: 1.25;
+        margin-top: 8px;
+      }
+      .turn-head {
+        align-items: flex-start;
+      }
+      .rules-mini {
+        min-height: 28px;
+        padding: 4px 7px;
+        font-size: 11px;
+      }
+      .log { max-height: 132px; }
       .choice { grid-template-columns: 30px minmax(0, 1fr); }
       .choice button { grid-column: 1 / -1; }
+      .dialog {
+        padding: 14px;
+        max-height: 86vh;
+        box-shadow: 0 7px 0 var(--line), 0 22px 60px rgba(0, 0, 0, .28);
+      }
+      .rules-dialog {
+        width: calc(100vw - 18px);
+        height: calc(100vh - 18px);
+        padding: 8px;
+      }
+      .rules-popup {
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .title h1 { font-size: 26px; }
+      .status-grid { grid-template-columns: 1fr; }
+      .action-panel { grid-template-columns: 1fr; }
+      .board { width: calc(100vw - 16px); gap: 3px; padding: 5px; }
+      .tile-icon { font-size: clamp(17px, 7vw, 26px); }
     }
   </style>
 </head>
@@ -799,7 +1002,7 @@
         <div class="setup-actions">
           <button id="startTutorial">Пройти обучение</button>
           <button id="startGame" class="secondary">Обычная игра</button>
-          <a class="button-link secondary" href="rules.html" target="_blank" rel="noopener">Полные правила</a>
+          <button type="button" class="button-link secondary rules-action" id="openRulesStart">Полные правила</button>
         </div>
       </section>
 
@@ -852,7 +1055,10 @@
 
       <section class="controls">
         <div class="panel">
-          <h2 id="turnTitle">Партия не начата</h2>
+          <div class="turn-head">
+            <h2 id="turnTitle">Партия не начата</h2>
+            <button type="button" class="rules-mini" id="openRulesTurn">Правила</button>
+          </div>
           <div class="toast" id="turnText">Выберите участников и начните поход.</div>
           <div class="turn-tools">
             <div class="die-box">
@@ -865,9 +1071,6 @@
               <button id="trade" class="secondary" disabled>Обмен</button>
               <button id="endTurn" class="secondary" disabled>Передать ход</button>
             </div>
-          </div>
-          <div class="row" style="margin-top:8px">
-            <a class="button-link secondary" href="rules.html" target="_blank" rel="noopener">Открыть все правила</a>
           </div>
           <div class="hint hidden" id="actionHint">Начните партию. Игра сама назначит роли и покажет доступную карту.</div>
         </div>
@@ -1083,6 +1286,7 @@
       drawWeather();
       log("Команда вышла из посёлка Шерегеш.");
       $("setupPanel").style.display = "none";
+      document.body.classList.add("game-started");
       $("terrainRules").classList.toggle("hidden", mode !== "tutorial");
       render();
       if (isTutorial()) showTutorialIntro();
@@ -1098,8 +1302,20 @@
         <p><b>Сейчас игра будет объяснять каждый шаг.</b> Внизу появится жёлтая подсказка, а в важных моментах откроется короткое окно.</p>
         <p><b>Ваша задача:</b> провести всех участников через гору Зелёную к вершине Мустаг.</p>
         <p><b>Первое действие:</b> посмотрите на активного игрока внизу и нажмите «Бросить шаг».</p>
-        <div class="row"><button onclick="closeModal()">Начать обучение</button><a class="button-link secondary" href="rules.html" target="_blank" rel="noopener">Полные правила</a></div>
+        <div class="row"><button onclick="closeModal()">Начать обучение</button><button type="button" class="button-link secondary" onclick="showRulesPopup()">Полные правила</button></div>
       `;
+      modal.classList.add("open");
+    }
+
+    function showRulesPopup() {
+      dialog.innerHTML = `
+        <div class="rules-dialog-head">
+          <h2>Правила</h2>
+          <button type="button" class="secondary" onclick="closeModal()">Закрыть</button>
+        </div>
+        <iframe class="rules-frame" src="rules.html" title="Полные правила игры"></iframe>
+      `;
+      dialog.classList.add("rules-dialog");
       modal.classList.add("open");
     }
 
@@ -1463,6 +1679,7 @@
 
     function closeModal() {
       modal.classList.remove("open");
+      dialog.classList.remove("rules-dialog");
     }
 
     function log(text) {
@@ -1571,6 +1788,8 @@
     $("playerCount").addEventListener("change", renderSetupRoles);
     $("startTutorial").addEventListener("click", () => startGame("tutorial"));
     $("startGame").addEventListener("click", () => startGame("normal"));
+    $("openRulesStart").addEventListener("click", showRulesPopup);
+    $("openRulesTurn").addEventListener("click", showRulesPopup);
     $("rollStep").addEventListener("click", rollStep);
     $("useRole").addEventListener("click", useRole);
     $("trade").addEventListener("click", openTrade);

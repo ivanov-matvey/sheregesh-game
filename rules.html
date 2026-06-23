@@ -6,18 +6,18 @@
   <title>Экспедиция Шерегеш — полные правила</title>
   <style>
     :root {
-      --pine: #1f7a4d;
-      --pine-dark: #174834;
-      --cedar: #2f8a53;
+      --pine: #6f7f45;
+      --pine-dark: #5c4930;
+      --cedar: #7f8f52;
       --snow: #fff8e8;
       --paper: #fffdf7;
-      --line: #183d30;
-      --ink: #10221f;
-      --muted: #5d6b69;
-      --sun: #f4c542;
-      --leaf: #a8d85a;
+      --line: #6a5638;
+      --ink: #4b3b27;
+      --muted: #7d705e;
+      --sun: #d9a93a;
+      --leaf: #b7bf73;
       --radius: 8px;
-      --shadow: 0 10px 0 rgba(24, 61, 48, .18), 0 20px 38px rgba(24, 61, 48, .18);
+      --shadow: 0 4px 0 rgba(106, 86, 56, .16), 0 12px 24px rgba(106, 86, 56, .14);
     }
 
     * { box-sizing: border-box; }
@@ -30,8 +30,8 @@
       font-family: Inter, "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
       line-height: 1.58;
       background:
-        radial-gradient(circle at 12% 16%, rgba(244, 197, 66, .2) 0 11%, transparent 12%),
-        radial-gradient(circle at 88% 12%, rgba(168, 216, 90, .16) 0 10%, transparent 11%),
+        radial-gradient(circle at 12% 16%, rgba(217, 169, 58, .2) 0 11%, transparent 12%),
+        radial-gradient(circle at 88% 12%, rgba(183, 191, 115, .16) 0 10%, transparent 11%),
         linear-gradient(135deg, #eadbbf, #ddcca8);
     }
 
@@ -100,7 +100,7 @@
       line-height: .98;
       letter-spacing: 0;
       text-transform: uppercase;
-      text-shadow: 3px 3px 0 rgba(255, 248, 232, .75), 0 0 18px rgba(244, 197, 66, .34);
+      text-shadow: 3px 3px 0 rgba(255, 248, 232, .75), 0 0 18px rgba(217, 169, 58, .28);
     }
 
     .hero p {
@@ -242,6 +242,59 @@
       .grid, .grid.three, .toc { grid-template-columns: 1fr; }
       .brand { width: 100%; }
       .hero { min-height: 230px; }
+    }
+
+    @media (max-width: 620px) {
+      body { background-attachment: scroll; }
+      .topbar-inner {
+        padding: 8px 10px;
+        gap: 6px;
+      }
+      .brand {
+        font-size: 14px;
+      }
+      .topbar a {
+        min-height: 30px;
+        padding: 4px 7px;
+        font-size: 11px;
+        box-shadow: 0 3px 0 var(--line);
+      }
+      .page {
+        padding: 14px 10px 34px;
+      }
+      .hero {
+        min-height: 180px;
+        padding: 22px 0;
+      }
+      .hero h1 {
+        font-size: 34px;
+        text-shadow: 2px 2px 0 rgba(255, 248, 232, .75);
+      }
+      .hero p {
+        width: 100%;
+        font-size: 14px;
+        line-height: 1.35;
+        padding: 9px 10px;
+      }
+      section {
+        margin: 12px 0;
+        padding: 12px;
+        box-shadow: 0 5px 0 rgba(106, 86, 56, .18), 0 12px 22px rgba(106, 86, 56, .12);
+      }
+      h2 {
+        font-size: 22px;
+      }
+      h3 {
+        font-size: 17px;
+      }
+      table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+      th, td {
+        padding: 8px;
+      }
     }
   </style>
 </head>
