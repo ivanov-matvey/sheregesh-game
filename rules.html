@@ -6,17 +6,18 @@
   <title>Экспедиция Шерегеш — полные правила</title>
   <style>
     :root {
-      --pine: #1f5a3c;
-      --pine-dark: #143a2a;
-      --cedar: #3d7c59;
-      --snow: #f5f7f2;
-      --paper: #ffffff;
-      --line: #cdd8cf;
-      --ink: #17231d;
-      --muted: #66746c;
-      --sun: #d99b2b;
-      --fire: #c64f2f;
+      --pine: #1f7a4d;
+      --pine-dark: #174834;
+      --cedar: #2f8a53;
+      --snow: #fff8e8;
+      --paper: #fffdf7;
+      --line: #183d30;
+      --ink: #10221f;
+      --muted: #5d6b69;
+      --sun: #f4c542;
+      --leaf: #a8d85a;
       --radius: 8px;
+      --shadow: 0 10px 0 rgba(24, 61, 48, .18), 0 20px 38px rgba(24, 61, 48, .18);
     }
 
     * { box-sizing: border-box; }
@@ -29,18 +30,19 @@
       font-family: Inter, "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
       line-height: 1.58;
       background:
-        linear-gradient(180deg, rgba(245, 247, 242, .94), rgba(245, 247, 242, .98)),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1400 700'%3E%3Crect width='1400' height='700' fill='%23dbeaf1'/%3E%3Cpath d='M0 430 160 250l90 80 150-190 250 285 130-155 125 145 170-220 325 305v200H0z' fill='%23edf3f0'/%3E%3Cpath d='M0 545c160-70 340-82 520-35 210 55 380-35 560-18 100 10 205 42 320 88v120H0z' fill='%238fac7d'/%3E%3C/svg%3E") top center/cover fixed;
+        radial-gradient(circle at 12% 16%, rgba(244, 197, 66, .2) 0 11%, transparent 12%),
+        radial-gradient(circle at 88% 12%, rgba(168, 216, 90, .16) 0 10%, transparent 11%),
+        linear-gradient(135deg, #eadbbf, #ddcca8);
     }
 
-    a { color: var(--pine-dark); }
+    a { color: var(--line); }
 
     .topbar {
       position: sticky;
       top: 0;
       z-index: 10;
-      background: rgba(245, 247, 242, .92);
-      border-bottom: 1px solid var(--line);
+      background: rgba(255, 248, 232, .94);
+      border-bottom: 4px solid var(--line);
       backdrop-filter: blur(10px);
     }
 
@@ -56,7 +58,7 @@
 
     .brand {
       margin-right: auto;
-      color: var(--pine-dark);
+      color: var(--line);
       font-weight: 950;
     }
 
@@ -68,15 +70,14 @@
       border-radius: var(--radius);
       text-decoration: none;
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 950;
+      border: 3px solid var(--line);
+      background: var(--paper);
+      box-shadow: 0 4px 0 var(--line);
+      text-transform: uppercase;
     }
 
-    .topbar a:hover { background: #e7f0e5; }
-
-    .button {
-      color: #fff !important;
-      background: var(--pine);
-    }
+    .topbar a:hover { background: #e8f6d1; }
 
     .page {
       max-width: 1120px;
@@ -94,32 +95,40 @@
     .hero h1 {
       max-width: 850px;
       margin: 0;
-      color: var(--pine-dark);
+      color: var(--line);
       font-size: clamp(34px, 6vw, 64px);
       line-height: .98;
       letter-spacing: 0;
+      text-transform: uppercase;
+      text-shadow: 3px 3px 0 rgba(255, 248, 232, .75), 0 0 18px rgba(244, 197, 66, .34);
     }
 
     .hero p {
       max-width: 780px;
       margin: 14px 0 0;
-      color: #2e4337;
+      display: inline-block;
+      padding: 10px 13px;
+      border: 3px solid var(--line);
+      border-radius: var(--radius);
+      color: var(--line);
+      background: var(--snow);
       font-size: 18px;
-      font-weight: 700;
+      font-weight: 850;
+      box-shadow: 0 5px 0 var(--line);
     }
 
     section {
       margin: 18px 0;
       padding: 18px;
-      border: 1px solid var(--line);
+      border: 3px solid var(--line);
       border-radius: var(--radius);
-      background: rgba(255, 255, 255, .92);
-      box-shadow: 0 14px 36px rgba(20, 58, 42, .12);
+      background: rgba(255, 248, 232, .95);
+      box-shadow: var(--shadow);
     }
 
     h2 {
       margin: 0 0 10px;
-      color: var(--pine-dark);
+      color: var(--line);
       font-size: clamp(22px, 3vw, 30px);
       line-height: 1.15;
       letter-spacing: 0;
@@ -127,7 +136,7 @@
 
     h3 {
       margin: 16px 0 7px;
-      color: var(--pine-dark);
+      color: var(--line);
       font-size: 18px;
       line-height: 1.2;
       letter-spacing: 0;
@@ -149,9 +158,10 @@
     .card {
       min-height: 100%;
       padding: 13px;
-      border: 1px solid var(--line);
+      border: 3px solid var(--line);
       border-radius: var(--radius);
-      background: #fff;
+      background: var(--paper);
+      box-shadow: 0 5px 0 var(--line);
     }
 
     .card h3 { margin-top: 0; }
@@ -161,10 +171,10 @@
       align-items: center;
       min-height: 26px;
       padding: 3px 9px;
-      border: 1px solid #cfe0cf;
+      border: 3px solid var(--line);
       border-radius: 999px;
-      background: #e7f0e5;
-      color: var(--pine-dark);
+      background: var(--sun);
+      color: var(--line);
       font-size: 12px;
       font-weight: 900;
       text-transform: uppercase;
@@ -177,35 +187,36 @@
       margin-top: 10px;
       overflow: hidden;
       border-radius: var(--radius);
-      background: #fff;
+      background: var(--paper);
       font-size: 14px;
     }
 
     th, td {
       padding: 10px;
-      border: 1px solid var(--line);
+      border: 2px solid var(--line);
       text-align: left;
       vertical-align: top;
     }
 
     th {
-      color: #fff;
       background: var(--pine);
+      color: var(--snow);
     }
 
     .note {
       padding: 11px 12px;
       border-left: 4px solid var(--sun);
-      background: #f8f1df;
+      border: 3px solid var(--line);
+      background: #fff1a8;
       border-radius: var(--radius);
-      color: #594215;
+      color: var(--line);
       font-weight: 700;
     }
 
     .danger {
-      border-left-color: var(--fire);
-      background: #f8e9e4;
-      color: #62311f;
+      border-color: var(--line);
+      background: #ffe0c9;
+      color: var(--line);
     }
 
     .toc {
@@ -219,11 +230,12 @@
       display: flex;
       align-items: center;
       padding: 8px 10px;
-      border: 1px solid var(--line);
+      border: 3px solid var(--line);
       border-radius: var(--radius);
-      background: #fff;
+      background: var(--paper);
       text-decoration: none;
       font-weight: 850;
+      box-shadow: 0 4px 0 var(--line);
     }
 
     @media (max-width: 840px) {
@@ -237,7 +249,6 @@
   <nav class="topbar">
     <div class="topbar-inner">
       <div class="brand">⛰️ Экспедиция Шерегеш · правила</div>
-      <a href="index.html" class="button">Вернуться к игре</a>
       <a href="#goal">Цель</a>
       <a href="#turn">Ход</a>
       <a href="#roles">Роли</a>
@@ -248,7 +259,7 @@
 
   <main class="page">
     <header class="hero">
-      <span class="kicker">Полный свод правил MVP</span>
+      <span class="kicker">Полный свод правил</span>
       <h1>Экспедиция Шерегеш</h1>
       <p>Кооперативная игра-путешествие: команда исследует Шерегеш, проходит через тайгу, ручьи, болота и горные подъёмы, посещает гору Зелёную и вместе поднимается на Мустаг.</p>
     </header>
@@ -267,14 +278,14 @@
         <a href="#artifacts">9. Артефакты</a>
         <a href="#coop">10. Кооперация</a>
         <a href="#finish">11. Финал</a>
-        <a href="#mvp">12. Что реализовано</a>
+        <a href="#scope">12. Состав игры</a>
       </div>
     </section>
 
     <section id="idea">
       <h2>1. Идея игры</h2>
       <p><b>Экспедиция Шерегеш</b> — это цифровая кооперативная игра для 2–6 участников. Игроки не соревнуются между собой, а проходят общий маршрут.</p>
-      <p>Сеттинг MVP: команда приезжает в Шерегеш, выходит из посёлка, исследует окрестности, доходит до горы Зелёной и завершает поход на вершине Мустаг.</p>
+      <p>Сеттинг: команда приезжает в Шерегеш, выходит из посёлка, исследует окрестности, доходит до горы Зелёной и завершает поход на вершине Мустаг.</p>
       <div class="note">Главный принцип: победить можно только всей командой. Если один участник не дошёл до финальной цели, партия ещё не завершена.</div>
     </section>
 
@@ -294,8 +305,8 @@
       <div class="grid">
         <div class="card">
           <h3>Игроки</h3>
-          <p>Выберите количество участников: от 2 до 6. Игра автоматически выдаёт каждому роль из набора.</p>
-          <p>Роли идут в фиксированном порядке, чтобы MVP запускался быстро без отдельного экрана выбора.</p>
+          <p>Выберите количество участников: от 2 до 6. Затем назначьте каждому участнику роль.</p>
+          <p>В одной команде роли не повторяются: это помогает сохранить кооперативный баланс.</p>
         </div>
         <div class="card">
           <h3>Сложность маршрута</h3>
@@ -346,7 +357,7 @@
         </thead>
         <tbody>
           <tr><td>🟩 Поляна</td><td>1</td><td>Обычная простая клетка.</td><td>Не требуется.</td></tr>
-          <tr><td>🌲 Тайга</td><td>1</td><td>Простая клетка. В MVP не даёт отдельного штрафа, но тематически отвечает за исследование закрытых участков.</td><td>Компас открывает соседние клетки вокруг владельца.</td></tr>
+          <tr><td>🌲 Тайга</td><td>1</td><td>Простая клетка. Отвечает за исследование закрытых участков маршрута.</td><td>Компас открывает соседние клетки вокруг владельца.</td></tr>
           <tr><td>💧 Ручей</td><td>2</td><td>Переправа стоит дороже обычной клетки.</td><td>Плавсредство снижает стоимость до 1.</td></tr>
           <tr><td>🟫 Болото</td><td>6</td><td>Очень сложная клетка. Обычно нужна шестёрка или специальное снаряжение.</td><td>Снаряжение снижает стоимость до 2.</td></tr>
           <tr><td>⛰️ Подъём</td><td>2</td><td>После входа на подъём движение останавливается. Есть небольшой шанс получить усталость.</td><td>Исследователь проходит подъём за 1 очко.</td></tr>
@@ -403,7 +414,7 @@
 
     <section id="coop">
       <h2>10. Кооперация и обмен</h2>
-      <p>Игра рассчитана на совместное прохождение. Главный кооперативный механизм MVP — обмен артефактами.</p>
+      <p>Игра рассчитана на совместное прохождение. Главный кооперативный механизм — обмен артефактами.</p>
       <ol>
         <li>В ход активного игрока нажмите «Обмен».</li>
         <li>Выберите участника, которому хотите помочь.</li>
@@ -418,7 +429,7 @@
       <p>Партия заканчивается, когда все участники дошли до Мустагa после посещения горы Зелёной.</p>
       <table>
         <thead>
-          <tr><th>Рейтинг</th><th>Условие в MVP</th></tr>
+          <tr><th>Рейтинг</th><th>Условие</th></tr>
         </thead>
         <tbody>
           <tr><td>⭐⭐⭐</td><td>Команда завершила маршрут за 8 раундов или быстрее.</td></tr>
@@ -429,8 +440,8 @@
       <p>Проигрыша нет. Если команда идёт медленно, она всё равно может завершить поход, просто получит меньше звёзд.</p>
     </section>
 
-    <section id="mvp">
-      <h2>12. Что реализовано в MVP</h2>
+    <section id="scope">
+      <h2>12. Состав игры</h2>
       <div class="grid">
         <div class="card">
           <h3>Есть</h3>
@@ -448,7 +459,7 @@
           </ul>
         </div>
         <div class="card">
-          <h3>Не входит в MVP</h3>
+          <h3>Не входит в текущую версию</h3>
           <ul>
             <li>сетевое лобби;</li>
             <li>одновременная онлайн-игра;</li>
@@ -459,7 +470,6 @@
           </ul>
         </div>
       </div>
-      <div class="note danger">Если поведение в игре отличается от этой страницы, для MVP приоритет имеет реализованное поведение в игре. Эта страница описывает текущую реализацию и правила спецификации в одном месте.</div>
     </section>
   </main>
 </body>
