@@ -119,6 +119,30 @@
       min-height: 100dvh;
     }
 
+    body:not(.game-started) .app {
+      display: grid;
+      grid-template-columns: minmax(320px, 620px);
+      place-content: center;
+      padding: 18px;
+      min-height: 100dvh;
+    }
+
+    body:not(.game-started) .side {
+      border: 4px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      max-height: calc(100dvh - 36px);
+      width: min(620px, calc(100vw - 36px));
+    }
+
+    body:not(.game-started) .side > section:not(#setupPanel) {
+      display: none;
+    }
+
+    body:not(.game-started) .main {
+      display: none;
+    }
+
     .side {
       display: flex;
       flex-direction: column;
@@ -159,12 +183,19 @@
       min-height: 0;
       gap: 12px;
       padding: 14px;
+      border-top: 0;
+      border-left: 0;
+      border-bottom: 0;
+      border-radius: 0;
+      box-shadow: none;
+      max-height: none;
+      width: auto;
     }
 
     body.game-started .main {
       height: 100dvh;
       min-height: 0;
-      grid-template-rows: minmax(0, 1fr) 270px;
+      grid-template-rows: minmax(0, 1fr) 310px;
       gap: 12px;
       padding: 14px;
       overflow: hidden;
@@ -175,7 +206,7 @@
     }
 
     body.game-started .board {
-      width: min(100%, calc(100dvh - 320px));
+      width: min(100%, calc(100dvh - 360px));
       max-height: 100%;
     }
 
@@ -191,7 +222,7 @@
     }
 
     body.game-started .log {
-      max-height: 202px;
+      max-height: 242px;
     }
 
     .title h1 {
@@ -287,27 +318,6 @@
       display: block;
       color: var(--line);
       margin-bottom: 2px;
-    }
-
-    .terrain-guide {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 6px;
-    }
-
-    .terrain-item {
-      min-height: 34px;
-      display: flex;
-      gap: 6px;
-      align-items: center;
-      padding: 6px 7px;
-      border: 3px solid var(--line);
-      border-radius: var(--radius);
-      background: #fffdf7;
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--line);
-      box-shadow: 0 2px 0 rgba(106, 86, 56, .18);
     }
 
     .row {
@@ -607,18 +617,46 @@
       user-select: none;
       min-width: 0;
       min-height: 0;
-      box-shadow: inset 0 -8px 0 rgba(0, 0, 0, .12), 0 4px 0 var(--line);
+      box-shadow: inset 0 -5px 0 rgba(106, 86, 56, .1), 0 2px 0 rgba(106, 86, 56, .22);
       transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
     }
 
-    .tile:hover { transform: translateY(-3px) rotate(1deg); }
+    .board.generating .tile {
+      animation: dealTile .58s cubic-bezier(.18, .88, .28, 1.12) both;
+      animation-delay: calc(var(--tile-index, 0) * 26ms);
+    }
+
+    @keyframes dealTile {
+      0% {
+        opacity: 0;
+        transform: translateY(-18px) scale(.78) rotate(-5deg);
+        filter: saturate(.7) brightness(1.12);
+      }
+      72% {
+        opacity: 1;
+        transform: translateY(3px) scale(1.04) rotate(1deg);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0deg);
+        filter: none;
+      }
+    }
+
+    .tile:hover { transform: none; }
     .tile.hidden {
       background: linear-gradient(145deg, #9a9f91, #66705f);
       filter: saturate(.72) brightness(.9);
     }
-    .tile.reachable { border-color: var(--sun); box-shadow: inset 0 0 0 4px rgba(255, 255, 255, .6), 0 7px 0 var(--line), 0 0 0 4px rgba(217, 169, 58, .38); }
-    .tile.goal { border-color: var(--sun); box-shadow: inset 0 0 0 4px rgba(255, 255, 255, .6), 0 5px 0 var(--line); }
-    .tile.mid { border-color: var(--sun); box-shadow: inset 0 0 0 4px rgba(255, 255, 255, .55), 0 5px 0 var(--line); }
+    .tile.reachable {
+      border-color: var(--sun);
+      box-shadow: inset 0 0 0 4px rgba(217, 169, 58, .28), 0 0 0 3px rgba(217, 169, 58, .18), 0 2px 0 rgba(106, 86, 56, .22);
+    }
+    .tile.goal,
+    .tile.mid {
+      border-color: #d7b75d;
+      box-shadow: inset 0 0 0 3px rgba(217, 169, 58, .2), 0 2px 0 rgba(106, 86, 56, .22);
+    }
 
     .plain { background: linear-gradient(145deg, #cfe8a0, #8fc66a); }
     .forest { background: linear-gradient(145deg, #9cac63, #6f7f45); color: #fff; }
@@ -627,32 +665,13 @@
     .mountain { background: linear-gradient(145deg, #f1ead7, #b6aa8c); color: #fff; }
 
     .tile-icon {
-      font-size: clamp(20px, 4.6vw, 42px);
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-size: clamp(26px, 5vw, 46px);
       line-height: 1;
       text-shadow: 3px 3px 0 rgba(106, 86, 56, .45);
-    }
-
-    .tile-label {
-      position: absolute;
-      left: 5px;
-      right: 5px;
-      bottom: 3px;
-      min-height: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2px 3px;
-      border-radius: 5px;
-      color: var(--line);
-      background: rgba(255, 248, 232, .92);
-      font-size: clamp(8px, 1.05vw, 10px);
-      line-height: 1.05;
-      text-align: center;
-      font-weight: 900;
-      white-space: normal;
-      overflow-wrap: anywhere;
-      word-break: normal;
-      overflow: hidden;
     }
 
     .occupants {
@@ -969,8 +988,31 @@
     }
 
     .hint.hidden,
+    .hint-button.hidden,
+    .tutorial-help.hidden,
     .tutorial-only.hidden {
       display: none;
+    }
+
+    .hint-button {
+      width: 34px;
+      min-width: 34px;
+      min-height: 34px;
+      padding: 0;
+      border: 3px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+      color: var(--line);
+      font-size: 18px;
+      line-height: 1;
+      box-shadow: 0 4px 0 var(--line), 0 8px 12px rgba(106, 86, 56, .14);
+    }
+
+    .turn-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-shrink: 0;
     }
 
     @media (max-width: 980px) {
@@ -1025,7 +1067,6 @@
       }
       .role-card span { font-size: 11px; }
       .status-grid { grid-template-columns: 1fr 1fr; }
-      .terrain-guide { grid-template-columns: 1fr; }
       .weather-table { grid-template-columns: 64px minmax(0, 1fr); }
       .weather-deck, .weather-card { width: 58px; height: 78px; }
       .turn-tools { grid-template-columns: 1fr; }
@@ -1046,8 +1087,7 @@
         box-shadow: inset 0 -5px 0 rgba(0, 0, 0, .1), 0 2px 0 var(--line);
       }
       .tile:hover { transform: none; }
-      .tile-icon { font-size: clamp(19px, 7vw, 30px); }
-      .tile-label { display: none; }
+      .tile-icon { font-size: clamp(24px, 7vw, 34px); }
       .pawn {
         width: 15px;
         height: 15px;
@@ -1244,8 +1284,8 @@
 
       body.game-started .tile {
         border-radius: 9px;
-        border-width: 2px;
-        box-shadow: inset 0 -5px 0 rgba(106, 86, 56, .12), 0 3px 0 rgba(106, 86, 56, .52);
+        border-width: 3px;
+        box-shadow: inset 0 -5px 0 rgba(106, 86, 56, .1), 0 2px 0 rgba(106, 86, 56, .22);
       }
 
       body.game-started .tile.hidden {
@@ -1254,8 +1294,8 @@
       }
 
       body.game-started .tile-icon {
-        font-size: clamp(21px, 7.7vw, 32px);
-        text-shadow: 2px 2px 0 rgba(106, 86, 56, .28);
+        font-size: clamp(26px, 8vw, 38px);
+        text-shadow: 3px 3px 0 rgba(106, 86, 56, .34);
       }
 
       body.game-started .pawn {
@@ -1364,7 +1404,7 @@
       .status-grid { grid-template-columns: 1fr; }
       .action-panel { grid-template-columns: 1fr; }
       .board { width: calc(100vw - 16px); gap: 3px; padding: 5px; }
-      .tile-icon { font-size: clamp(17px, 7vw, 26px); }
+      .tile-icon { font-size: clamp(22px, 7vw, 30px); }
       body.game-started .board {
         width: min(calc(100vw - 16px), calc(100dvh - 434px));
       }
@@ -1428,18 +1468,6 @@
         </div>
       </section>
 
-      <section class="panel tutorial-only" id="terrainRules">
-        <h2>Стоимость клеток</h2>
-        <div class="terrain-guide">
-          <div class="terrain-item">🟩 Поляна: 1</div>
-          <div class="terrain-item">🌲 Тайга: 1, скрывает соседей</div>
-          <div class="terrain-item">💧 Ручей: 2</div>
-          <div class="terrain-item">🟫 Болото: 6</div>
-          <div class="terrain-item">⛰️ Подъём: 2</div>
-          <div class="terrain-item">❔ Закрыто: сначала открыть</div>
-        </div>
-      </section>
-
       <section class="panel">
         <h2>Состояние</h2>
         <div class="status-grid">
@@ -1495,7 +1523,10 @@
         <div class="panel">
           <div class="turn-head">
             <h2 id="turnTitle">Партия не начата</h2>
-            <button type="button" class="rules-mini" id="openRulesTurn">📖 Правила</button>
+            <div class="turn-actions">
+              <button type="button" class="hint-button hidden" id="openHintTurn" aria-label="Подсказка обучения">?</button>
+              <button type="button" class="rules-mini" id="openRulesTurn">📖 Правила</button>
+            </div>
           </div>
           <div class="toast" id="turnText">Выберите участников и начните поход.</div>
           <div class="turn-tools">
@@ -1514,7 +1545,6 @@
             <button type="button" class="secondary" id="openTeamMobile">Команда</button>
             <button type="button" class="secondary" id="openLogMobile">Журнал</button>
           </div>
-          <div class="hint hidden" id="actionHint">Начните партию. Игра сама назначит роли и покажет доступную карту.</div>
         </div>
         <div class="panel">
           <h2>Журнал похода</h2>
@@ -1585,6 +1615,7 @@
       rolling: false,
       mode: "normal",
       tutorialSeen: new Set(),
+      currentHint: "Начните партию. Игра сама назначит роли и покажет доступную карту.",
       log: []
     };
 
@@ -1769,8 +1800,8 @@
       log("Команда вышла из посёлка Шерегеш.");
       $("setupPanel").style.display = "none";
       document.body.classList.add("game-started");
-      $("terrainRules").classList.toggle("hidden", mode !== "tutorial");
       render();
+      animateMapGeneration();
       if (isTutorial()) showTutorialIntro();
     }
 
@@ -1959,8 +1990,6 @@
       const player = currentPlayer();
       if (!isReachable(tile, player)) return;
       let foundArtifact = null;
-      let reachedMid = false;
-      let reachedGoal = false;
       const ignoredDifficult = canIgnoreDifficult(player, tile);
       const shieldedRain = !state.weatherSuppressed && state.weather.type === "rain" && isDifficult(tile) && player.weatherShield > 0;
       const cost = costFor(tile, player);
@@ -1994,23 +2023,13 @@
           log(`${player.name} устал на подъёме.`);
         }
       }
-      if (tile.x === places.mid.x && tile.y === places.mid.y) {
-        player.visitedMid = true;
-        reachedMid = true;
-        state.story += 1;
-        log(`${player.name} отметил промежуточную цель: гора Зелёная.`);
-      }
-      if (tile.x === places.goal.x && tile.y === places.goal.y && player.visitedMid) {
-        player.finished = true;
-        reachedGoal = true;
-        log(`${player.name} дошёл до вершины Мустаг.`);
-      }
+      const { reachedMid, reachedGoal } = updatePlayerGoalProgress(player);
       if (tile.type !== "forest" || player.artifacts.includes("compass")) {
         revealAround(player.x, player.y);
       } else {
         log("Тайга скрыла соседние закрытые клетки.");
       }
-      checkWin();
+      const won = checkWin();
       render();
       if (!reachedGoal) {
         tutorialPopup(
@@ -2022,7 +2041,28 @@
       if (foundArtifact) tutorialPopup("artifact", "Артефакт найден", `${foundArtifact.icon} ${foundArtifact.name} теперь у игрока. Артефакты можно передавать через кнопку «Обмен», чтобы помогать команде.`);
       if (reachedMid) tutorialPopup("mid", "Промежуточная цель", "Этот участник посетил гору Зелёную. Теперь именно он может финишировать на Мустаге. Остальным тоже нужно зайти на гору Зелёную.");
       if (reachedGoal) tutorialPopup("goal", "Финиш игрока", "Участник дошёл до Мустагa после горы Зелёной. Партия закончится, когда так сделают все участники.");
-      if (reachedGoal && !state.gameOver) endTurn(true);
+      if (reachedGoal && !won) endTurn(true);
+    }
+
+    function updatePlayerGoalProgress(player) {
+      let reachedMid = false;
+      let reachedGoal = false;
+      if (player.x === places.mid.x && player.y === places.mid.y && !player.visitedMid) {
+        player.visitedMid = true;
+        reachedMid = true;
+        state.story += 1;
+        log(`${player.name} отметил промежуточную цель: гора Зелёная.`);
+      }
+      if (player.x === places.goal.x && player.y === places.goal.y) {
+        if (player.visitedMid && !player.finished) {
+          player.finished = true;
+          reachedGoal = true;
+          log(`${player.name} дошёл до вершины Мустаг.`);
+        } else if (!player.visitedMid) {
+          log(`${player.name} дошёл до Мустагa, но сначала нужно посетить гору Зелёную.`);
+        }
+      }
+      return { reachedMid, reachedGoal };
     }
 
     function collectArtifact(tile, player) {
@@ -2111,7 +2151,9 @@
             player.usedSpecial = 1;
             target.x = tile.x;
             target.y = tile.y;
+            updatePlayerGoalProgress(target);
             log(`Спасатель переместил ${target.name} на соседнюю клетку.`);
+            checkWin();
             render();
             tutorialPopup("role", "Особое действие роли", "Кнопка «Роль» применяет сильное действие персонажа. Обычно оно ограничено одним или двумя применениями за партию.");
           });
@@ -2146,6 +2188,7 @@
 
     function endTurn(auto = false) {
       if (!state.started || state.gameOver) return;
+      if (checkWin()) return;
       const finishedPlayer = currentPlayer();
       state.step = 0;
       state.lastRoll = 0;
@@ -2162,6 +2205,10 @@
         }
         if (!state.players[next].finished) break;
       }
+      if (state.players.every(p => p.finished)) {
+        checkWin();
+        return;
+      }
       state.current = next;
       $("stepDie").textContent = "🎲";
       beginTurnEffects(currentPlayer());
@@ -2172,9 +2219,10 @@
     }
 
     function checkWin() {
-      if (!state.players.length || state.gameOver) return;
+      if (!state.players.length) return false;
+      if (state.gameOver) return true;
       const done = state.players.every(p => p.finished);
-      if (!done) return;
+      if (!done) return false;
       state.gameOver = true;
       const stars = state.round <= 8 ? 3 : state.round <= 12 ? 2 : 1;
       const story = [
@@ -2185,6 +2233,7 @@
       dialog.innerHTML = `<h2>Маршрут пройден</h2><p style="font-size:28px;margin:8px 0">${"⭐".repeat(stars)}${"☆".repeat(3 - stars)}</p><p>${story}</p><p><b>Раундов:</b> ${state.round}. <b>Жетонов истории:</b> ${state.story}.</p><div class="row"><button onclick="location.reload()">Новая партия</button><button class="secondary" onclick="closeModal()">Смотреть карту</button></div>`;
       modal.classList.add("open");
       log(`Победа команды: ${stars} звезды.`);
+      return true;
     }
 
     function choosePlayer(title, players, cb) {
@@ -2217,6 +2266,14 @@
 
     function showInfo(text) {
       dialog.innerHTML = `<h2>Нельзя выполнить</h2><p>${text}</p><div class="row"><button onclick="closeModal()">Понятно</button></div>`;
+      modal.classList.add("open");
+    }
+
+    function showHintPopup() {
+      const player = state.started && !state.gameOver ? currentPlayer() : null;
+      const text = getActionHint(player, state.started && !state.gameOver);
+      state.currentHint = text;
+      dialog.innerHTML = `<h2>Подсказка обучения</h2><p>${text}</p><div class="row"><button onclick="closeModal()">Закрыть</button></div>`;
       modal.classList.add("open");
     }
 
@@ -2269,7 +2326,7 @@
 
     function drawBoard() {
       board.innerHTML = "";
-      state.tiles.forEach((tile) => {
+      state.tiles.forEach((tile, index) => {
         const data = terrain[tile.type];
         const el = document.createElement("button");
         const isMid = tile.x === places.mid.x && tile.y === places.mid.y;
@@ -2277,14 +2334,13 @@
         const player = state.started ? currentPlayer() : null;
         const reachable = player && isReachable(tile, player);
         el.className = `tile ${data.className}${tile.revealed ? "" : " hidden"}${reachable ? " reachable" : ""}${isMid ? " mid" : ""}${isGoal ? " goal" : ""}`;
+        el.style.setProperty("--tile-index", index);
         el.disabled = !reachable;
         const placeIcon = tile.x === places.base.x && tile.y === places.base.y ? places.base.icon : isMid ? places.mid.icon : isGoal ? places.goal.icon : data.icon;
-        const label = tile.x === places.base.x && tile.y === places.base.y ? places.base.label : isMid ? places.mid.label : isGoal ? places.goal.label : data.name;
         const occupants = state.players.filter(p => p.x === tile.x && p.y === tile.y);
         el.innerHTML = `
           <div class="occupants">${occupants.map(p => `<span class="pawn">${p.id}</span>`).join("")}</div>
           <div class="tile-icon">${tile.revealed ? placeIcon : "❔"}</div>
-          <div class="tile-label">${tile.revealed ? label : "неизвестно"}</div>
           ${tile.revealed && tile.artifact ? `<div class="found">${artifacts.find(a => a.id === tile.artifact).icon}</div>` : ""}
         `;
         el.onclick = () => moveTo(tile);
@@ -2343,8 +2399,8 @@
       $("turnText").textContent = active
         ? isTutorial() ? `Шаг: ${state.rolling ? "кубик катится" : state.rolled ? state.step : "бросок не сделан"}. ${player.role.passive}` : `Шаг: ${state.rolling ? "кубик катится" : state.rolled ? state.step : "бросок не сделан"}.`
         : state.gameOver ? "Команда дошла до вершины." : "Выберите участников и начните поход.";
-      $("actionHint").textContent = getActionHint(player, active);
-      $("actionHint").classList.toggle("hidden", !isTutorial());
+      state.currentHint = getActionHint(player, active);
+      $("openHintTurn").classList.toggle("hidden", !isTutorial() || !active);
       $("rollStep").disabled = !active || state.rolled || player.finished || state.rolling;
       $("useRole").disabled = !active || player.finished || state.rolling;
       $("trade").disabled = !active || player.finished || state.rolling;
@@ -2378,6 +2434,17 @@
       if (state.started) return;
       buildMap();
       drawBoard();
+      animateMapGeneration();
+    }
+
+    function animateMapGeneration() {
+      board.classList.remove("generating");
+      void board.offsetWidth;
+      board.classList.add("generating");
+      window.clearTimeout(state.mapAnimationTimer);
+      state.mapAnimationTimer = window.setTimeout(() => {
+        board.classList.remove("generating");
+      }, 1200);
     }
 
     $("playerCount").addEventListener("change", renderSetupRoles);
@@ -2388,6 +2455,7 @@
     $("openRulesStart").addEventListener("click", showRulesPopup);
     $("openRulesTurn").addEventListener("click", showRulesPopup);
     $("openRulesMobile").addEventListener("click", showRulesPopup);
+    $("openHintTurn").addEventListener("click", showHintPopup);
     $("openLogMobile").addEventListener("click", showLogPopup);
     $("openTeamMobile").addEventListener("click", showTeamPopup);
     $("rollStep").addEventListener("click", rollStep);
@@ -2402,6 +2470,7 @@
     renderSetupRoles();
     buildMap();
     drawBoard();
+    animateMapGeneration();
     renderPlayers();
     renderStatus();
     renderTurn();
