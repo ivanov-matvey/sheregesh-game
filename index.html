@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#eadbbf">
+  <meta name="theme-color" content="#071613">
   <title>Экспедиция Шерегеш</title>
   <style>
     :root {
@@ -940,15 +940,16 @@
     }
 
     .die.rolling {
-      animation: rollDie .7s ease;
+      animation: rollDie .72s cubic-bezier(.18, .88, .28, 1.12);
     }
 
     @keyframes rollDie {
-      0% { transform: rotate(0deg) scale(1); }
-      20% { transform: rotate(18deg) scale(1.08); }
-      45% { transform: rotate(-22deg) scale(.95); }
-      70% { transform: rotate(14deg) scale(1.05); }
-      100% { transform: rotate(0deg) scale(1); }
+      0% { transform: translateY(0) rotate(0deg) scale(1); filter: brightness(1); }
+      18% { transform: translateY(-10px) rotate(92deg) scale(1.12); filter: brightness(1.18); }
+      36% { transform: translateY(4px) rotate(181deg) scale(.96); }
+      54% { transform: translateY(-7px) rotate(268deg) scale(1.1); filter: brightness(1.22); }
+      76% { transform: translateY(2px) rotate(344deg) scale(.98); }
+      100% { transform: translateY(0) rotate(360deg) scale(1); filter: brightness(1); }
     }
 
     .log {
@@ -1014,6 +1015,51 @@
     }
 
     .modal.open { display: grid; }
+
+    .roll-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 900;
+      display: none;
+      place-items: center;
+      pointer-events: none;
+      background: rgba(1, 10, 12, .18);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+    }
+
+    .roll-overlay.show {
+      display: grid;
+    }
+
+    .roll-overlay.settled .roll-anim-die {
+      animation: none;
+      transform: translateY(0) rotate(0deg) scale(1);
+      filter: brightness(1.08);
+    }
+
+    .roll-anim-die {
+      width: clamp(104px, 22vw, 156px);
+      height: clamp(104px, 22vw, 156px);
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      border: 2px solid rgba(255, 255, 255, .52);
+      color: #071613;
+      background: linear-gradient(145deg, rgba(255, 255, 255, .98), rgba(142, 247, 219, .82));
+      box-shadow: 0 30px 90px rgba(0, 0, 0, .45), inset -14px -14px 30px rgba(143, 124, 255, .2), inset 0 1px 0 rgba(255, 255, 255, .72);
+      font-size: clamp(48px, 11vw, 76px);
+      font-weight: 950;
+      animation: rollOverlayDie .72s cubic-bezier(.18, .88, .28, 1.12) infinite;
+    }
+
+    @keyframes rollOverlayDie {
+      0% { transform: translateY(0) rotate(0deg) scale(1); filter: brightness(1); }
+      20% { transform: translateY(-22px) rotate(98deg) scale(1.12); filter: brightness(1.2); }
+      42% { transform: translateY(8px) rotate(190deg) scale(.95); }
+      64% { transform: translateY(-14px) rotate(286deg) scale(1.08); filter: brightness(1.18); }
+      100% { transform: translateY(0) rotate(360deg) scale(1); filter: brightness(1); }
+    }
 
     .dialog {
       width: min(620px, 100%);
@@ -1644,6 +1690,1855 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
+
+    /* Glass morphism look based on the V_Pokhod visual system. */
+    :root {
+      --pine: #52c878;
+      --pine-dark: #071613;
+      --cedar: #16a879;
+      --snow: rgba(255, 255, 255, .88);
+      --paper: rgba(255, 255, 255, .64);
+      --cream-2: #d8f2f0;
+      --ice: rgba(220, 246, 255, .42);
+      --mist: rgba(221, 235, 237, .72);
+      --sun: #ff6b5f;
+      --leaf: #8fe37e;
+      --ink: #f8fffb;
+      --muted: rgba(225, 240, 239, .76);
+      --line: rgba(255, 255, 255, .36);
+      --card: rgba(10, 34, 32, .52);
+      --glass-strong: rgba(8, 28, 28, .72);
+      --glass-soft: rgba(255, 255, 255, .14);
+      --glass-line: rgba(255, 255, 255, .3);
+      --violet: #8f7cff;
+      --cyan: #74f2ff;
+      --shadow: 0 20px 70px rgba(0, 0, 0, .34), inset 0 1px 0 rgba(255, 255, 255, .22);
+      --button-shadow: 0 14px 26px rgba(0, 0, 0, .28), inset 0 1px 0 rgba(255, 255, 255, .28);
+      --radius: 8px;
+    }
+
+    html {
+      background: #071613;
+    }
+
+    body {
+      position: relative;
+      color: var(--ink);
+      background:
+        linear-gradient(120deg, rgba(7, 22, 19, .84), rgba(9, 27, 39, .55) 48%, rgba(22, 168, 121, .18)),
+        url("assets/v-pokhod/game/cover.jpg") center/cover fixed;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 14% 18%, rgba(116, 242, 255, .28), transparent 22%),
+        radial-gradient(circle at 86% 16%, rgba(255, 107, 95, .24), transparent 24%),
+        linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, 0) 38%);
+      z-index: 0;
+    }
+
+    .app,
+    .modal {
+      position: relative;
+      z-index: 1;
+    }
+
+    body:not(.game-started) .side {
+      width: min(640px, calc(100vw - 32px));
+      max-height: none;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      overflow: visible;
+    }
+
+    .side,
+    .panel,
+    .dialog,
+    .scoreboard,
+    .rule,
+    .role-card,
+    .metric,
+    .weather-table,
+    .player,
+    .choice,
+    .toast,
+    .hint,
+    .log p,
+    .log-popup p,
+    .place-fact,
+    .mobile-metrics,
+    body.game-started .mobile-weather-card {
+      border: 1px solid var(--glass-line);
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .18), rgba(255, 255, 255, .06)),
+        var(--card);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(22px) saturate(1.34);
+      -webkit-backdrop-filter: blur(22px) saturate(1.34);
+    }
+
+    .side {
+      border-right: 1px solid var(--glass-line);
+      background:
+        linear-gradient(180deg, rgba(7, 22, 19, .82), rgba(7, 22, 19, .58)),
+        rgba(255, 255, 255, .08);
+    }
+
+    body:not(.game-started) {
+      overflow-y: auto;
+    }
+
+    body:not(.game-started) .app {
+      min-height: 100dvh;
+      place-content: start center;
+      padding: clamp(16px, 4dvh, 44px) 16px;
+    }
+
+    body:not(.game-started) #setupPanel {
+      display: grid;
+      gap: 16px;
+      max-height: none;
+      padding: clamp(18px, 3vw, 28px);
+      border: 1px solid rgba(255, 255, 255, .34);
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .18), rgba(255, 255, 255, .07)),
+        rgba(7, 22, 19, .7);
+      box-shadow: 0 32px 92px rgba(0, 0, 0, .48), inset 0 1px 0 rgba(255, 255, 255, .24);
+      backdrop-filter: blur(24px) saturate(1.28);
+      -webkit-backdrop-filter: blur(24px) saturate(1.28);
+    }
+
+    body:not(.game-started) #setupPanel h2 {
+      margin-bottom: 2px;
+      font-size: clamp(22px, 3vw, 28px);
+      line-height: 1;
+    }
+
+    body:not(.game-started) #setupPanel .field {
+      gap: 7px;
+    }
+
+    body:not(.game-started) #setupPanel > .field + .field,
+    body:not(.game-started) #setupPanel > .roles,
+    body:not(.game-started) #setupPanel > .setup-actions,
+    body:not(.game-started) #setupPanel > .scoreboard {
+      margin-top: 2px;
+    }
+
+    .panel::before,
+    .dialog::before,
+    .side::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: linear-gradient(135deg, rgba(255, 255, 255, .22), transparent 38%);
+      opacity: .72;
+    }
+
+    .panel,
+    .dialog,
+    .side {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .side {
+      overflow: auto;
+    }
+
+    .dialog {
+      overflow: auto;
+    }
+
+    .panel > *,
+    .dialog > *,
+    .side > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .panel h2,
+    .panel h3,
+    .scoreboard h3,
+    .metric b,
+    .metric span,
+    .weather-info b,
+    .player-name,
+    .role-card b,
+    .mini-label,
+    .turn-head h2,
+    .dialog h2,
+    .dialog p,
+    .place-next,
+    .rules-popup {
+      color: var(--ink);
+    }
+
+    .role-card span,
+    .role-details p,
+    .weather-info span,
+    .player-meta,
+    .score-empty,
+    .field label,
+    .photo-source,
+    .choice small,
+    .mobile-weather-card span {
+      color: var(--muted);
+    }
+
+    button,
+    a.button-link,
+    .rules-mini,
+    .hint-button,
+    body.game-started .mobile-hud .rules-mini {
+      border: 1px solid rgba(255, 255, 255, .34);
+      color: #071613;
+      background: linear-gradient(135deg, rgba(255, 255, 255, .96), rgba(142, 247, 219, .78));
+      box-shadow: var(--button-shadow);
+      text-shadow: none;
+      letter-spacing: 0;
+    }
+
+    button:hover,
+    a.button-link:hover,
+    .rules-mini:hover,
+    .setup-actions .rules-action:hover {
+      background: linear-gradient(135deg, #fff, rgba(116, 242, 255, .82));
+      box-shadow: 0 18px 34px rgba(0, 0, 0, .32), 0 0 32px rgba(116, 242, 255, .2);
+    }
+
+    button.secondary,
+    a.button-link.secondary,
+    .setup-actions .rules-action,
+    body.game-started .mobile-secondary-actions button {
+      color: var(--ink);
+      background: linear-gradient(135deg, rgba(255, 255, 255, .18), rgba(255, 255, 255, .07));
+      border-color: rgba(255, 255, 255, .28);
+    }
+
+    button:disabled {
+      color: rgba(255, 255, 255, .56);
+      background: rgba(255, 255, 255, .12);
+      box-shadow: none;
+    }
+
+    select,
+    input {
+      border: 1px solid rgba(255, 255, 255, .28);
+      color: var(--ink);
+      background: rgba(255, 255, 255, .12);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18);
+      outline: none;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    select:focus,
+    input:focus {
+      border-color: rgba(116, 242, 255, .82);
+      box-shadow: 0 0 0 3px rgba(116, 242, 255, .16), inset 0 1px 0 rgba(255, 255, 255, .18);
+    }
+
+    input::placeholder {
+      color: rgba(225, 240, 239, .52);
+    }
+
+    .field label,
+    .mini-label,
+    .die-label {
+      color: rgba(248, 255, 251, .7);
+      font-size: 11px;
+      letter-spacing: .04em;
+    }
+
+    .score-row,
+    .role-details p,
+    .artifact,
+    .badge,
+    .mobile-metrics div {
+      border: 1px solid rgba(255, 255, 255, .22);
+      color: var(--ink);
+      background: rgba(255, 255, 255, .1);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12);
+    }
+
+    body:not(.game-started) .roles {
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    body:not(.game-started) .role-card {
+      grid-template-columns: 56px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      padding: 14px;
+      border-color: rgba(255, 255, 255, .22);
+      background: rgba(255, 255, 255, .075);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    body:not(.game-started) .role-card:nth-child(2n),
+    body:not(.game-started) .role-card:nth-child(3n) {
+      background: rgba(255, 255, 255, .075);
+    }
+
+    body:not(.game-started) .role-card b {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 15px;
+      line-height: 1.1;
+    }
+
+    body:not(.game-started) .role-card > div:last-child {
+      display: grid;
+      gap: 7px;
+    }
+
+    body:not(.game-started) .role-card .field,
+    body:not(.game-started) .role-card label {
+      margin-top: 0;
+    }
+
+    body:not(.game-started) .role-card input,
+    body:not(.game-started) .role-card select {
+      min-height: 36px;
+      margin-top: -3px;
+      background: rgba(255, 255, 255, .12);
+    }
+
+    body:not(.game-started) .role-icon {
+      width: 48px;
+      height: 48px;
+      margin-top: 0;
+      font-size: 27px;
+    }
+
+    body:not(.game-started) .role-details {
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    body:not(.game-started) .role-details p {
+      padding: 8px 9px;
+      border-color: rgba(255, 255, 255, .16);
+      background: rgba(0, 0, 0, .12);
+      color: rgba(248, 255, 251, .82);
+      font-size: 12px;
+      line-height: 1.28;
+      box-shadow: none;
+    }
+
+    body:not(.game-started) .role-details b {
+      margin-bottom: 3px;
+      color: rgba(248, 255, 251, .62);
+      font-size: 10px;
+      letter-spacing: .04em;
+    }
+
+    body:not(.game-started) .setup-actions {
+      gap: 9px;
+      padding-top: 2px;
+    }
+
+    body:not(.game-started) .setup-actions button,
+    body:not(.game-started) .setup-actions .button-link {
+      min-height: 50px;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, .24), inset 0 1px 0 rgba(255, 255, 255, .24);
+    }
+
+    body:not(.game-started) .scoreboard {
+      padding: 12px;
+      border-color: rgba(255, 255, 255, .18);
+      background: rgba(0, 0, 0, .14);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    .role-icon,
+    .avatar,
+    .artifact-popup-icon,
+    .mobile-weather-icon {
+      border: 1px solid rgba(255, 255, 255, .36);
+      background: linear-gradient(145deg, rgba(143, 124, 255, .88), rgba(116, 242, 255, .56));
+      box-shadow: 0 14px 28px rgba(0, 0, 0, .24), inset 0 1px 0 rgba(255, 255, 255, .36);
+    }
+
+    .player.active {
+      border-color: rgba(255, 107, 95, .74);
+      background:
+        linear-gradient(135deg, rgba(255, 107, 95, .34), rgba(255, 255, 255, .1)),
+        rgba(10, 34, 32, .62);
+      box-shadow: 0 20px 50px rgba(255, 107, 95, .2), inset 0 1px 0 rgba(255, 255, 255, .24);
+    }
+
+    .weather-deck::before,
+    .weather-deck::after,
+    .weather-card {
+      border: 1px solid rgba(255, 255, 255, .34);
+      background: linear-gradient(145deg, rgba(143, 124, 255, .92), rgba(22, 168, 121, .72));
+      box-shadow: 0 18px 34px rgba(0, 0, 0, .32), inset 0 1px 0 rgba(255, 255, 255, .28);
+    }
+
+    .board {
+      border: 1px solid rgba(255, 255, 255, .38);
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .2), rgba(255, 255, 255, .06)),
+        rgba(6, 20, 22, .42);
+      box-shadow: 0 30px 90px rgba(0, 0, 0, .42), inset 0 1px 0 rgba(255, 255, 255, .3);
+      backdrop-filter: blur(24px) saturate(1.35);
+      -webkit-backdrop-filter: blur(24px) saturate(1.35);
+    }
+
+    .tile {
+      border: 1px solid rgba(255, 255, 255, .32);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 12px 24px rgba(0, 0, 0, .22);
+      background-size: cover;
+      background-position: center;
+    }
+
+    .tile::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, .12), rgba(0, 0, 0, .1));
+      pointer-events: none;
+    }
+
+    .plain { background-image: linear-gradient(rgba(139, 227, 126, .22), rgba(11, 45, 30, .18)), url("assets/v-pokhod/game/terrain_plain.jpg"); }
+    .forest { background-image: linear-gradient(rgba(18, 90, 49, .18), rgba(2, 22, 16, .28)), url("assets/v-pokhod/game/terrain_forest_conifer.jpg"); }
+    .water { background-image: linear-gradient(rgba(116, 242, 255, .16), rgba(4, 47, 66, .24)), url("assets/v-pokhod/game/terrain_water.jpg"); }
+    .bog { background-image: linear-gradient(rgba(255, 107, 95, .12), rgba(30, 18, 9, .28)), url("assets/v-pokhod/game/terrain_bog.jpg"); }
+    .mountain { background-image: linear-gradient(rgba(255, 255, 255, .14), rgba(19, 25, 31, .32)), url("assets/v-pokhod/game/terrain_mountain.jpg"); }
+
+    .tile.hidden {
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .18), rgba(255, 255, 255, .04)),
+        rgba(12, 32, 35, .74);
+      filter: none;
+    }
+
+    .tile.reachable {
+      border-color: rgba(116, 242, 255, .92);
+      box-shadow: inset 0 0 0 2px rgba(116, 242, 255, .3), 0 0 0 3px rgba(116, 242, 255, .18), 0 18px 36px rgba(116, 242, 255, .16);
+    }
+
+    .tile.goal,
+    .tile.mid {
+      border-color: rgba(255, 107, 95, .86);
+      box-shadow: inset 0 0 0 2px rgba(255, 107, 95, .28), 0 16px 34px rgba(255, 107, 95, .18);
+    }
+
+    .tile-icon {
+      z-index: 1;
+      text-shadow: 0 4px 16px rgba(0, 0, 0, .52);
+    }
+
+    .occupants,
+    .found {
+      z-index: 2;
+    }
+
+    .pawn,
+    .found {
+      border-color: rgba(255, 255, 255, .88);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, .34);
+    }
+
+    .found {
+      background: rgba(255, 255, 255, .82);
+      color: #071613;
+    }
+
+    .die {
+      border: 1px solid rgba(255, 255, 255, .38);
+      color: #071613;
+      background: linear-gradient(145deg, rgba(255, 255, 255, .96), rgba(255, 255, 255, .68));
+      box-shadow: 0 18px 30px rgba(0, 0, 0, .3), inset -10px -10px 26px rgba(143, 124, 255, .18);
+    }
+
+    .modal {
+      background: rgba(1, 10, 12, .66);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .dialog {
+      border-color: rgba(255, 255, 255, .34);
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .2), rgba(255, 255, 255, .08)),
+        rgba(7, 22, 19, .82);
+    }
+
+    .place-photo,
+    .rules-frame {
+      border: 1px solid rgba(255, 255, 255, .32);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, .28);
+    }
+
+    .hint {
+      background:
+        linear-gradient(135deg, rgba(255, 107, 95, .24), rgba(255, 255, 255, .08)),
+        rgba(10, 34, 32, .64);
+    }
+
+    @media (max-width: 980px) {
+      .side {
+        border-bottom: 1px solid var(--glass-line);
+      }
+    }
+
+    @media (max-width: 620px) {
+      body {
+        background-attachment: scroll;
+      }
+
+      body:not(.game-started) .side {
+        max-height: none;
+        width: min(620px, calc(100vw - 20px));
+      }
+
+      body.game-started .main {
+        background: linear-gradient(180deg, rgba(7, 22, 19, .28), rgba(7, 22, 19, .7));
+      }
+
+      body.game-started .board,
+      .board {
+        border-width: 1px;
+        box-shadow: 0 18px 54px rgba(0, 0, 0, .4), inset 0 1px 0 rgba(255, 255, 255, .26);
+      }
+
+      body.game-started .tile,
+      .tile {
+        border-width: 1px;
+      }
+
+      body.game-started .action-panel button,
+      body.game-started .mobile-secondary-actions button,
+      body.game-started .die {
+        border-width: 1px;
+        box-shadow: var(--button-shadow);
+      }
+    }
+
+    /* Gameplay layout refinement: less nesting, wider map, compact left rail. */
+    body.game-started .app {
+      grid-template-columns: 280px minmax(0, 1fr);
+    }
+
+    body.game-started .side {
+      gap: 10px;
+      padding: 12px 10px;
+      border-right: 0;
+      background: transparent;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    body.game-started .side::before {
+      display: none;
+    }
+
+    body.game-started .side .panel {
+      padding: 12px;
+      border-color: rgba(255, 255, 255, .2);
+      background: rgba(9, 32, 31, .52);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), 0 12px 30px rgba(0, 0, 0, .18);
+      backdrop-filter: blur(16px) saturate(1.15);
+      -webkit-backdrop-filter: blur(16px) saturate(1.15);
+    }
+
+    body.game-started .side .panel h2,
+    body.game-started .controls .panel h2 {
+      margin-bottom: 10px;
+      font-size: 16px;
+      line-height: 1.05;
+    }
+
+    body.game-started .status-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    body.game-started .goal-metric {
+      grid-column: 1 / -1;
+    }
+
+    body.game-started .metric {
+      min-height: 54px;
+      padding: 8px;
+      border-color: rgba(255, 255, 255, .16);
+      background: rgba(255, 255, 255, .07);
+      box-shadow: none;
+    }
+
+    body.game-started .metric span {
+      font-size: 16px;
+      line-height: 1.12;
+    }
+
+    body.game-started .weather-table {
+      grid-template-columns: 58px minmax(0, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+      padding: 8px;
+      border-color: rgba(255, 255, 255, .16);
+      background: rgba(255, 255, 255, .07);
+      box-shadow: none;
+    }
+
+    body.game-started .weather-deck,
+    body.game-started .weather-card {
+      width: 52px;
+      height: 70px;
+    }
+
+    body.game-started .weather-info b {
+      font-size: 13px;
+    }
+
+    body.game-started .weather-info span {
+      font-size: 11px;
+      line-height: 1.2;
+    }
+
+    body.game-started .players {
+      gap: 7px;
+    }
+
+    body.game-started .player {
+      padding: 8px;
+      border-color: rgba(255, 255, 255, .16);
+      background: rgba(255, 255, 255, .07);
+      box-shadow: none;
+    }
+
+    body.game-started .player-top {
+      grid-template-columns: 26px minmax(0, 1fr) auto;
+      gap: 7px;
+    }
+
+    body.game-started .avatar {
+      width: 26px;
+      height: 26px;
+      font-size: 13px;
+    }
+
+    body.game-started .player-name {
+      font-size: 13px;
+      line-height: 1.08;
+    }
+
+    body.game-started .player-meta,
+    body.game-started .artifacts {
+      font-size: 11px;
+    }
+
+    body.game-started .badge {
+      min-height: 22px;
+      padding: 3px 6px;
+      font-size: 10px;
+    }
+
+    body.game-started .log-panel {
+      min-height: 0;
+      flex: 1 1 auto;
+    }
+
+    body.game-started .log {
+      max-height: none;
+      height: 100%;
+      min-height: 150px;
+      font-size: 12px;
+    }
+
+    body.game-started .log p {
+      padding: 7px 8px;
+      border-color: rgba(255, 255, 255, .14);
+      background: rgba(255, 255, 255, .07);
+      box-shadow: none;
+      color: rgba(248, 255, 251, .72);
+    }
+
+    body.game-started .main {
+      grid-template-rows: minmax(0, 1fr) auto;
+      gap: 10px;
+      padding: 12px;
+    }
+
+    body.game-started .board {
+      width: min(100%, calc(100dvh - 168px));
+      gap: 7px;
+      padding: 10px;
+    }
+
+    body.game-started .controls {
+      display: block;
+    }
+
+    body.game-started .controls .panel {
+      padding: 12px;
+      min-height: auto;
+      background: rgba(9, 32, 31, .56);
+    }
+
+    body.game-started .controls > .panel:last-child {
+      display: none;
+    }
+
+    body.game-started .turn-head {
+      display: grid;
+      grid-template-columns: minmax(210px, auto) minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    body.game-started .turn-head h2 {
+      font-size: 17px;
+      line-height: 1.1;
+      margin: 0;
+    }
+
+    body.game-started .toast {
+      min-height: 40px;
+      margin: 0;
+      padding: 8px 10px;
+      border-color: rgba(255, 255, 255, .16);
+      background: rgba(255, 255, 255, .07);
+      box-shadow: none;
+      font-size: 13px;
+      line-height: 1.2;
+    }
+
+    body.game-started .turn-tools {
+      grid-template-columns: 74px minmax(0, 1fr);
+      gap: 12px;
+      margin-top: 0;
+      align-items: end;
+    }
+
+    body.game-started .die {
+      width: 54px;
+      height: 54px;
+      font-size: 27px;
+    }
+
+    body.game-started .die-label {
+      font-size: 10px;
+      line-height: 1.05;
+      text-align: left;
+    }
+
+    body.game-started .action-panel {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    body.game-started .action-panel button {
+      min-height: 54px;
+      padding: 7px 8px;
+      font-size: 13px;
+      line-height: 1.05;
+    }
+
+    body.game-started .tile-icon {
+      display: none;
+    }
+
+    body.game-started .tile.base::before,
+    body.game-started .tile.mid::before,
+    body.game-started .tile.goal::before {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      border: 2px solid rgba(255, 255, 255, .7);
+      border-radius: 6px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    body.game-started .tile.base::before {
+      border-color: rgba(116, 242, 255, .78);
+    }
+
+    body.game-started .tile.mid::before,
+    body.game-started .tile.goal::before {
+      border-color: rgba(255, 107, 95, .82);
+    }
+
+    .found {
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .found img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    @media (min-width: 1280px) {
+      body.game-started .app {
+        grid-template-columns: 290px minmax(0, 1fr);
+      }
+
+      body.game-started .board {
+        width: min(100%, calc(100dvh - 154px));
+      }
+    }
+
+    @media (max-width: 980px) {
+      body.game-started .app {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Final gameplay fixes: keep actions visible and preserve terrain art on hidden tiles. */
+    body.game-started .main {
+      grid-template-rows: minmax(0, 1fr) 126px;
+      overflow: hidden;
+    }
+
+    body.game-started .board-wrap {
+      align-content: center;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    body.game-started .board {
+      width: min(100%, calc(100dvh - 244px));
+      max-width: calc(100vw - 316px);
+      max-height: 100%;
+    }
+
+    body.game-started .controls {
+      min-height: 0;
+      overflow: visible;
+    }
+
+    body.game-started .controls .panel {
+      height: 126px;
+      overflow: hidden;
+    }
+
+    body.game-started .turn-head {
+      grid-template-columns: minmax(190px, auto) minmax(0, 1fr) auto;
+      margin-bottom: 8px;
+    }
+
+    body.game-started .turn-tools {
+      grid-template-columns: 62px minmax(0, 1fr);
+    }
+
+    body.game-started .die {
+      width: 46px;
+      height: 46px;
+      font-size: 24px;
+    }
+
+    body.game-started .action-panel button {
+      min-height: 46px;
+    }
+
+    .tile.plain,
+    .tile.hidden.plain {
+      background: linear-gradient(rgba(139, 227, 126, .18), rgba(11, 45, 30, .22)), url("assets/v-pokhod/game/terrain_plain.jpg") center/cover;
+    }
+
+    .tile.forest,
+    .tile.hidden.forest {
+      background: linear-gradient(rgba(18, 90, 49, .12), rgba(2, 22, 16, .32)), url("assets/v-pokhod/game/terrain_forest_conifer.jpg") center/cover;
+    }
+
+    .tile.water,
+    .tile.hidden.water {
+      background: linear-gradient(rgba(116, 242, 255, .14), rgba(4, 47, 66, .28)), url("assets/v-pokhod/game/terrain_water.jpg") center/cover;
+    }
+
+    .tile.bog,
+    .tile.hidden.bog {
+      background: linear-gradient(rgba(255, 107, 95, .1), rgba(30, 18, 9, .34)), url("assets/v-pokhod/game/terrain_bog.jpg") center/cover;
+    }
+
+    .tile.mountain,
+    .tile.hidden.mountain {
+      background: linear-gradient(rgba(255, 255, 255, .1), rgba(19, 25, 31, .34)), url("assets/v-pokhod/game/terrain_mountain.jpg") center/cover;
+    }
+
+    .tile.hidden {
+      filter: saturate(.72) brightness(.72);
+    }
+
+    .tile.hidden::after {
+      background: linear-gradient(180deg, rgba(7, 22, 19, .28), rgba(7, 22, 19, .4));
+    }
+
+    @media (min-width: 1280px) {
+      body.game-started .board {
+        width: min(100%, calc(100dvh - 230px));
+        max-width: calc(100vw - 326px);
+      }
+    }
+
+    @media (max-width: 980px) {
+      body.game-started .main {
+        grid-template-rows: auto minmax(0, 1fr) auto;
+      }
+
+      body.game-started .board {
+        max-width: 100%;
+      }
+    }
+
+    /* Robust in-game HUD: actions stay visible, closed map stays closed. */
+    body.game-started .main {
+      grid-template-rows: minmax(0, 1fr);
+      padding-bottom: 146px;
+    }
+
+    body.game-started .controls {
+      position: fixed;
+      left: 300px;
+      right: 12px;
+      bottom: 12px;
+      z-index: 8;
+      display: block !important;
+      pointer-events: auto;
+    }
+
+    body.game-started .controls .panel {
+      height: auto;
+      min-height: 118px;
+      overflow: visible;
+    }
+
+    body.game-started .controls > .panel:first-child {
+      display: block !important;
+    }
+
+    body.game-started .turn-head {
+      grid-template-columns: minmax(170px, auto) minmax(0, 1fr) auto;
+    }
+
+    body.game-started .board {
+      width: min(100%, calc(100dvh - 196px));
+      max-width: calc(100vw - 324px);
+    }
+
+    .tile.hidden.plain,
+    .tile.hidden.forest,
+    .tile.hidden.water,
+    .tile.hidden.bog,
+    .tile.hidden.mountain {
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .16), rgba(255, 255, 255, .04)),
+        rgba(12, 32, 35, .78);
+      filter: none;
+    }
+
+    .tile.hidden::after {
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, .1), transparent 42%),
+        linear-gradient(180deg, rgba(7, 22, 19, .16), rgba(7, 22, 19, .28));
+    }
+
+    @media (min-width: 1280px) {
+      body.game-started .controls {
+        left: 312px;
+      }
+
+      body.game-started .board {
+        width: min(100%, calc(100dvh - 184px));
+        max-width: calc(100vw - 338px);
+      }
+    }
+
+    @media (max-width: 980px) and (min-width: 621px) {
+      body.game-started .app {
+        display: grid;
+        grid-template-columns: 280px minmax(0, 1fr);
+      }
+
+      body.game-started .side {
+        display: flex;
+        order: initial;
+      }
+
+      body.game-started .main {
+        order: initial;
+        grid-template-rows: minmax(0, 1fr);
+      }
+
+      body.game-started .controls {
+        left: 292px;
+      }
+
+      body.game-started .board {
+        max-width: calc(100vw - 316px);
+      }
+    }
+
+    @media (max-width: 620px) {
+      body.game-started .controls {
+        position: static;
+        left: auto;
+        right: auto;
+        bottom: auto;
+      }
+
+      body.game-started .main {
+        padding-bottom: max(8px, env(safe-area-inset-bottom));
+      }
+    }
+
+    /* Layout correction: no overlap, readable left rail. */
+    body.game-started .app {
+      grid-template-columns: 310px minmax(0, 1fr);
+    }
+
+    body.game-started .main {
+      grid-template-rows: minmax(0, 1fr) 132px;
+      padding: 10px 12px 10px 4px;
+      padding-bottom: 10px;
+      gap: 8px;
+    }
+
+    body.game-started .controls {
+      position: static;
+      left: auto;
+      right: auto;
+      bottom: auto;
+      z-index: auto;
+      align-self: stretch;
+    }
+
+    body.game-started .controls .panel {
+      min-height: 0;
+      height: 132px;
+      padding: 10px 12px;
+    }
+
+    body.game-started .board {
+      width: min(100%, calc(100dvh - 164px));
+      max-width: calc(100vw - 344px);
+    }
+
+    body.game-started .side {
+      padding: 10px;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    body.game-started .side .panel {
+      padding: 10px;
+    }
+
+    body.game-started .side .panel h2 {
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+
+    body.game-started .status-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    body.game-started .metric {
+      min-height: 58px;
+      padding: 8px 7px;
+    }
+
+    body.game-started .metric b {
+      white-space: nowrap;
+      overflow-wrap: normal;
+      font-size: 10px;
+      letter-spacing: .02em;
+    }
+
+    body.game-started .metric span {
+      font-size: 15px;
+      overflow-wrap: normal;
+    }
+
+    body.game-started .goal-metric span {
+      white-space: normal;
+      overflow-wrap: anywhere;
+      font-size: 14px;
+    }
+
+    body.game-started .weather-table {
+      grid-template-columns: 50px minmax(0, 1fr);
+      min-height: 70px;
+      padding: 7px;
+    }
+
+    body.game-started .weather-deck,
+    body.game-started .weather-card {
+      width: 44px;
+      height: 58px;
+    }
+
+    body.game-started .players {
+      max-height: 210px;
+      overflow: auto;
+      padding-right: 2px;
+    }
+
+    body.game-started .log-panel {
+      flex: 0 0 190px;
+      min-height: 0;
+    }
+
+    body.game-started .log {
+      max-height: 136px;
+      min-height: 0;
+      height: auto;
+      overflow: auto;
+    }
+
+    body.game-started .turn-head {
+      grid-template-columns: minmax(180px, auto) minmax(0, 1fr) auto;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    body.game-started .turn-head h2 {
+      font-size: 16px;
+    }
+
+    body.game-started .toast {
+      min-height: 36px;
+      padding: 7px 9px;
+      font-size: 12px;
+    }
+
+    body.game-started .turn-tools {
+      grid-template-columns: 58px minmax(0, 1fr);
+      gap: 10px;
+    }
+
+    body.game-started .die-box {
+      align-content: end;
+    }
+
+    body.game-started .die-label {
+      font-size: 9px;
+    }
+
+    body.game-started .die {
+      width: 44px;
+      height: 44px;
+      font-size: 23px;
+    }
+
+    body.game-started .action-panel {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    body.game-started .action-panel button {
+      min-height: 44px;
+      padding: 6px 8px;
+      font-size: 12px;
+    }
+
+    @media (min-width: 1280px) {
+      body.game-started .app {
+        grid-template-columns: 320px minmax(0, 1fr);
+      }
+
+      body.game-started .board {
+        max-width: calc(100vw - 356px);
+      }
+    }
+
+    @media (max-width: 980px) and (min-width: 621px) {
+      body.game-started .app {
+        grid-template-columns: 310px minmax(0, 1fr);
+      }
+
+      body.game-started .board {
+        max-width: calc(100vw - 344px);
+      }
+    }
+
+    /* Final density pass for left rail and turn controls. */
+    body.game-started .side {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) 160px;
+      min-height: 0;
+    }
+
+    body.game-started .side > .panel:nth-of-type(2) {
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    body.game-started .side > .panel:nth-of-type(2) .players {
+      flex: 1 1 auto;
+      max-height: none;
+      min-height: 0;
+    }
+
+    body.game-started .log-panel {
+      flex: initial;
+      height: 160px;
+    }
+
+    body.game-started .log {
+      max-height: 108px;
+    }
+
+    body.game-started .main {
+      grid-template-rows: minmax(0, 1fr) 112px;
+    }
+
+    body.game-started .controls .panel {
+      height: 112px;
+      padding: 9px 12px;
+    }
+
+    body.game-started .turn-head {
+      grid-template-columns: minmax(220px, auto) minmax(0, 1fr) auto;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    body.game-started .turn-actions {
+      justify-content: flex-end;
+    }
+
+    body.game-started .rules-mini {
+      min-height: 34px;
+      padding: 6px 10px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    body.game-started .toast {
+      min-height: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      color: rgba(248, 255, 251, .7);
+      font-size: 12px;
+      font-weight: 850;
+      align-self: center;
+    }
+
+    body.game-started .turn-tools {
+      grid-template-columns: 54px minmax(0, 1fr);
+      gap: 10px;
+      align-items: end;
+    }
+
+    body.game-started .die-box {
+      gap: 4px;
+      justify-items: start;
+    }
+
+    body.game-started .die-label {
+      max-width: 54px;
+    }
+
+    body.game-started .die {
+      width: 42px;
+      height: 42px;
+      font-size: 22px;
+    }
+
+    body.game-started .action-panel button {
+      min-height: 42px;
+      padding: 6px 8px;
+    }
+
+    body.game-started .board {
+      width: min(100%, calc(100dvh - 144px));
+    }
+
+    /* Requested turn bar and team fill tweaks. */
+    body.game-started .side {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) 150px;
+      align-content: stretch;
+    }
+
+    body.game-started .side > .panel:nth-of-type(2) {
+      min-height: 0;
+      height: 100%;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+    }
+
+    body.game-started .side > .panel:nth-of-type(2) .players {
+      min-height: 0;
+      height: 100%;
+      max-height: none !important;
+      overflow: auto;
+    }
+
+    body.game-started .log-panel {
+      height: 150px;
+    }
+
+    body.game-started .log {
+      max-height: 98px;
+    }
+
+    body.game-started .main {
+      grid-template-rows: minmax(0, 1fr) 94px;
+    }
+
+    body.game-started .controls .panel {
+      height: 94px;
+      padding: 8px 12px;
+      display: grid;
+      grid-template-rows: 30px 48px;
+      gap: 6px;
+    }
+
+    body.game-started .turn-head {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      margin: 0;
+      min-width: 0;
+    }
+
+    body.game-started .turn-head h2 {
+      font-size: 15px;
+      white-space: nowrap;
+    }
+
+    body.game-started .toast {
+      grid-column: 2;
+      grid-row: 1;
+      min-width: 0;
+      width: auto;
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    body.game-started .turn-actions {
+      grid-column: 3;
+      grid-row: 1;
+    }
+
+    body.game-started .rules-mini {
+      min-height: 30px;
+      padding: 5px 9px;
+      color: rgba(248, 255, 251, .78);
+      background: rgba(255, 255, 255, .1);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1);
+      border-color: rgba(255, 255, 255, .22);
+      font-size: 11px;
+    }
+
+    body.game-started .turn-tools {
+      grid-template-columns: 48px minmax(0, 1fr);
+      gap: 10px;
+      margin: 0;
+      align-items: center;
+    }
+
+    body.game-started .die-label {
+      display: none;
+    }
+
+    body.game-started .die {
+      width: 42px;
+      height: 42px;
+    }
+
+    body.game-started .action-panel {
+      gap: 7px;
+    }
+
+    body.game-started .action-panel button {
+      min-height: 42px;
+      font-size: 12px;
+    }
+
+    /* Final interaction/layout fixes for the compact game screen. */
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      place-items: center;
+      padding: 20px;
+      background: rgba(1, 10, 12, .66);
+      z-index: 1000;
+    }
+
+    .modal.open {
+      display: grid;
+    }
+
+    body.game-started .app {
+      position: relative;
+      z-index: 2;
+    }
+
+    body.game-started .side {
+      height: 100dvh;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) 150px;
+      align-content: stretch;
+      overflow: hidden;
+    }
+
+    body.game-started .side > .panel:first-of-type {
+      min-height: 0;
+    }
+
+    body.game-started .team-panel {
+      min-height: 0;
+      height: auto;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      overflow: hidden;
+    }
+
+    body.game-started .team-panel .players {
+      display: grid;
+      grid-template-rows: repeat(var(--player-count, 6), minmax(0, 1fr));
+      align-content: stretch;
+      min-height: 0;
+      height: 100%;
+      max-height: none !important;
+      align-self: stretch;
+      overflow-y: hidden;
+      overflow-x: hidden;
+      padding-right: 2px;
+    }
+
+    body.game-started .team-panel .player {
+      min-height: 0;
+      display: grid;
+      align-content: center;
+      padding: 5px 8px;
+      overflow: hidden;
+    }
+
+    body.game-started .team-panel .player-top {
+      min-height: 0;
+      grid-template-columns: 24px minmax(0, 1fr) auto;
+      gap: 6px;
+    }
+
+    body.game-started .team-panel .avatar {
+      width: 24px;
+      height: 24px;
+      font-size: 12px;
+    }
+
+    body.game-started .team-panel .player-name {
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    body.game-started .team-panel .player-meta,
+    body.game-started .team-panel .artifacts {
+      font-size: 10px;
+      line-height: 1.08;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    body.game-started .team-panel .artifacts {
+      margin-top: 3px;
+      gap: 3px;
+      white-space: nowrap;
+    }
+
+    body.game-started .team-panel .badge,
+    body.game-started .team-panel .artifact {
+      min-height: 18px;
+      padding: 2px 6px;
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    body.game-started .main {
+      grid-template-rows: minmax(0, 1fr) 104px;
+    }
+
+    body.game-started .controls .panel {
+      height: 104px;
+      grid-template-rows: 30px 48px;
+      gap: 12px;
+    }
+
+    body.game-started .turn-head {
+      align-items: center;
+    }
+
+    body.game-started .toast {
+      min-height: 0;
+      height: auto;
+      padding: 0 !important;
+      border: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      color: rgba(248, 255, 251, .78);
+      align-self: center;
+      display: flex;
+      align-items: center;
+    }
+
+    body.game-started .turn-actions {
+      align-self: center;
+      margin-left: 12px;
+    }
+
+    body.game-started .rules-mini {
+      min-height: 30px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1);
+    }
+
+    body.game-started .side {
+      grid-template-rows: auto minmax(0, 1fr) 150px !important;
+    }
+
+    body.game-started .team-panel {
+      min-height: 0 !important;
+      height: 100% !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+
+    body.game-started .team-panel .players {
+      flex: 1 1 auto !important;
+      min-height: 0 !important;
+      height: auto !important;
+      max-height: none !important;
+      overflow: auto !important;
+      align-content: start;
+    }
+
+    body.game-started .controls .panel {
+      grid-template-rows: 30px 48px !important;
+    }
+
+    body.game-started .turn-head {
+      display: grid !important;
+      grid-template-columns: max-content minmax(0, 1fr) max-content !important;
+      align-items: center !important;
+      gap: 12px !important;
+      margin: 0 !important;
+    }
+
+    body.game-started .turn-head h2 {
+      grid-column: 1 !important;
+      white-space: nowrap !important;
+      margin: 0 !important;
+    }
+
+    body.game-started .turn-head .toast {
+      grid-column: 2 !important;
+      grid-row: 1 !important;
+      min-width: 0 !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      align-self: center !important;
+    }
+
+    body.game-started .turn-head .turn-actions {
+      grid-column: 3 !important;
+      grid-row: 1 !important;
+      justify-self: end !important;
+      margin-left: 0 !important;
+    }
+
+    @media (max-width: 620px) {
+      body.game-started .side {
+        display: none;
+      }
+
+      body.game-started .app {
+        display: block;
+        height: 100dvh;
+        overflow: hidden;
+      }
+
+      body.game-started .main {
+        height: 100dvh;
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr) auto;
+        gap: 8px;
+        padding: max(8px, env(safe-area-inset-top)) 8px max(8px, env(safe-area-inset-bottom));
+        overflow: hidden;
+      }
+
+      body.game-started .mobile-hud {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 102px;
+        gap: 8px;
+        align-items: start;
+      }
+
+      .mobile-metrics {
+        height: 58px;
+        grid-template-columns: .65fr .78fr .65fr 1.6fr;
+        padding: 5px;
+        gap: 5px;
+      }
+
+      .mobile-metrics div {
+        height: 46px;
+        padding: 5px 6px;
+        min-width: 0;
+        overflow: hidden;
+      }
+
+      .mobile-metrics b {
+        font-size: 9px;
+        line-height: 1;
+      }
+
+      .mobile-metrics span,
+      .mobile-metrics .mobile-goal span {
+        font-size: 13px;
+        line-height: 1.05;
+        overflow-wrap: normal;
+        word-break: normal;
+      }
+
+      .mobile-metrics .mobile-goal span {
+        white-space: normal;
+        font-size: 12px;
+      }
+
+      body.game-started .mobile-hud .rules-mini {
+        height: 58px;
+        min-height: 58px;
+        padding: 4px 12px;
+        font-size: 12px;
+        color: rgba(248, 255, 251, .82);
+        background: rgba(255, 255, 255, .14);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16);
+      }
+
+      body.game-started .mobile-weather-card {
+        grid-column: 1 / -1;
+        min-height: 46px;
+        grid-template-columns: 38px minmax(0, 1fr);
+        gap: 7px;
+        padding: 4px 7px;
+      }
+
+      .mobile-weather-icon {
+        width: 34px;
+        height: 36px;
+        font-size: 21px;
+      }
+
+      .mobile-weather-card b {
+        font-size: 14px;
+      }
+
+      .mobile-weather-card span {
+        font-size: 12px;
+        line-height: 1.1;
+      }
+
+      body.game-started .board-wrap {
+        min-height: 0;
+        display: grid;
+        place-items: center;
+      }
+
+      body.game-started .board {
+        width: min(calc(100vw - 16px), calc(100dvh - 306px));
+        max-width: none;
+        min-width: 0;
+        max-height: 100%;
+        gap: 4px;
+        padding: 6px;
+        border-color: rgba(255, 255, 255, .38);
+        background:
+          linear-gradient(145deg, rgba(255, 255, 255, .2), rgba(255, 255, 255, .06)),
+          rgba(6, 20, 22, .42);
+        box-shadow: 0 18px 54px rgba(0, 0, 0, .4), inset 0 1px 0 rgba(255, 255, 255, .26);
+        backdrop-filter: blur(24px) saturate(1.35);
+        -webkit-backdrop-filter: blur(24px) saturate(1.35);
+      }
+
+      body.game-started .tile {
+        border-color: rgba(255, 255, 255, .32);
+        background-size: cover;
+        background-position: center;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 12px 24px rgba(0, 0, 0, .22);
+      }
+
+      body.game-started .tile.hidden {
+        background:
+          linear-gradient(145deg, rgba(255, 255, 255, .18), rgba(255, 255, 255, .04)),
+          rgba(12, 32, 35, .74);
+        filter: none;
+      }
+
+      body.game-started .controls {
+        position: static;
+        display: block;
+        min-height: 0;
+      }
+
+      body.game-started .controls .panel {
+        height: auto;
+        min-height: 0;
+        display: grid;
+        grid-template-rows: auto auto auto !important;
+        row-gap: 0 !important;
+        column-gap: 0;
+        padding: 14px 6px;
+      }
+
+      body.game-started .turn-head {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        grid-template-rows: auto auto !important;
+        gap: 2px !important;
+        align-items: center !important;
+      }
+
+      body.game-started .turn-head h2 {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+        min-width: 0;
+        white-space: normal !important;
+        font-size: 16px;
+        line-height: 1.05;
+        margin: 0 !important;
+      }
+
+      body.game-started .turn-head .toast {
+        grid-column: 1 !important;
+        grid-row: 2 !important;
+        min-width: 0 !important;
+        width: auto !important;
+        font-size: 12px;
+        line-height: 1.1;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        margin: 0 !important;
+        align-self: start !important;
+      }
+
+      body.game-started .turn-head .turn-actions {
+        display: none !important;
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+        margin-left: 0 !important;
+      }
+
+      body.game-started .turn-head .rules-mini {
+        display: none;
+      }
+
+      body.game-started .turn-tools {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-rows: repeat(2, 48px);
+        column-gap: 4px !important;
+        row-gap: 6px !important;
+        align-items: stretch;
+        margin-top: 8px !important;
+      }
+
+      body.game-started .die-box {
+        display: none;
+      }
+
+      body.game-started .die {
+        width: 44px;
+        height: 48px;
+        font-size: 20px;
+      }
+
+      body.game-started .action-panel {
+        display: contents;
+      }
+
+      body.game-started .action-panel button {
+        height: 48px !important;
+        min-height: 48px !important;
+        padding: 8px 4px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 10px;
+        line-height: 1.08;
+      }
+
+      body.game-started #rollStep {
+        grid-column: 1;
+        grid-row: 1;
+      }
+
+      body.game-started #endTurn {
+        grid-column: 2;
+        grid-row: 1;
+      }
+
+      body.game-started #useRole {
+        grid-column: 1;
+        grid-row: 2;
+      }
+
+      body.game-started #trade {
+        grid-column: 2;
+        grid-row: 2;
+      }
+
+      body.game-started .mobile-secondary-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 4px !important;
+        row-gap: 0 !important;
+        margin-top: 7px !important;
+      }
+
+      body.game-started .mobile-secondary-actions button {
+        height: 46px !important;
+        min-height: 46px !important;
+        padding: 8px 4px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: rgba(248, 255, 251, .82);
+        background: rgba(255, 255, 255, .09);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12);
+        font-size: 12px;
+        line-height: 1.08;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1711,9 +3606,14 @@
         </div>
       </section>
 
-      <section class="panel">
+      <section class="panel team-panel">
         <h2>Команда</h2>
         <div class="players" id="players"></div>
+      </section>
+
+      <section class="panel log-panel">
+        <h2>Журнал похода</h2>
+        <div class="log" id="log"></div>
       </section>
     </aside>
 
@@ -1730,7 +3630,7 @@
           <div><b>Ходы</b><span id="mobileTurnsNow">0</span></div>
           <div class="mobile-goal"><b>Цель</b><span id="mobileGoalNow">База</span></div>
         </div>
-        <button type="button" class="rules-mini mobile-rules-button" id="openRulesMobile">📖 Правила</button>
+        <button type="button" class="rules-mini mobile-rules-button" id="openRulesMobile">Правила</button>
         <div class="mobile-weather-card" aria-label="Текущая погода">
           <div class="mobile-weather-icon" id="mobileWeatherIcon">?</div>
           <div>
@@ -1748,19 +3648,19 @@
         <div class="panel">
           <div class="turn-head">
             <h2 id="turnTitle">Партия не начата</h2>
+            <div class="toast" id="turnText">Выберите участников и начните поход.</div>
             <div class="turn-actions">
               <button type="button" class="hint-button hidden" id="openHintTurn" aria-label="Подсказка обучения">?</button>
-              <button type="button" class="rules-mini" id="openRulesTurn">📖 Правила</button>
+              <button type="button" class="rules-mini" id="openRulesTurn">Правила</button>
             </div>
           </div>
-          <div class="toast" id="turnText">Выберите участников и начните поход.</div>
           <div class="turn-tools">
             <div class="die-box">
               <div class="die-label">Очки движения</div>
               <div class="die" id="stepDie">🎲</div>
             </div>
             <div class="action-panel">
-              <button id="rollStep" disabled>Бросить шаг</button>
+              <button id="rollStep" disabled>Бросить кубик</button>
               <button id="useRole" class="secondary" disabled>Способность роли</button>
               <button id="trade" class="secondary" disabled>Обмен</button>
               <button id="endTurn" class="secondary" disabled>Передать ход</button>
@@ -1771,16 +3671,16 @@
             <button type="button" class="secondary" id="openLogMobile">Журнал</button>
           </div>
         </div>
-        <div class="panel">
-          <h2>Журнал похода</h2>
-          <div class="log" id="log"></div>
-        </div>
       </section>
     </main>
   </div>
 
   <div class="modal" id="modal">
     <div class="dialog" id="dialog"></div>
+  </div>
+
+  <div class="roll-overlay" id="rollOverlay" aria-hidden="true">
+    <div class="roll-anim-die" id="rollAnimDie">🎲</div>
   </div>
 
   <script>
@@ -1839,6 +3739,7 @@
       gameOver: false,
       mapSize: 6,
       rolling: false,
+      rollOverlayTimer: 0,
       mode: "normal",
       teamName: "",
       tutorialSeen: new Set(),
@@ -2251,7 +4152,7 @@
         <h2>Обучение: первый поход</h2>
         <p><b>Сейчас игра будет объяснять каждый шаг.</b> Рядом с заголовком хода будет кнопка «?»: нажимайте её, чтобы открыть подсказку ещё раз.</p>
         <p><b>Ваша задача:</b> провести всех участников через гору Зелёную к вершине Мустаг.</p>
-        <p><b>Первое действие:</b> посмотрите на активного игрока внизу и нажмите «Бросить шаг».</p>
+        <p><b>Первое действие:</b> посмотрите на активного игрока внизу и нажмите «Бросить кубик».</p>
         <div class="row"><button onclick="closeModal()">Начать обучение</button><button type="button" class="button-link secondary" onclick="showRulesPopup()">Полные правила</button></div>
       `;
       modal.classList.add("open");
@@ -2347,6 +4248,7 @@
       die.classList.remove("rolling");
       void die.offsetWidth;
       die.classList.add("rolling");
+      startRollOverlay(faces);
       const interval = window.setInterval(() => {
         die.textContent = faces[Math.floor(Math.random() * faces.length)];
         ticks += 1;
@@ -2355,11 +4257,39 @@
       window.setTimeout(() => finishRollStep(player), 720);
     }
 
+    function startRollOverlay(faces) {
+      const overlay = $("rollOverlay");
+      const die = $("rollAnimDie");
+      if (!overlay || !die) return;
+      overlay.classList.remove("settled");
+      overlay.classList.add("show");
+      die.textContent = "🎲";
+      let ticks = 0;
+      window.clearInterval(state.rollOverlayTimer);
+      state.rollOverlayTimer = window.setInterval(() => {
+        die.textContent = faces[Math.floor(Math.random() * faces.length)];
+        ticks += 1;
+        if (ticks >= 12) window.clearInterval(state.rollOverlayTimer);
+      }, 60);
+    }
+
+    function finishRollOverlay(result) {
+      const overlay = $("rollOverlay");
+      const die = $("rollAnimDie");
+      window.clearInterval(state.rollOverlayTimer);
+      if (die) die.textContent = result;
+      if (overlay) overlay.classList.add("settled");
+      window.setTimeout(() => {
+        if (overlay) overlay.classList.remove("show", "settled");
+      }, 1100);
+    }
+
     function finishRollStep(player) {
       let value = 1 + Math.floor(Math.random() * 6);
       const original = value;
       const energyBonus = player.energy;
       $("stepDie").textContent = original;
+      finishRollOverlay(original);
       if (energyBonus) {
         value += energyBonus;
         log(`${player.name} использует поддержку: +${energyBonus}.`);
@@ -2813,7 +4743,9 @@
     }
 
     function showLogPopup() {
-      const items = state.log.length ? state.log : ["Журнал появится после начала партии."];
+      const items = state.log.length
+        ? state.log.map(normalizeLogEntry).sort((a, b) => b.time - a.time).map(item => item.text)
+        : ["Журнал появится после начала партии."];
       dialog.innerHTML = `
         <h2>Журнал похода</h2>
         <div class="log-popup">${items.map(item => `<p>${item}</p>`).join("")}</div>
@@ -2851,13 +4783,33 @@
     }
 
     function log(text) {
-      state.log.unshift(text);
+      state.log.unshift({ text, time: Date.now() });
       state.log = state.log.slice(0, 24);
+    }
+
+    function normalizeLogEntry(item, index) {
+      if (item && typeof item === "object") {
+        return {
+          text: item.text || "",
+          time: Number.isFinite(item.time) ? item.time : -index
+        };
+      }
+      return { text: String(item), time: -index };
     }
 
     function artifactChip(id) {
       const artifact = artifacts.find(a => a.id === id);
       return `<span class="artifact">${artifact.icon} ${artifact.name}</span>`;
+    }
+
+    function artifactImage(id) {
+      const sources = {
+        compass: "assets/v-pokhod/game/item_compass.jpg",
+        raft: "assets/v-pokhod/game/item_raft.jpg",
+        hat: "assets/v-pokhod/game/item_hat.jpg",
+        gear: "assets/v-pokhod/game/item_gear.jpg"
+      };
+      return sources[id] || "";
     }
 
     function drawBoard() {
@@ -2869,15 +4821,16 @@
         const isGoal = tile.x === places.goal.x && tile.y === places.goal.y;
         const player = state.started ? currentPlayer() : null;
         const reachable = player && isReachable(tile, player);
-        el.className = `tile ${data.className}${tile.revealed ? "" : " hidden"}${reachable ? " reachable" : ""}${isMid ? " mid" : ""}${isGoal ? " goal" : ""}`;
+        const isBase = tile.x === places.base.x && tile.y === places.base.y;
+        el.className = `tile ${data.className}${tile.revealed ? "" : " hidden"}${reachable ? " reachable" : ""}${isBase ? " base" : ""}${isMid ? " mid" : ""}${isGoal ? " goal" : ""}`;
         el.style.setProperty("--tile-index", index);
         el.disabled = !reachable;
-        const placeIcon = tile.x === places.base.x && tile.y === places.base.y ? places.base.icon : isMid ? places.mid.icon : isGoal ? places.goal.icon : data.icon;
         const occupants = state.players.filter(p => p.x === tile.x && p.y === tile.y);
+        const artifactSrc = tile.revealed && tile.artifact ? artifactImage(tile.artifact) : "";
         el.innerHTML = `
           <div class="occupants">${occupants.map(p => `<span class="pawn">${p.id}</span>`).join("")}</div>
-          <div class="tile-icon">${tile.revealed ? placeIcon : "❔"}</div>
-          ${tile.revealed && tile.artifact ? `<div class="found">${artifacts.find(a => a.id === tile.artifact).icon}</div>` : ""}
+          <div class="tile-icon" aria-hidden="true"></div>
+          ${artifactSrc ? `<div class="found"><img src="${artifactSrc}" alt=""></div>` : ""}
         `;
         el.onclick = () => moveTo(tile);
         board.appendChild(el);
@@ -2886,6 +4839,7 @@
 
     function renderPlayers() {
       const box = $("players");
+      box.style.setProperty("--player-count", Math.max(state.players.length, 1));
       box.innerHTML = "";
       state.players.forEach((player, index) => {
         const el = document.createElement("div");
@@ -2953,7 +4907,7 @@
       if (!active) return state.gameOver ? "Партия завершена. Можно смотреть карту или начать новую через обновление страницы." : "Начните партию. Игра покажет закрытую карту для исследования.";
       if (player.finished) return `${player.name} уже на финише и больше не тратит ходы команды.`;
       if (state.rolling) return "Кубик катится. Когда он остановится, появятся очки хода и подсветятся доступные клетки.";
-      if (!state.rolled) return "Сейчас нажмите «Бросить шаг». После броска появятся очки движения и подсветятся доступные соседние клетки.";
+      if (!state.rolled) return "Сейчас нажмите «Бросить кубик». После броска появятся очки движения и подсветятся доступные соседние клетки.";
       const reachable = state.tiles.filter(tile => isReachable(tile, player));
       if (reachable.length) return `Можно идти. Кликните по подсвеченной соседней клетке. Осталось очков движения: ${state.step}.`;
       if (player.artifacts.length) return "Подходящих клеток нет или очки движения закончились. Можно передать артефакт через «Обмен» или завершить ход.";
@@ -2961,7 +4915,10 @@
     }
 
     function renderLog() {
-      $("log").innerHTML = state.log.map(item => `<p>${item}</p>`).join("");
+      const logBox = $("log");
+      const items = state.log.map(normalizeLogEntry).sort((a, b) => b.time - a.time);
+      logBox.innerHTML = items.map(item => `<p>${item.text}</p>`).join("");
+      logBox.scrollTop = 0;
     }
 
     function render() {
