@@ -446,9 +446,16 @@
       place-items: center;
       border-radius: var(--radius);
       background: #f2ead2;
-      font-size: 34px;
       border: 3px solid var(--line);
       box-shadow: 0 2px 0 rgba(106, 86, 56, .18);
+      overflow: hidden;
+    }
+
+    .role-icon img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
     }
 
     .role-details {
@@ -818,29 +825,6 @@
       font-size: clamp(26px, 5vw, 46px);
       line-height: 1;
       text-shadow: 3px 3px 0 rgba(106, 86, 56, .45);
-    }
-
-    .place-marker {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      overflow: hidden;
-      pointer-events: none;
-    }
-
-    .place-marker img {
-      width: 100%;
-      height: 100%;
-      display: block;
-      object-fit: cover;
-      filter: saturate(1.08) contrast(1.04);
-    }
-
-    .place-marker::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(21, 17, 42, .04), rgba(21, 17, 42, .34));
     }
 
     .occupants {
@@ -2332,11 +2316,11 @@
       pointer-events: none;
     }
 
-    .plain { background-image: linear-gradient(rgba(139, 227, 126, .22), rgba(11, 45, 30, .18)), url("assets/v-pokhod/game/terrain_plain.jpg"); }
-    .forest { background-image: linear-gradient(rgba(18, 90, 49, .18), rgba(2, 22, 16, .28)), url("assets/v-pokhod/game/terrain_forest_conifer.jpg"); }
-    .water { background-image: linear-gradient(rgba(116, 242, 255, .16), rgba(4, 47, 66, .24)), url("assets/v-pokhod/game/terrain_water.jpg"); }
-    .bog { background-image: linear-gradient(rgba(255, 107, 95, .12), rgba(30, 18, 9, .28)), url("assets/v-pokhod/game/terrain_bog.jpg"); }
-    .mountain { background-image: linear-gradient(rgba(255, 255, 255, .14), rgba(19, 25, 31, .32)), url("assets/v-pokhod/game/terrain_mountain.jpg"); }
+    .plain { background-image: linear-gradient(rgba(139, 227, 126, .22), rgba(11, 45, 30, .18)), url("assets/v-pokhod/game/terrain_plain.jpg?v=20260624-2"); }
+    .forest { background-image: linear-gradient(rgba(18, 90, 49, .18), rgba(2, 22, 16, .28)), url("assets/v-pokhod/game/terrain_forest_conifer.jpg?v=20260624-2"); }
+    .water { background-image: linear-gradient(rgba(116, 242, 255, .16), rgba(4, 47, 66, .24)), url("assets/v-pokhod/game/terrain_water.jpg?v=20260624-2"); }
+    .bog { background-image: linear-gradient(rgba(255, 107, 95, .12), rgba(30, 18, 9, .28)), url("assets/v-pokhod/game/terrain_bog.jpg?v=20260624-2"); }
+    .mountain { background-image: linear-gradient(rgba(255, 255, 255, .14), rgba(19, 25, 31, .32)), url("assets/v-pokhod/game/terrain_mountain.jpg?v=20260624-2"); }
 
     .tile.hidden {
       background:
@@ -2776,27 +2760,27 @@
 
     .tile.plain,
     .tile.hidden.plain {
-      background: linear-gradient(rgba(139, 227, 126, .18), rgba(11, 45, 30, .22)), url("assets/v-pokhod/game/terrain_plain.jpg") center/cover;
+      background: linear-gradient(rgba(139, 227, 126, .18), rgba(11, 45, 30, .22)), url("assets/v-pokhod/game/terrain_plain.jpg?v=20260624-2") center/cover;
     }
 
     .tile.forest,
     .tile.hidden.forest {
-      background: linear-gradient(rgba(18, 90, 49, .12), rgba(2, 22, 16, .32)), url("assets/v-pokhod/game/terrain_forest_conifer.jpg") center/cover;
+      background: linear-gradient(rgba(18, 90, 49, .12), rgba(2, 22, 16, .32)), url("assets/v-pokhod/game/terrain_forest_conifer.jpg?v=20260624-2") center/cover;
     }
 
     .tile.water,
     .tile.hidden.water {
-      background: linear-gradient(rgba(116, 242, 255, .14), rgba(4, 47, 66, .28)), url("assets/v-pokhod/game/terrain_water.jpg") center/cover;
+      background: linear-gradient(rgba(116, 242, 255, .14), rgba(4, 47, 66, .28)), url("assets/v-pokhod/game/terrain_water.jpg?v=20260624-2") center/cover;
     }
 
     .tile.bog,
     .tile.hidden.bog {
-      background: linear-gradient(rgba(255, 107, 95, .1), rgba(30, 18, 9, .34)), url("assets/v-pokhod/game/terrain_bog.jpg") center/cover;
+      background: linear-gradient(rgba(255, 107, 95, .1), rgba(30, 18, 9, .34)), url("assets/v-pokhod/game/terrain_bog.jpg?v=20260624-2") center/cover;
     }
 
     .tile.mountain,
     .tile.hidden.mountain {
-      background: linear-gradient(rgba(255, 255, 255, .1), rgba(19, 25, 31, .34)), url("assets/v-pokhod/game/terrain_mountain.jpg") center/cover;
+      background: linear-gradient(rgba(255, 255, 255, .1), rgba(19, 25, 31, .34)), url("assets/v-pokhod/game/terrain_mountain.jpg?v=20260624-2") center/cover;
     }
 
     .tile.hidden {
@@ -2859,21 +2843,24 @@
       max-width: calc(100vw - 324px);
     }
 
-    .tile.hidden.plain,
-    .tile.hidden.forest,
-    .tile.hidden.water,
-    .tile.hidden.bog,
-    .tile.hidden.mountain {
-      background:
-        linear-gradient(145deg, rgba(255, 255, 255, .16), rgba(255, 255, 255, .04)),
-        rgba(12, 32, 35, .78);
-      filter: none;
-    }
-
     .tile.hidden::after {
       background:
         linear-gradient(135deg, rgba(255, 255, 255, .1), transparent 42%),
         linear-gradient(180deg, rgba(7, 22, 19, .16), rgba(7, 22, 19, .28));
+    }
+
+    .tile.mid,
+    .tile.hidden.mid {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(21, 17, 42, .28)),
+        url("assets/v-pokhod/game/zelenaya.png") center/cover !important;
+    }
+
+    .tile.goal,
+    .tile.hidden.goal {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(21, 17, 42, .28)),
+        url("assets/v-pokhod/game/mustag.png") center/cover !important;
     }
 
     @media (min-width: 1280px) {
@@ -4463,6 +4450,19 @@
         rgba(255, 255, 255, .82) !important;
     }
 
+    .tile.hidden,
+    body.game-started .tile.hidden,
+    .tile.hidden.plain,
+    .tile.hidden.forest,
+    .tile.hidden.water,
+    .tile.hidden.bog,
+    .tile.hidden.mountain {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(21, 17, 42, .1)),
+        url("assets/v-pokhod/game/back.png?v=20260624-1") center/cover !important;
+      filter: none !important;
+    }
+
     body.game-started .player.active,
     body.game-started .mobile-team-player.active {
       box-shadow: none !important;
@@ -4555,6 +4555,29 @@
     body:not(.game-started) .role-card span,
     body:not(.game-started) .role-details b {
       color: rgba(21, 17, 42, .58) !important;
+    }
+
+    body:not(.game-started) .role-icon {
+      width: 72px !important;
+      height: 72px !important;
+      border: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      overflow: visible !important;
+    }
+
+    body:not(.game-started) .role-card {
+      grid-template-columns: 84px minmax(0, 1fr) !important;
+      align-items: start !important;
+    }
+
+    body:not(.game-started) .role-icon img {
+      width: 86px !important;
+      height: 86px !important;
+      max-width: none !important;
+      display: block;
+      object-fit: contain !important;
+      transform: translate(-7px, -7px);
     }
 
     input::placeholder,
@@ -4738,12 +4761,12 @@
 
   <script>
     const roles = [
-      { id: "scout", icon: "🧭", name: "Разведчик", passive: "Открывает соседнюю плитку в начале хода.", special: "Быстрый марш: один раз получает второй бросок шага." },
-      { id: "researcher", icon: "🔬", name: "Исследователь", passive: "Игнорирует один штраф сложной местности.", special: "Разведка карты: один раз открывает любую плитку." },
-      { id: "camp", icon: "🏕️", name: "Хранитель лагеря", passive: "Снимает усталость у любого участника.", special: "Тёплый привал: отменяет погоду на один раунд." },
-      { id: "mood", icon: "🎶", name: "Хранитель атмосферы", passive: "Раз в раунд даёт +1 к шагу другому игроку.", special: "Поддержка: дважды отменяет негативный эффект." },
-      { id: "memory", icon: "📸", name: "Хранитель впечатлений", passive: "Новые плитки дают жетоны истории.", special: "Памятный кадр: 3 жетона истории дают бонус команде." },
-      { id: "rescue", icon: "⛑️", name: "Спасатель", passive: "Отменяет серьёзный штраф раз в ход.", special: "Спасательная операция: перемещает игрока на соседнюю плитку." }
+      { id: "scout", icon: "🧭", image: "assets/v-pokhod/game/01_razvedchik.png", name: "Разведчик", passive: "Открывает соседнюю плитку в начале хода.", special: "Быстрый марш: один раз получает второй бросок шага." },
+      { id: "researcher", icon: "🔬", image: "assets/v-pokhod/game/02_issledovatel.png", name: "Исследователь", passive: "Игнорирует один штраф сложной местности.", special: "Разведка карты: один раз открывает любую плитку." },
+      { id: "camp", icon: "🏕️", image: "assets/v-pokhod/game/03_hranitel_lagerya.png", name: "Хранитель лагеря", passive: "Снимает усталость у любого участника.", special: "Тёплый привал: отменяет погоду на один раунд." },
+      { id: "mood", icon: "🎶", image: "assets/v-pokhod/game/04_hranitel_atmosfery.png", name: "Хранитель атмосферы", passive: "Раз в раунд даёт +1 к шагу другому игроку.", special: "Поддержка: дважды отменяет негативный эффект." },
+      { id: "memory", icon: "📸", image: "assets/v-pokhod/game/05_hranitel_vpechatleniy.png", name: "Хранитель впечатлений", passive: "Новые плитки дают жетоны истории.", special: "Памятный кадр: 3 жетона истории дают бонус команде." },
+      { id: "rescue", icon: "⛑️", image: "assets/v-pokhod/game/06_spasatel.png", name: "Спасатель", passive: "Отменяет серьёзный штраф раз в ход.", special: "Спасательная операция: перемещает игрока на соседнюю плитку." }
     ];
 
     const terrain = {
@@ -4823,7 +4846,9 @@
         const card = document.createElement("div");
         card.className = "role-card";
         card.innerHTML = `
-          <div class="role-icon" id="roleIcon${index}">${defaultRole.icon}</div>
+          <div class="role-icon" id="roleIcon${index}">
+            <img src="${defaultRole.image}" alt="${defaultRole.name}" loading="lazy">
+          </div>
           <div>
             <b>Участник ${index + 1}</b>
             <label class="mini-label" for="playerName${index}">Имя</label>
@@ -4849,7 +4874,7 @@
         const select = card.querySelector("select");
         select.addEventListener("change", () => {
           const role = roles.find(item => item.id === select.value);
-          $(`roleIcon${index}`).textContent = role.icon;
+          $(`roleIcon${index}`).innerHTML = `<img src="${role.image}" alt="${role.name}" loading="lazy">`;
           $(`roleHint${index}`).innerHTML = `
             <p><b>Постоянная способность</b>${role.passive}</p>
             <p><b>Особая способность</b>${role.special}</p>
@@ -6095,10 +6120,7 @@
         el.disabled = !reachable;
         const occupants = state.players.filter(p => p.x === tile.x && p.y === tile.y);
         const artifactSrc = tile.revealed && tile.artifact ? artifactImage(tile.artifact) : "";
-        const placeSrc = isMid ? "assets/v-pokhod/game/zelenaya.png" : isGoal ? "assets/v-pokhod/game/mustag.png" : "";
-        const placeAlt = isMid ? "Гора Зелёная" : isGoal ? "Мустаг" : "";
         el.innerHTML = `
-          ${placeSrc ? `<div class="place-marker"><img src="${placeSrc}" alt="${placeAlt}"></div>` : ""}
           <div class="occupants">${occupants.map(p => `<span class="pawn">${p.id}</span>`).join("")}</div>
           <div class="tile-icon" aria-hidden="true"></div>
           ${artifactSrc ? `<div class="found"><img src="${artifactSrc}" alt=""></div>` : ""}
