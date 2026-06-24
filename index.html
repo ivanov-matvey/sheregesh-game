@@ -820,6 +820,29 @@
       text-shadow: 3px 3px 0 rgba(106, 86, 56, .45);
     }
 
+    .place-marker {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .place-marker img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      filter: saturate(1.08) contrast(1.04);
+    }
+
+    .place-marker::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(21, 17, 42, .04), rgba(21, 17, 42, .34));
+    }
+
     .occupants {
       position: absolute;
       top: 4px;
@@ -1240,6 +1263,144 @@
     .rules-popup ol {
       padding-left: 22px;
     }
+
+    .victory-share {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .victory-result {
+      display: grid;
+      gap: 14px;
+    }
+
+    .victory-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+      padding: 16px;
+      border: 1px solid var(--brand-line, var(--line));
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(138, 219, 171, .32), rgba(244, 241, 255, .92)),
+        #fff;
+    }
+
+    .victory-hero h2 {
+      margin: 0;
+    }
+
+    .victory-hero p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-weight: 750;
+      line-height: 1.35;
+    }
+
+    .victory-stars {
+      color: var(--brand-violet, var(--line));
+      font-size: 32px;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .victory-stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .victory-stat {
+      min-height: 84px;
+      padding: 11px;
+      border: 1px solid var(--brand-line, var(--line));
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .94);
+    }
+
+    .victory-stat b {
+      display: block;
+      color: var(--brand-ink, var(--ink));
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .victory-stat span {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .victory-note {
+      margin: 0;
+      padding: 10px 12px;
+      border-left: 4px solid var(--brand-mint, var(--leaf));
+      border-radius: var(--radius);
+      color: var(--brand-ink, var(--ink));
+      background: rgba(138, 219, 171, .16);
+      font-weight: 750;
+      line-height: 1.35;
+    }
+
+    .victory-share-card {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1200 / 630;
+      object-fit: cover;
+      max-height: 220px;
+      border: 1px solid var(--brand-line, var(--line));
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(138, 219, 171, .34), rgba(244, 241, 255, .92)),
+        #fff;
+    }
+
+    .victory-share-text {
+      margin: 0;
+      padding: 8px 10px;
+      border: 1px solid var(--brand-line, var(--line));
+      border-radius: var(--radius);
+      color: var(--brand-ink, var(--line));
+      background: rgba(255, 255, 255, .92);
+      font-weight: 750;
+      line-height: 1.3;
+      font-size: 13px;
+    }
+
+    .victory-share-link {
+      display: block;
+      margin-top: 4px;
+      color: var(--brand-violet, var(--line));
+      font-weight: 950;
+      text-decoration: none;
+      overflow-wrap: anywhere;
+    }
+
+    .victory-share-actions {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    @media (max-width: 620px) {
+      .victory-hero {
+        grid-template-columns: 1fr;
+      }
+
+      .victory-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .victory-share-actions {
+        grid-template-columns: 1fr;
+      }
+    }
+
 
     .toast {
       min-height: 46px;
@@ -4477,7 +4638,7 @@
         <div class="status-grid">
           <div class="metric weather-metric"><b>Погода</b><span id="weatherNow">-</span></div>
           <div class="metric"><b>Раунд</b><span id="roundNow">-</span></div>
-          <div class="metric"><b>История</b><span id="storyNow">0</span></div>
+          <div class="metric"><b>Жетоны</b><span id="storyNow">0</span></div>
           <div class="metric"><b>Ходы</b><span id="turnsNow">0</span></div>
           <div class="metric goal-metric"><b>Цель</b><span id="goalNow">База</span></div>
         </div>
@@ -4512,7 +4673,7 @@
       <section class="mobile-hud" id="mobileHud" aria-label="Краткое состояние партии">
         <div class="mobile-metrics">
           <div><b>Раунд</b><span id="mobileRoundNow">-</span></div>
-          <div><b>История</b><span id="mobileStoryNow">0</span></div>
+          <div><b>Жетоны</b><span id="mobileStoryNow">0</span></div>
           <div><b>Ходы</b><span id="mobileTurnsNow">0</span></div>
           <div class="mobile-goal"><b>Цель</b><span id="mobileGoalNow">База</span></div>
         </div>
@@ -4590,7 +4751,7 @@
       forest: { icon: "🌲", name: "Тайга", cost: 1, className: "forest" },
       water: { icon: "💧", name: "Ручей", cost: 2, className: "water" },
       bog: { icon: "🟫", name: "Болото", cost: 6, className: "bog" },
-      mountain: { icon: "⛰️", name: "Подъём", cost: 2, className: "mountain" }
+      mountain: { icon: "⛰️", name: "Подъём", cost: 6, className: "mountain" }
     };
 
     const weather = [
@@ -4608,6 +4769,10 @@
       { id: "hat", icon: "🧢", name: "Головной убор", text: "Игнорирует жару.", details: "Защищает от погодной карты «Жара». Если игрок стоит на открытой местности, его бросок не уменьшается на 1." },
       { id: "gear", icon: "🎒", name: "Снаряжение", text: "Болото стоит 2 очка вместо 6.", details: "Позволяет проходить болото без натуральной 6. Стоимость болота для владельца снижается до 2 очков движения." }
     ];
+
+    const siteUrl = "https://ivanov-matvey.github.io/sheregesh-game/";
+    let victoryShareResult = null;
+    let victoryShareImageUrl = "";
 
     let places = {
       base: { x: 0, y: 5, label: "Посёлок", icon: "🏠" },
@@ -4821,6 +4986,7 @@
       state.currentHint = saved.currentHint || "Продолжайте поход.";
       state.log = Array.isArray(saved.log) ? saved.log : [];
       board.style.setProperty("--map-size", state.mapSize);
+      revealRouteAnchors();
       $("setupPanel").style.display = "none";
       document.body.classList.add("game-started");
       $("stepDie").textContent = state.rolled ? state.lastRoll : "🎲";
@@ -4971,6 +5137,13 @@
       return tiles[xyToIndex(x, y)];
     }
 
+    function revealRouteAnchors() {
+      [places.base, places.mid, places.goal].forEach((place) => {
+        const tile = tileAt(place.x, place.y);
+        if (tile) tile.revealed = true;
+      });
+    }
+
     function createPlayers() {
       const count = Number($("playerCount").value);
       const selectedRoleIds = [...document.querySelectorAll(".role-select")].slice(0, count).map(select => select.value);
@@ -5023,10 +5196,10 @@
       state.log = [];
       buildMap();
       createPlayers();
-      tileAt(places.base.x, places.base.y).revealed = true;
+      revealRouteAnchors();
       beginTurnEffects(currentPlayer());
       drawWeather();
-      log("Команда вышла из посёлка Шерегеш. Стартовая точка открыта, остальной маршрут нужно исследовать.");
+      log("Команда вышла из посёлка Шерегеш. Старт, Гора Зелёная и Мустаг уже отмечены на карте, остальной маршрут нужно исследовать.");
       if (!state.teamName) state.teamName = getTeamName();
       $("setupPanel").style.display = "none";
       document.body.classList.add("game-started");
@@ -5243,7 +5416,6 @@
       if (!near) return false;
       if (!state.weatherSuppressed && state.weather.type === "wind" && tile.x === player.lastX && tile.y === player.lastY) return false;
       if (tile.type === "bog" && !player.artifacts.includes("gear") && !canIgnoreDifficult(player, tile) && state.lastRoll !== 6) return false;
-      if (tile.type === "mountain" && state.lastRoll !== 6) return false;
       return costFor(tile, player) <= state.step;
     }
 
@@ -5284,6 +5456,7 @@
           log(`${player.name} устал на подъёме.`);
         }
       }
+      const endedOnMountain = tile.type === "mountain";
       const { reachedMid, reachedGoal } = updatePlayerGoalProgress(player);
       if (tile.type !== "forest" || player.artifacts.includes("compass")) {
         revealAround(player.x, player.y);
@@ -5292,7 +5465,7 @@
       }
       const won = checkWin();
       render();
-      const shouldShowNoStep = !foundArtifact && !reachedMid && !reachedGoal && state.step <= 0 && !won;
+      const shouldShowNoStep = !endedOnMountain && !foundArtifact && !reachedMid && !reachedGoal && state.step <= 0 && !won;
       if (!reachedGoal && !shouldShowNoStep) {
         tutorialPopup(
           "move",
@@ -5302,9 +5475,10 @@
       }
       if (foundArtifact) showArtifactPopup(player, foundArtifact);
       if (reachedMid) showGreenMountainPopup(player);
-      if (reachedGoal) showMustagPopup(player, won);
+      if (reachedGoal && !won) showMustagPopup(player, won);
       if (shouldShowNoStep) showNoStepPopup(player);
       if (reachedGoal && !won) endTurn(true);
+      else if (endedOnMountain && !won) endTurn(true);
     }
 
     function updatePlayerGoalProgress(player) {
@@ -5426,26 +5600,31 @@
     }
 
     function openTrade() {
-      const giver = currentPlayer();
-      if (!giver.artifacts.length) return showInfo("У текущего игрока нет артефактов для обмена.");
-      choosePlayer("Кому передать артефакт?", state.players.filter(p => p.id !== giver.id), (receiver) => {
-        dialog.innerHTML = `<div class="dialog-head"><h2>Выберите артефакт</h2><button type="button" class="secondary modal-close" aria-label="Закрыть" onclick="closeModal()"></button></div><div class="choices"></div>`;
-        const box = dialog.querySelector(".choices");
-        giver.artifacts.forEach((artifactId) => {
-          const artifact = artifacts.find(a => a.id === artifactId);
-          const item = document.createElement("div");
-          item.className = "choice";
-          item.innerHTML = `<div>${artifact.icon}</div><div><b>${artifact.name}</b><small>${artifact.text}</small></div><button>Передать</button>`;
-          item.querySelector("button").onclick = () => {
-            giver.artifacts = giver.artifacts.filter(id => id !== artifactId);
-            receiver.artifacts.push(artifactId);
-            state.story += 1;
-            log(`${giver.name} передал ${artifact.name} игроку ${receiver.name}.`);
-            closeModal();
-            render();
-            tutorialPopup("trade", "Обмен артефактами", "Это главный кооперативный механизм: предмет должен быть у того, кому он сейчас помогает пройти маршрут.");
-          };
-          box.appendChild(item);
+      const givers = state.players.filter(player => player.artifacts.length);
+      if (!givers.length) return showInfo("У команды пока нет артефактов для обмена.");
+      choosePlayer("У кого взять артефакт?", givers, (giver) => {
+        const receivers = state.players.filter(player => player.id !== giver.id);
+        choosePlayer("Кому передать артефакт?", receivers, (receiver) => {
+          dialog.innerHTML = `<div class="dialog-head"><h2>Выберите артефакт</h2><button type="button" class="secondary modal-close" aria-label="Закрыть" onclick="closeModal()"></button></div><div class="choices"></div>`;
+          const box = dialog.querySelector(".choices");
+          giver.artifacts.forEach((artifactId) => {
+            const artifact = artifacts.find(a => a.id === artifactId);
+            if (!artifact) return;
+            const item = document.createElement("div");
+            item.className = "choice";
+            item.innerHTML = `<div>${artifact.icon}</div><div><b>${artifact.name}</b><small>${giver.name} → ${receiver.name}. ${artifact.text}</small></div><button>Передать</button>`;
+            item.querySelector("button").onclick = () => {
+              giver.artifacts = giver.artifacts.filter(id => id !== artifactId);
+              if (!receiver.artifacts.includes(artifactId)) receiver.artifacts.push(artifactId);
+              state.story += 1;
+              log(`${giver.name} передал ${artifact.name} игроку ${receiver.name}.`);
+              closeModal();
+              render();
+              tutorialPopup("trade", "Обмен артефактами", "Это главный кооперативный механизм: предмет должен быть у того, кому он сейчас помогает пройти маршрут.");
+            };
+            box.appendChild(item);
+          });
+          modal.classList.add("open");
         });
       });
     }
@@ -5476,10 +5655,171 @@
       state.current = next;
       $("stepDie").textContent = "🎲";
       beginTurnEffects(currentPlayer());
-      if (auto) log(`${finishedPlayer.name} завершил маршрут, ход автоматически передан следующему участнику.`);
+      if (auto) log(`${finishedPlayer.name}: ход автоматически передан следующему участнику.`);
       render();
       if (!auto) tutorialPopup("endTurn", "Передача хода", "Ход перешёл к следующему участнику. Следите, чтобы каждый сначала посетил гору Зелёную, а потом дошёл до Мустагa.");
       if (!auto && newRound) tutorialPopup("newRound", "Новый раунд и погода", `Начался новый раунд. Новая погода: ${state.weather.icon} ${state.weather.name}. Она действует на всю команду.`);
+    }
+
+    function buildVictoryShareText(result) {
+      return `Мы прошли маршрут «В поход» в Шерегеше. Команда: «${result.teamName}». Итог: ${result.stars}/3, ${result.turns} ходов, ${result.round} раундов, ${result.story} жетонов истории. Сыграть: ${siteUrl}`;
+    }
+
+    function roundRect(ctx, x, y, width, height, radius) {
+      const r = Math.min(radius, width / 2, height / 2);
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + width, y, x + width, y + height, r);
+      ctx.arcTo(x + width, y + height, x, y + height, r);
+      ctx.arcTo(x, y + height, x, y, r);
+      ctx.arcTo(x, y, x + width, y, r);
+      ctx.closePath();
+    }
+
+    function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines = 3) {
+      const words = String(text).split(" ");
+      const lines = [];
+      let line = "";
+      words.forEach((word) => {
+        const test = line ? `${line} ${word}` : word;
+        if (ctx.measureText(test).width > maxWidth && line) {
+          lines.push(line);
+          line = word;
+        } else {
+          line = test;
+        }
+      });
+      if (line) lines.push(line);
+      lines.slice(0, maxLines).forEach((item, index) => {
+        const suffix = index === maxLines - 1 && lines.length > maxLines ? "..." : "";
+        ctx.fillText(`${item}${suffix}`, x, y + index * lineHeight);
+      });
+    }
+
+    async function createVictoryShareImage(result) {
+      if (document.fonts && document.fonts.ready) await document.fonts.ready;
+      const canvas = document.createElement("canvas");
+      canvas.width = 1200;
+      canvas.height = 630;
+      const ctx = canvas.getContext("2d");
+      const mint = "#8ADBAB";
+      const violet = "#5236AF";
+      const ink = "#15112A";
+      const soft = "#F4F1FF";
+
+      const bg = ctx.createLinearGradient(0, 0, 1200, 630);
+      bg.addColorStop(0, "#ffffff");
+      bg.addColorStop(.55, soft);
+      bg.addColorStop(1, "#E8FFF0");
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, 1200, 630);
+
+      ctx.fillStyle = "rgba(138, 219, 171, .32)";
+      for (let y = -30; y < 700; y += 74) {
+        for (let x = -20; x < 1240; x += 92) {
+          ctx.beginPath();
+          ctx.arc(x + ((y / 74) % 2) * 32, y, 18, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      ctx.fillStyle = mint;
+      roundRect(ctx, 72, 72, 1056, 486, 34);
+      ctx.fill();
+      ctx.fillStyle = "rgba(255, 255, 255, .86)";
+      roundRect(ctx, 92, 92, 1016, 446, 26);
+      ctx.fill();
+
+      ctx.fillStyle = violet;
+      ctx.font = '950 54px "TT Fors", Arial, sans-serif';
+      ctx.fillText("Маршрут пройден", 132, 162);
+
+      ctx.fillStyle = ink;
+      ctx.font = '950 72px "TT Fors", Arial, sans-serif';
+      wrapCanvasText(ctx, result.teamName, 132, 252, 640, 78, 2);
+
+      ctx.fillStyle = violet;
+      ctx.font = '950 60px "TT Fors", Arial, sans-serif';
+      ctx.fillText("★".repeat(result.stars) + "☆".repeat(3 - result.stars), 132, 394);
+
+      const stats = [
+        ["Ходы", result.turns],
+        ["Раунды", result.round],
+        ["Жетоны", result.story]
+      ];
+      stats.forEach(([label, value], index) => {
+        const x = 132 + index * 190;
+        ctx.fillStyle = "rgba(82, 54, 175, .1)";
+        roundRect(ctx, x, 430, 158, 78, 14);
+        ctx.fill();
+        ctx.fillStyle = ink;
+        ctx.font = '950 30px "TT Fors", Arial, sans-serif';
+        ctx.fillText(String(value), x + 18, 468);
+        ctx.fillStyle = "rgba(21, 17, 42, .62)";
+        ctx.font = '700 18px "TT Fors", Arial, sans-serif';
+        ctx.fillText(label, x + 18, 496);
+      });
+
+      ctx.fillStyle = violet;
+      roundRect(ctx, 812, 128, 230, 230, 28);
+      ctx.fill();
+      ctx.fillStyle = mint;
+      ctx.font = '950 94px "TT Fors", Arial, sans-serif';
+      ctx.fillText("В", 872, 260);
+      ctx.font = '950 42px "TT Fors", Arial, sans-serif';
+      ctx.fillText("поход", 862, 318);
+
+      ctx.fillStyle = ink;
+      ctx.font = '700 24px "TT Fors", Arial, sans-serif';
+      wrapCanvasText(ctx, result.storyText, 792, 402, 280, 32, 4);
+
+      ctx.fillStyle = "rgba(21, 17, 42, .7)";
+      ctx.font = '700 20px "TT Fors", Arial, sans-serif';
+      wrapCanvasText(ctx, siteUrl.replace("https://", ""), 132, 548, 760, 24, 2);
+
+      return canvas.toDataURL("image/png");
+    }
+
+    async function prepareVictoryShare(result) {
+      victoryShareResult = result;
+      const text = buildVictoryShareText(result);
+      const textBox = $("victoryShareTextValue");
+      if (textBox) textBox.textContent = text;
+      try {
+        victoryShareImageUrl = await createVictoryShareImage(result);
+        const image = $("victoryShareImage");
+        if (image) image.src = victoryShareImageUrl;
+      } catch (error) {
+        victoryShareImageUrl = "";
+        const image = $("victoryShareImage");
+        if (image) image.alt = "Картинка результата не сгенерировалась, но репост в VK доступен.";
+      }
+    }
+
+    function shareVictoryToVk() {
+      if (!victoryShareResult) return;
+      const text = buildVictoryShareText(victoryShareResult);
+      const params = new URLSearchParams({
+        url: siteUrl,
+        title: "Маршрут «В поход» пройден",
+        description: text,
+        comment: text,
+        noparse: "false"
+      });
+      const shareUrl = `https://vk.com/share.php?${params.toString()}`;
+      const popup = window.open(shareUrl, "_blank", "width=720,height=640");
+      if (!popup) window.location.href = shareUrl;
+    }
+
+    async function downloadVictoryImage() {
+      if (!victoryShareResult) return;
+      if (!victoryShareImageUrl) victoryShareImageUrl = await createVictoryShareImage(victoryShareResult);
+      const link = document.createElement("a");
+      link.href = victoryShareImageUrl;
+      link.download = `sheregesh-result-${Date.now()}.png`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
     }
 
     function checkWin() {
@@ -5494,17 +5834,49 @@
         "На карте остались отметки тайги, ручьёв и снежных склонов Шерегеша.",
         "Каждая роль пригодилась: маршрут стал настоящим командным походом."
       ][Math.floor(Math.random() * 3)];
+      const result = {
+        teamName: state.teamName || getTeamName(),
+        stars,
+        turns: state.turns,
+        round: state.round,
+        story: state.story,
+        storyText: story
+      };
       addRatingEntry(stars);
       clearProgress();
       dialog.innerHTML = `
-        <h2>Ура, победа!</h2>
-        <div class="victory-burst" aria-hidden="true"><span>⭐</span><span>🏁</span><span>⛰️</span><span>⭐</span></div>
-        <p style="font-size:28px;margin:8px 0;text-align:center">${"⭐".repeat(stars)}${"☆".repeat(3 - stars)}</p>
-        <p>${story}</p>
-        <p><b>Команда:</b> ${escapeHtml(state.teamName || getTeamName())}. <b>Ходов:</b> ${state.turns}. <b>Раундов:</b> ${state.round}. <b>Жетонов истории:</b> ${state.story}.</p>
-        <div class="row"><button onclick="location.reload()">Новая партия</button><button class="secondary" onclick="closeModal()">Смотреть карту</button></div>
+        <div class="victory-result">
+          <div class="victory-hero">
+            <div>
+              <h2>Маршрут пройден</h2>
+              <p><b>${escapeHtml(result.teamName)}</b> завершили «В поход» в Шерегеше.</p>
+            </div>
+            <div class="victory-stars" aria-label="${stars} из 3 звёзд">${"⭐".repeat(stars)}${"☆".repeat(3 - stars)}</div>
+          </div>
+          <div class="victory-stats" aria-label="Итоги партии">
+            <div class="victory-stat"><b>${result.turns}</b><span>ходов команды</span></div>
+            <div class="victory-stat"><b>${result.round}</b><span>раундов погоды</span></div>
+            <div class="victory-stat"><b>${result.story}</b><span>жетонов</span></div>
+            <div class="victory-stat"><b>${stars}/3</b><span>оценка маршрута</span></div>
+          </div>
+          <p class="victory-note">${story} Жетоны — это очки за открытия, находки и командные действия по ходу партии.</p>
+          <div class="victory-share" aria-label="Поделиться результатом">
+            <p class="victory-share-text" id="victoryShareText">
+              <span id="victoryShareTextValue">${escapeHtml(buildVictoryShareText(result))}</span>
+              <a class="victory-share-link" href="${siteUrl}" target="_blank" rel="noopener">ivanov-matvey.github.io/sheregesh-game/</a>
+            </p>
+            <div class="victory-share-actions">
+              <button type="button" onclick="shareVictoryToVk()">Поделиться ВК</button>
+              <button type="button" class="secondary" onclick="downloadVictoryImage()">Скачать картинку</button>
+              <button type="button" class="secondary" onclick="closeModal()">Смотреть карту</button>
+            </div>
+            <img class="victory-share-card" id="victoryShareImage" alt="Картинка результата команды" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==">
+          </div>
+          <div class="row"><button onclick="location.reload()">Новая партия</button></div>
+        </div>
       `;
       modal.classList.add("open");
+      prepareVictoryShare(result);
       log(`Победа команды: ${stars} звезды, ${state.turns} ходов.`);
       return true;
     }
@@ -5580,7 +5952,7 @@
           <h2>Гора Зелёная</h2>
           <img
             class="place-photo"
-            src="zelenaya.jpeg"
+            src="assets/v-pokhod/game/zelenaya.png"
             alt="Гора Зелёная в Шерегеше"
             loading="lazy"
           >
@@ -5605,7 +5977,7 @@
           <h2>Мустаг</h2>
           <img
             class="place-photo"
-            src="mustag.jpeg"
+            src="assets/v-pokhod/game/mustag.png"
             alt="Гора Мустаг в Горной Шории"
             loading="lazy"
           >
@@ -5723,7 +6095,10 @@
         el.disabled = !reachable;
         const occupants = state.players.filter(p => p.x === tile.x && p.y === tile.y);
         const artifactSrc = tile.revealed && tile.artifact ? artifactImage(tile.artifact) : "";
+        const placeSrc = isMid ? "assets/v-pokhod/game/zelenaya.png" : isGoal ? "assets/v-pokhod/game/mustag.png" : "";
+        const placeAlt = isMid ? "Гора Зелёная" : isGoal ? "Мустаг" : "";
         el.innerHTML = `
+          ${placeSrc ? `<div class="place-marker"><img src="${placeSrc}" alt="${placeAlt}"></div>` : ""}
           <div class="occupants">${occupants.map(p => `<span class="pawn">${p.id}</span>`).join("")}</div>
           <div class="tile-icon" aria-hidden="true"></div>
           ${artifactSrc ? `<div class="found"><img src="${artifactSrc}" alt=""></div>` : ""}
@@ -5830,6 +6205,7 @@
     function refreshPreviewMap() {
       if (state.started) return;
       buildMap();
+      revealRouteAnchors();
       drawBoard();
       animateMapGeneration();
     }
@@ -5892,6 +6268,7 @@
     renderScoreboard();
     updateResumeButton();
     buildMap();
+    revealRouteAnchors();
     drawBoard();
     animateMapGeneration();
     renderPlayers();
