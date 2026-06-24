@@ -4457,10 +4457,27 @@
     .tile.hidden.water,
     .tile.hidden.bog,
     .tile.hidden.mountain {
-      background:
-        linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(21, 17, 42, .1)),
-        url("assets/v-pokhod/game/back.png?v=20260624-1") center/cover !important;
+      background-color: #fff !important;
+      background-image: url("assets/v-pokhod/game/back.png?v=20260625-1") !important;
+      background-position: center !important;
+      background-repeat: no-repeat !important;
+      background-size: 78% auto !important;
+      opacity: 1 !important;
       filter: none !important;
+    }
+
+    .tile.hidden::after,
+    body.game-started .tile.hidden::after {
+      background: transparent !important;
+      opacity: 0 !important;
+    }
+
+    .board.generating .tile,
+    body.game-started .board.generating .tile {
+      animation: none !important;
+      opacity: 1 !important;
+      filter: none !important;
+      transform: none !important;
     }
 
     body.game-started .player.active,
@@ -4578,6 +4595,150 @@
       display: block;
       object-fit: contain !important;
       transform: translate(-7px, -7px);
+    }
+
+    @media (min-width: 721px) {
+      body:not(.game-started) .role-card {
+        grid-template-columns: 116px minmax(0, 1fr) !important;
+      }
+
+      body:not(.game-started) .role-icon {
+        width: 96px !important;
+        height: 96px !important;
+      }
+
+      body:not(.game-started) .role-icon img {
+        width: 116px !important;
+        height: 116px !important;
+        transform: translate(-10px, -10px);
+      }
+    }
+
+    body.game-started .board {
+      background:
+        linear-gradient(145deg, rgba(219, 214, 232, .94), rgba(205, 198, 222, .9)),
+        rgba(205, 198, 222, .92) !important;
+    }
+
+    .tile:not(.hidden)::after,
+    body.game-started .tile:not(.hidden)::after {
+      background: transparent !important;
+      opacity: 0 !important;
+    }
+
+    .tile,
+    body.game-started .tile {
+      opacity: 1 !important;
+      filter: none !important;
+    }
+
+    .tile::after,
+    body.game-started .tile::after {
+      background: transparent !important;
+      opacity: 0 !important;
+    }
+
+    .tile.plain:not(.hidden) {
+      background: url("assets/v-pokhod/game/terrain_plain.jpg?v=20260624-2") center/cover !important;
+    }
+
+    .tile.forest:not(.hidden) {
+      background: url("assets/v-pokhod/game/terrain_forest_conifer.jpg?v=20260624-2") center/cover !important;
+    }
+
+    .tile.water:not(.hidden) {
+      background: url("assets/v-pokhod/game/terrain_water.jpg?v=20260624-2") center/cover !important;
+    }
+
+    .tile.bog:not(.hidden) {
+      background: url("assets/v-pokhod/game/terrain_bog.jpg?v=20260624-2") center/cover !important;
+    }
+
+    .tile.mountain:not(.hidden) {
+      background: url("assets/v-pokhod/game/terrain_mountain.jpg?v=20260624-2") center/cover !important;
+    }
+
+    .tile.mid:not(.hidden),
+    body.game-started .tile.mid:not(.hidden) {
+      background: url("assets/v-pokhod/game/zelenaya.png") center/cover !important;
+    }
+
+    .tile.goal:not(.hidden),
+    body.game-started .tile.goal:not(.hidden) {
+      background: url("assets/v-pokhod/game/mustag.png") center/cover !important;
+    }
+
+    .tile.reachable,
+    body.game-started .tile.reachable {
+      border-color: var(--brand-violet) !important;
+      outline: 4px solid var(--brand-mint) !important;
+      outline-offset: -8px;
+      box-shadow:
+        0 0 0 3px rgba(82, 54, 175, .28),
+        0 0 24px rgba(138, 219, 171, .72) !important;
+    }
+
+    .tile.hidden.reachable,
+    body.game-started .tile.hidden.reachable {
+      background-color: #fff !important;
+      background-image: url("assets/v-pokhod/game/back.png?v=20260625-1") !important;
+      background-position: center !important;
+      background-repeat: no-repeat !important;
+      background-size: 78% auto !important;
+    }
+
+    .tile.reachable::after,
+    body.game-started .tile.reachable::after {
+      background: transparent !important;
+      opacity: 0 !important;
+    }
+
+    .tile.selectable,
+    body.game-started .tile.selectable {
+      border-color: var(--brand-violet) !important;
+      outline: 5px dashed var(--brand-violet) !important;
+      outline-offset: -8px;
+      box-shadow:
+        0 0 0 5px rgba(138, 219, 171, .62),
+        0 0 30px rgba(82, 54, 175, .58) !important;
+      cursor: pointer;
+    }
+
+    .tile.hidden.selectable,
+    body.game-started .tile.hidden.selectable {
+      background-color: #fff !important;
+      background-image: url("assets/v-pokhod/game/back.png?v=20260625-1") !important;
+      background-position: center !important;
+      background-repeat: no-repeat !important;
+      background-size: 78% auto !important;
+    }
+
+    .pawn.selectable-pawn {
+      background: var(--brand-mint);
+      color: var(--brand-ink);
+      box-shadow: 0 0 0 3px rgba(82, 54, 175, .4);
+    }
+
+    .selection-label {
+      position: absolute;
+      left: 6px;
+      bottom: 6px;
+      z-index: 5;
+      padding: 4px 6px;
+      border-radius: 6px;
+      background: var(--brand-violet);
+      color: #fff;
+      font-size: .62rem;
+      font-weight: 950;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      box-shadow: 0 3px 10px rgba(21, 17, 42, .26);
+      pointer-events: none;
+    }
+
+    .selection-label.is-move {
+      background: var(--brand-mint);
+      color: var(--brand-ink);
     }
 
     input::placeholder,
@@ -4824,6 +4985,7 @@
       teamName: "",
       tutorialSeen: new Set(),
       currentHint: "Начните партию. Игра покажет закрытую карту для исследования.",
+      pendingSelection: null,
       log: []
     };
 
@@ -4953,6 +5115,7 @@
 
     function saveProgress() {
       if (!state.started || state.gameOver) return;
+      if (state.pendingSelection) return;
       safeWriteStorage(SAVE_KEY, {
         started: state.started,
         tiles: state.tiles,
@@ -5222,15 +5385,15 @@
       buildMap();
       createPlayers();
       revealRouteAnchors();
-      beginTurnEffects(currentPlayer());
       drawWeather();
       log("Команда вышла из посёлка Шерегеш. Старт, Гора Зелёная и Мустаг уже отмечены на карте, остальной маршрут нужно исследовать.");
       if (!state.teamName) state.teamName = getTeamName();
       $("setupPanel").style.display = "none";
       document.body.classList.add("game-started");
       render();
+      beginTurnEffects(currentPlayer());
       animateMapGeneration();
-      if (isTutorial()) showTutorialIntro();
+      if (isTutorial() && !state.pendingSelection) showTutorialIntro();
     }
 
     function isTutorial() {
@@ -5301,30 +5464,95 @@
 
     function beginTurnEffects(player) {
       player.usedTerrainIgnore = false;
-      if (player.role.id === "scout") revealBestNeighbor(player);
+      revealWithCompass(player);
+      if (player.role.id === "scout") promptScoutReveal(player);
       if (player.role.id === "camp") {
-        const tired = state.players.find(p => p.tired);
-        if (tired) {
-          tired.tired = false;
-          log(`${player.role.icon} ${player.role.name} снял усталость у ${tired.name}.`);
-        }
+        promptTiredRecovery(player, `${player.role.icon} ${player.role.name} снял усталость`);
       }
       if (player.role.id === "mood" && !player.usedPassiveRound) {
-        const target = state.players.find(p => p.id !== player.id && !p.finished);
-        if (target) {
-          target.energy += 1;
-          player.usedPassiveRound = true;
-          log(`${player.role.icon} Хранитель атмосферы дал ${target.name} +1 к следующему броску.`);
-        }
+        promptMoodPassive(player);
       }
       if (player.role.id === "rescue") {
-        const tired = state.players.find(p => p.tired);
-        if (tired) {
-          tired.tired = false;
-          log(`${player.role.icon} Спасатель отменил усталость у ${tired.name}.`);
-        }
+        promptTiredRecovery(player, `${player.role.icon} Спасатель отменил усталость`);
       }
-      if (player.artifacts.includes("compass")) revealAround(player.x, player.y);
+    }
+
+    function storyForReveal() {
+      return state.players.some(p => p.role.id === "memory") ? 2 : 1;
+    }
+
+    function revealRoleTile(tile, message) {
+      tile.revealed = true;
+      state.story += storyForReveal();
+      log(message);
+      render();
+    }
+
+    function startTileSelection(title, tiles, cb) {
+      if (!tiles.length) return showInfo("Нет доступных клеток.");
+      state.pendingSelection = {
+        type: "tile",
+        title,
+        keys: tiles.map(tile => `${tile.x}:${tile.y}`),
+        cb
+      };
+      state.currentHint = title;
+      render();
+    }
+
+    function startPlayerSelection(title, players, cb) {
+      if (!players.length) return showInfo("Нет доступных участников.");
+      state.pendingSelection = {
+        type: "player",
+        title,
+        ids: players.map(player => player.id),
+        cb
+      };
+      state.currentHint = title;
+      render();
+    }
+
+    function finishPendingSelection() {
+      state.pendingSelection = null;
+      render();
+    }
+
+    function promptScoutReveal(player) {
+      const closed = neighbors(player.x, player.y).map(([x, y]) => tileAt(x, y)).filter(t => !t.revealed);
+      if (!closed.length) return;
+      if (closed.length === 1) {
+        revealRoleTile(closed[0], `${player.role.icon} Разведчик открыл соседнюю плитку.`);
+        return;
+      }
+      startTileSelection("Выберите на карте соседнюю закрытую плитку для Разведчика.", closed, (tile) => {
+        revealRoleTile(tile, `${player.role.icon} Разведчик открыл соседнюю плитку.`);
+      });
+    }
+
+    function promptTiredRecovery(player, message) {
+      const tiredPlayers = state.players.filter(p => p.tired);
+      if (!tiredPlayers.length) return;
+      const recover = (target) => {
+        target.tired = false;
+        log(`${message} у ${target.name}.`);
+        render();
+      };
+      if (tiredPlayers.length === 1) {
+        recover(tiredPlayers[0]);
+        return;
+      }
+      choosePlayer("С кого снять усталость?", tiredPlayers, recover);
+    }
+
+    function promptMoodPassive(player) {
+      const targets = state.players.filter(p => p.id !== player.id && !p.finished);
+      if (!targets.length) return;
+      player.usedPassiveRound = true;
+      startPlayerSelection("Выберите на карте участника, который получит +1 к следующему броску.", targets, (target) => {
+        target.energy += 1;
+        log(`${player.role.icon} Хранитель атмосферы дал ${target.name} +1 к следующему броску.`);
+        render();
+      });
     }
 
     function rollStep() {
@@ -5418,7 +5646,6 @@
       let cost = terrain[tile.type].cost;
       if (tile.type === "water" && player.artifacts.includes("raft")) cost = 1;
       if (tile.type === "bog" && player.artifacts.includes("gear")) cost = 2;
-      if (canIgnoreDifficult(player, tile)) cost = Math.max(1, cost - 1);
       if (!state.weatherSuppressed && state.weather.type === "rain" && isDifficult(tile) && !player.weatherShield) cost += 1;
       return cost;
     }
@@ -5439,7 +5666,7 @@
       if (!state.rolled || state.step <= 0 || player.finished) return false;
       const near = Math.abs(tile.x - player.x) + Math.abs(tile.y - player.y) === 1;
       if (!near) return false;
-      if (!state.weatherSuppressed && state.weather.type === "wind" && tile.x === player.lastX && tile.y === player.lastY) return false;
+      if (!state.weatherSuppressed && state.weather.type === "wind" && tile.x === player.lastX && tile.y === player.lastY && !player.weatherShield) return false;
       if (tile.type === "bog" && !player.artifacts.includes("gear") && !canIgnoreDifficult(player, tile) && state.lastRoll !== 6) return false;
       return costFor(tile, player) <= state.step;
     }
@@ -5450,6 +5677,7 @@
       let foundArtifact = null;
       const ignoredDifficult = canIgnoreDifficult(player, tile);
       const shieldedRain = !state.weatherSuppressed && state.weather.type === "rain" && isDifficult(tile) && player.weatherShield > 0;
+      const shieldedWind = !state.weatherSuppressed && state.weather.type === "wind" && tile.x === player.lastX && tile.y === player.lastY && player.weatherShield > 0;
       const cost = costFor(tile, player);
       player.lastX = player.x;
       player.lastY = player.y;
@@ -5458,7 +5686,7 @@
       state.step -= cost;
       if (!tile.revealed) {
         tile.revealed = true;
-        state.story += state.players.some(p => p.role.id === "memory") ? 2 : 1;
+        state.story += storyForReveal();
         log(`Открыта новая точка маршрута: ${terrain[tile.type].name}.`);
       }
       tile.visited = true;
@@ -5471,23 +5699,33 @@
         player.weatherShield -= 1;
         log(`${player.name} избежал штрафа дождя благодаря поддержке.`);
       }
+      if (shieldedWind) {
+        player.weatherShield -= 1;
+        log(`${player.name} избежал штрафа ветра благодаря поддержке.`);
+      }
       if (tile.type === "mountain") {
         if (state.step > 0 && !ignoredDifficult) {
-          log("Подъём останавливает ход: оставшиеся очки сгорают.");
-          state.step = 0;
+          if (player.weatherShield) {
+            player.weatherShield -= 1;
+            log(`${player.name} избежал остановки на подъёме благодаря поддержке.`);
+          } else {
+            log("Подъём останавливает ход: оставшиеся очки сгорают.");
+            state.step = 0;
+          }
         }
-        if (Math.random() < .18 && player.role.id !== "rescue") {
-          player.tired = true;
-          log(`${player.name} устал на подъёме.`);
+        if (Math.random() < .18) {
+          if (player.weatherShield) {
+            player.weatherShield -= 1;
+            log(`${player.name} избежал усталости благодаря поддержке.`);
+          } else {
+            player.tired = true;
+            log(`${player.name} устал на подъёме.`);
+          }
         }
       }
       const endedOnMountain = tile.type === "mountain";
       const { reachedMid, reachedGoal } = updatePlayerGoalProgress(player);
-      if (tile.type !== "forest" || player.artifacts.includes("compass")) {
-        revealAround(player.x, player.y);
-      } else {
-        log("Тайга скрыла соседние закрытые клетки.");
-      }
+      revealWithCompass(player);
       const won = checkWin();
       render();
       const shouldShowNoStep = !endedOnMountain && !foundArtifact && !reachedMid && !reachedGoal && state.step <= 0 && !won;
@@ -5537,23 +5775,23 @@
     }
 
     function revealAround(x, y) {
+      let revealed = 0;
       neighbors(x, y).forEach(([nx, ny]) => {
         const tile = tileAt(nx, ny);
         if (!tile.revealed) {
           tile.revealed = true;
-          if (state.started) state.story += state.players.some(p => p.role.id === "memory") ? 2 : 1;
+          revealed += 1;
+          if (state.started) state.story += storyForReveal();
         }
       });
+      return revealed;
     }
 
-    function revealBestNeighbor(player) {
-      const closed = neighbors(player.x, player.y).map(([x, y]) => tileAt(x, y)).filter(t => !t.revealed);
-      if (closed.length) {
-        const tile = closed[0];
-        tile.revealed = true;
-        state.story += state.players.some(p => p.role.id === "memory") ? 2 : 1;
-        log(`${player.role.icon} Разведчик открыл соседнюю плитку.`);
-      }
+    function revealWithCompass(player) {
+      if (!player.artifacts.includes("compass")) return 0;
+      const revealed = revealAround(player.x, player.y);
+      if (revealed) log(`${player.name}: компас открыл соседние клетки (${revealed}).`);
+      return revealed;
     }
 
     function useRole() {
@@ -5571,10 +5809,10 @@
         tutorialPopup("role", "Способность роли", "Кнопка «Способность роли» применяет сильное действие персонажа. Обычно оно ограничено одним или двумя применениями за партию.");
       } else if (role.id === "researcher") {
         if (player.usedSpecial) return showInfo("Разведка карты уже использована.");
-        chooseTile("Открыть любую плитку", state.tiles.filter(t => !t.revealed), (tile) => {
+        startTileSelection("Разведка карты: выберите на карте одну закрытую плитку.", state.tiles.filter(t => !t.revealed), (tile) => {
           player.usedSpecial = 1;
           tile.revealed = true;
-          state.story += 1;
+          state.story += storyForReveal();
           log("Исследователь открыл удалённую точку маршрута.");
           render();
           tutorialPopup("role", "Способность роли", "Кнопка «Способность роли» применяет сильное действие персонажа. Обычно оно ограничено одним или двумя применениями за партию.");
@@ -5588,7 +5826,7 @@
         tutorialPopup("weatherCancel", "Отмена погоды", "Хранитель лагеря убрал эффект погоды до конца раунда. Это полезно при тумане, жаре или дожде.");
       } else if (role.id === "mood") {
         if (player.usedSpecial >= 2) return showInfo("Поддержка уже использована два раза.");
-        choosePlayer("Кому помочь?", state.players.filter(p => p.id !== player.id), (target) => {
+        choosePlayer("Кому помочь?", state.players, (target) => {
           player.usedSpecial += 1;
           if (target.tired) target.tired = false;
           else target.weatherShield += 1;
@@ -5613,11 +5851,16 @@
             player.usedSpecial = 1;
             target.x = tile.x;
             target.y = tile.y;
-            const { reachedMid } = updatePlayerGoalProgress(target);
+            const foundArtifact = tile.artifact ? collectArtifact(tile, target) : null;
+            const { reachedMid, reachedGoal } = updatePlayerGoalProgress(target);
+            revealWithCompass(target);
             log(`Спасатель переместил ${target.name} на соседнюю клетку.`);
-            checkWin();
+            const won = checkWin();
             render();
+            if (won) return;
+            if (foundArtifact) showArtifactPopup(target, foundArtifact);
             if (reachedMid) showGreenMountainPopup(target);
+            if (reachedGoal && !won) showMustagPopup(target, won);
             tutorialPopup("role", "Способность роли", "Кнопка «Способность роли» применяет сильное действие персонажа. Обычно оно ограничено одним или двумя применениями за партию.");
           });
         });
@@ -5650,8 +5893,8 @@
             box.appendChild(item);
           });
           modal.classList.add("open");
-        });
-      });
+        }, { showArtifacts: true });
+      }, { showArtifacts: true });
     }
 
     function endTurn(auto = false) {
@@ -5906,13 +6149,22 @@
       return true;
     }
 
-    function choosePlayer(title, players, cb) {
+    function playerArtifactSummary(player) {
+      if (!player.artifacts.length) return "Артефакты: нет";
+      return `Артефакты: ${player.artifacts.map((id) => {
+        const artifact = artifacts.find(item => item.id === id);
+        return artifact ? `${artifact.icon} ${artifact.name}` : id;
+      }).join(", ")}`;
+    }
+
+    function choosePlayer(title, players, cb, options = {}) {
       dialog.innerHTML = `<div class="dialog-head"><h2>${title}</h2><button type="button" class="secondary modal-close" aria-label="Закрыть" onclick="closeModal()"></button></div><div class="choices"></div>`;
       const box = dialog.querySelector(".choices");
       players.forEach((player) => {
         const item = document.createElement("div");
         item.className = "choice";
-        item.innerHTML = `<div class="avatar">${player.id}</div><div><b>${player.name}</b><small>${player.role.name}</small></div><button>Выбрать</button>`;
+        const details = options.showArtifacts ? `${player.role.name}. ${playerArtifactSummary(player)}` : player.role.name;
+        item.innerHTML = `<div class="avatar">${player.id}</div><div><b>${player.name}</b><small>${details}</small></div><button>Выбрать</button>`;
         item.querySelector("button").onclick = () => { closeModal(); cb(player); };
         box.appendChild(item);
       });
@@ -5924,7 +6176,7 @@
       dialog.innerHTML = `<div class="dialog-head"><h2>${title}</h2><button type="button" class="secondary modal-close" aria-label="Закрыть" onclick="closeModal()"></button></div><div class="choices"></div>`;
       const box = dialog.querySelector(".choices");
       tiles.forEach((tile) => {
-        const data = terrain[tile.type];
+        const data = tile.revealed ? terrain[tile.type] : { icon: "❔", name: "Закрытая плитка" };
         const item = document.createElement("div");
         item.className = "choice";
         item.innerHTML = `<div>${data.icon}</div><div><b>${data.name}</b><small>${tile.x + 1}:${tile.y + 1}</small></div><button>Выбрать</button>`;
@@ -6114,18 +6366,42 @@
         const isGoal = tile.x === places.goal.x && tile.y === places.goal.y;
         const player = state.started ? currentPlayer() : null;
         const reachable = player && isReachable(tile, player);
+        const pending = state.pendingSelection;
+        const tileKey = `${tile.x}:${tile.y}`;
+        const tileSelection = pending && pending.type === "tile" && pending.keys.includes(tileKey);
+        const playerTargets = pending && pending.type === "player"
+          ? state.players.filter(p => pending.ids.includes(p.id) && p.x === tile.x && p.y === tile.y)
+          : [];
+        const playerSelection = playerTargets.length > 0;
+        const selectable = tileSelection || playerSelection;
         const isBase = tile.x === places.base.x && tile.y === places.base.y;
-        el.className = `tile ${data.className}${tile.revealed ? "" : " hidden"}${reachable ? " reachable" : ""}${isBase ? " base" : ""}${isMid ? " mid" : ""}${isGoal ? " goal" : ""}`;
+        el.className = `tile ${data.className}${tile.revealed ? "" : " hidden"}${reachable && !pending ? " reachable" : ""}${selectable ? " selectable" : ""}${isBase ? " base" : ""}${isMid ? " mid" : ""}${isGoal ? " goal" : ""}`;
         el.style.setProperty("--tile-index", index);
-        el.disabled = !reachable;
+        el.disabled = pending ? !selectable : !reachable;
         const occupants = state.players.filter(p => p.x === tile.x && p.y === tile.y);
         const artifactSrc = tile.revealed && tile.artifact ? artifactImage(tile.artifact) : "";
         el.innerHTML = `
-          <div class="occupants">${occupants.map(p => `<span class="pawn">${p.id}</span>`).join("")}</div>
+          <div class="occupants">${occupants.map(p => `<span class="pawn${pending && pending.type === "player" && pending.ids.includes(p.id) ? " selectable-pawn" : ""}">${p.id}</span>`).join("")}</div>
           <div class="tile-icon" aria-hidden="true"></div>
           ${artifactSrc ? `<div class="found"><img src="${artifactSrc}" alt=""></div>` : ""}
+          ${selectable ? `<div class="selection-label">${pending.type === "player" ? "+1" : "Выбор"}</div>` : reachable && !pending ? `<div class="selection-label is-move">Ход</div>` : ""}
         `;
-        el.onclick = () => moveTo(tile);
+        el.onclick = () => {
+          if (pending && tileSelection) {
+            const cb = pending.cb;
+            finishPendingSelection();
+            cb(tile);
+            return;
+          }
+          if (pending && playerSelection) {
+            const cb = pending.cb;
+            finishPendingSelection();
+            if (playerTargets.length === 1) cb(playerTargets[0]);
+            else choosePlayer("Кого выбрать на этой клетке?", playerTargets, cb);
+            return;
+          }
+          moveTo(tile);
+        };
         board.appendChild(el);
       });
     }
@@ -6186,14 +6462,15 @@
       const active = state.started && !state.gameOver;
       $("turnTitle").textContent = active ? `${player.name}: ${player.role.icon} ${player.role.name}` : state.gameOver ? "Маршрут завершён" : "Партия не начата";
       $("turnText").textContent = active
-        ? isTutorial() ? `Очки движения: ${state.rolling ? "кубик катится" : state.rolled ? state.step : "бросок не сделан"}. Способность: ${player.role.passive}` : `Очки движения: ${state.rolling ? "кубик катится" : state.rolled ? state.step : "бросок не сделан"}.`
+        ? state.pendingSelection ? state.pendingSelection.title : isTutorial() ? `Очки движения: ${state.rolling ? "кубик катится" : state.rolled ? state.step : "бросок не сделан"}. Способность: ${player.role.passive}` : `Очки движения: ${state.rolling ? "кубик катится" : state.rolled ? state.step : "бросок не сделан"}.`
         : state.gameOver ? "Команда дошла до вершины." : "Выберите участников и начните поход.";
-      state.currentHint = getActionHint(player, active);
+      state.currentHint = state.pendingSelection ? state.pendingSelection.title : getActionHint(player, active);
       $("openHintTurn").classList.toggle("hidden", !isTutorial() || !active);
-      $("rollStep").disabled = !active || state.rolled || player.finished || state.rolling;
-      $("useRole").disabled = !active || player.finished || state.rolling;
-      $("trade").disabled = !active || player.finished || state.rolling;
-      $("endTurn").disabled = !active || player.finished || state.rolling;
+      const selectingOnMap = Boolean(state.pendingSelection);
+      $("rollStep").disabled = !active || state.rolled || player.finished || state.rolling || selectingOnMap;
+      $("useRole").disabled = !active || player.finished || state.rolling || selectingOnMap;
+      $("trade").disabled = !active || player.finished || state.rolling || selectingOnMap;
+      $("endTurn").disabled = !active || player.finished || state.rolling || selectingOnMap;
       $("endTurn").classList.toggle("is-primary-action", active && state.rolled && !player.finished && !state.rolling);
     }
 
