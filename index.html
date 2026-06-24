@@ -3851,6 +3851,580 @@
       border-color: rgba(255, 255, 255, .28);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, .14);
     }
+
+    /* Brandbook alignment: More Than a Trip / BChP visual system. */
+    @font-face {
+      font-family: "TT Fors";
+      src: url("brandbook/Шрифты/TT Fors Trial Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "TT Fors";
+      src: url("brandbook/Шрифты/TT Fors Trial Medium.ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "TT Fors";
+      src: url("brandbook/Шрифты/TT Fors Trial Bold.ttf") format("truetype");
+      font-weight: 950;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --brand-mint: #8ADBAB;
+      --brand-violet: #5236AF;
+      --brand-lilac: #7663A9;
+      --brand-ink: #15112A;
+      --brand-white: #ffffff;
+      --brand-soft: #F4F1FF;
+      --brand-line: rgba(82, 54, 175, .28);
+      --pine: var(--brand-mint);
+      --cedar: var(--brand-mint);
+      --sun: var(--brand-violet);
+      --leaf: var(--brand-mint);
+      --ink: var(--brand-ink);
+      --muted: rgba(21, 17, 42, .66);
+      --line: var(--brand-violet);
+      --card: rgba(255, 255, 255, .92);
+      --snow: #ffffff;
+      --paper: #ffffff;
+      --glass-line: var(--brand-line);
+      --shadow: 0 14px 34px rgba(82, 54, 175, .12);
+      --button-shadow: none;
+      --radius: 8px;
+      --system-bar-bg: var(--brand-violet);
+    }
+
+    html {
+      background:
+        linear-gradient(135deg, rgba(82, 54, 175, .94), rgba(138, 219, 171, .72)),
+        url("brandbook/Паттерн/Паттерн_БЧП.png") center/420px repeat;
+    }
+
+    body {
+      font-family: "TT Fors", Inter, "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+      color: var(--brand-ink);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, .92), rgba(244, 241, 255, .84)),
+        url("brandbook/Паттерн/Паттерн_БЧП.png") center/520px repeat;
+    }
+
+    body.game-started {
+      background:
+        linear-gradient(120deg, rgba(255, 255, 255, .9), rgba(244, 241, 255, .72)),
+        url("assets/v-pokhod/game/cover.jpg") center/cover fixed;
+    }
+
+    body::before {
+      background:
+        linear-gradient(135deg, rgba(138, 219, 171, .2), transparent 36%),
+        radial-gradient(circle at 92% 12%, rgba(82, 54, 175, .18), transparent 24%);
+      opacity: 1;
+    }
+
+    .side,
+    .panel,
+    .dialog,
+    .scoreboard,
+    .rule,
+    .role-card,
+    .metric,
+    .weather-table,
+    .player,
+    .choice,
+    .toast,
+    .hint,
+    .log p,
+    .log-popup p,
+    .place-fact,
+    .mobile-metrics,
+    body.game-started .mobile-weather-card {
+      color: var(--brand-ink);
+      border: 1px solid var(--brand-line);
+      background: rgba(255, 255, 255, .92);
+      box-shadow: var(--shadow);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    .panel::before,
+    .dialog::before,
+    .side::before {
+      background:
+        linear-gradient(135deg, rgba(138, 219, 171, .2), transparent 34%),
+        linear-gradient(315deg, rgba(82, 54, 175, .08), transparent 38%);
+      opacity: 1;
+    }
+
+    .side {
+      background: rgba(255, 255, 255, .9);
+      border-right: 1px solid var(--brand-line);
+    }
+
+    body.game-started .side {
+      background: rgba(255, 255, 255, .78);
+    }
+
+    .panel h2,
+    .panel h3,
+    .scoreboard h3,
+    .metric b,
+    .metric span,
+    .weather-info b,
+    .player-name,
+    .role-card b,
+    .mini-label,
+    .turn-head h2,
+    .dialog h2,
+    .dialog p,
+    .place-next,
+    .rules-popup {
+      color: var(--brand-ink);
+    }
+
+    .role-card span,
+    .role-details p,
+    .weather-info span,
+    .player-meta,
+    .score-empty,
+    .field label,
+    .photo-source,
+    .choice small,
+    .mobile-weather-card span,
+    .toast {
+      color: var(--muted);
+    }
+
+    button,
+    a.button-link,
+    .rules-mini,
+    .hint-button,
+    body.game-started .mobile-hud .rules-mini,
+    body.game-started .mobile-menu-toggle,
+    .mobile-menu-popover button {
+      color: var(--brand-white);
+      background: var(--brand-violet);
+      border: 1px solid var(--brand-violet);
+      box-shadow: none;
+      border-radius: 8px;
+      letter-spacing: 0;
+    }
+
+    button:hover,
+    a.button-link:hover,
+    .rules-mini:hover,
+    .setup-actions .rules-action:hover {
+      background: #6548C7;
+      box-shadow: 0 10px 24px rgba(82, 54, 175, .22);
+    }
+
+    button.secondary,
+    a.button-link.secondary,
+    .setup-actions .rules-action,
+    body.game-started #useRole,
+    body.game-started #trade,
+    body.game-started #endTurn:not(.is-primary-action),
+    body.game-started .mobile-secondary-actions button {
+      color: var(--brand-violet) !important;
+      background: rgba(255, 255, 255, .92) !important;
+      border-color: var(--brand-violet) !important;
+      box-shadow: none !important;
+    }
+
+    button:disabled {
+      color: rgba(21, 17, 42, .34);
+      background: rgba(21, 17, 42, .08);
+      border-color: rgba(21, 17, 42, .12);
+      box-shadow: none;
+    }
+
+    input,
+    select {
+      color: var(--brand-ink);
+      background: #fff;
+      border: 1px solid var(--brand-line);
+      box-shadow: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--brand-violet);
+      box-shadow: 0 0 0 3px rgba(138, 219, 171, .42);
+    }
+
+    .role-icon,
+    .avatar,
+    .artifact-popup-icon,
+    .mobile-weather-icon {
+      color: var(--brand-violet);
+      background: var(--brand-mint);
+      border: 1px solid rgba(82, 54, 175, .18);
+      box-shadow: none;
+    }
+
+    .badge,
+    .artifact,
+    .kicker,
+    .die-label {
+      color: var(--brand-violet);
+      background: rgba(138, 219, 171, .34);
+      border-color: rgba(82, 54, 175, .16);
+    }
+
+    .board {
+      border: 1px solid var(--brand-line);
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .86), rgba(244, 241, 255, .76)),
+        rgba(255, 255, 255, .72);
+      box-shadow: 0 18px 42px rgba(82, 54, 175, .16), inset 0 1px 0 rgba(255, 255, 255, .8);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    body.game-started .board {
+      border-color: var(--brand-line);
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .82), rgba(244, 241, 255, .72)),
+        rgba(255, 255, 255, .72);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .82);
+    }
+
+    .tile {
+      border-color: rgba(82, 54, 175, .22);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .36), 0 8px 18px rgba(82, 54, 175, .08);
+    }
+
+    body.game-started .tile.hidden {
+      background:
+        linear-gradient(145deg, rgba(82, 54, 175, .08), rgba(138, 219, 171, .12)),
+        rgba(255, 255, 255, .62);
+      border-color: rgba(82, 54, 175, .18);
+    }
+
+    body.game-started .tile.reachable {
+      border-color: var(--brand-violet) !important;
+      box-shadow:
+        inset 0 0 0 3px var(--brand-mint),
+        0 0 0 2px var(--brand-violet),
+        0 0 24px rgba(138, 219, 171, .58) !important;
+    }
+
+    body.game-started .tile.reachable::after {
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, .86), rgba(138, 219, 171, .52) 28%, transparent 44%),
+        linear-gradient(135deg, rgba(138, 219, 171, .34), transparent 58%) !important;
+    }
+
+    body.game-started .player.active,
+    .mobile-team-player.active {
+      border-color: var(--brand-violet) !important;
+      background:
+        linear-gradient(135deg, rgba(138, 219, 171, .38), rgba(255, 255, 255, .94)),
+        #fff !important;
+      box-shadow: 0 0 0 2px var(--brand-mint), 0 12px 26px rgba(82, 54, 175, .14) !important;
+    }
+
+    body.game-started .player.active .avatar,
+    .mobile-team-player.active .avatar {
+      color: var(--brand-white);
+      background: var(--brand-violet);
+      border-color: var(--brand-violet);
+    }
+
+    body.game-started .player.active .player-name,
+    .mobile-team-player.active .player-name {
+      color: var(--brand-ink);
+    }
+
+    body.game-started .player.active .player-name::after,
+    .mobile-team-player.active .player-name::after {
+      color: var(--brand-white);
+      background: var(--brand-violet);
+      border-color: var(--brand-violet);
+    }
+
+    body:not(.game-started) #setupPanel {
+      border: 1px solid var(--brand-line);
+      background: rgba(255, 255, 255, .94);
+      box-shadow: 0 24px 56px rgba(82, 54, 175, .18);
+    }
+
+    body:not(.game-started) #setupPanel::after {
+      content: "";
+      display: block;
+      width: min(270px, 100%);
+      height: 88px;
+      margin-top: 8px;
+      background: url("brandbook/Логотип/Logo_RU__PNG/Morethantrip_logo_color-08.png") left center/contain no-repeat;
+    }
+
+    body:not(.game-started) input,
+    body:not(.game-started) select,
+    body:not(.game-started) .role-card,
+    body:not(.game-started) .role-details p,
+    body:not(.game-started) .scoreboard,
+    body:not(.game-started) .role-card:nth-child(2n),
+    body:not(.game-started) .role-card:nth-child(3n) {
+      color: var(--brand-ink);
+      border: 1px solid var(--brand-line);
+      background: rgba(255, 255, 255, .86);
+      box-shadow: none;
+    }
+
+    .modal {
+      background: rgba(21, 17, 42, .48);
+    }
+
+    .dialog {
+      color: var(--brand-ink);
+      border: 1px solid var(--brand-line);
+      background: rgba(255, 255, 255, .96);
+      box-shadow: 0 24px 56px rgba(21, 17, 42, .22);
+    }
+
+    .modal-close {
+      color: var(--brand-violet);
+      background: #fff;
+      border-color: var(--brand-violet) !important;
+    }
+
+    .mobile-menu-popover {
+      background: rgba(255, 255, 255, .96);
+      border-color: var(--brand-line);
+      box-shadow: 0 18px 36px rgba(21, 17, 42, .2);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    .rules-frame {
+      border-color: var(--brand-line);
+      box-shadow: none;
+      background: #fff;
+    }
+
+    /* Final contrast pass for the brandbook palette. */
+    body.game-started {
+      background:
+        linear-gradient(120deg, rgba(255, 255, 255, .84), rgba(244, 241, 255, .78)),
+        url("assets/v-pokhod/game/cover.jpg") center/cover fixed;
+    }
+
+    body.game-started::before {
+      background:
+        linear-gradient(120deg, rgba(255, 255, 255, .48), rgba(244, 241, 255, .34));
+    }
+
+    body.game-started .side,
+    body.game-started .panel,
+    body.game-started .controls .panel,
+    body.game-started .mobile-weather-card,
+    body.game-started .mobile-metrics,
+    body.game-started .player,
+    body.game-started .log p {
+      color: var(--brand-ink) !important;
+      background: rgba(255, 255, 255, .96) !important;
+      border-color: var(--brand-line) !important;
+    }
+
+    body.game-started .side::before,
+    body.game-started .panel::before,
+    body.game-started .dialog::before {
+      display: none;
+    }
+
+    body.game-started .side,
+    body.game-started .controls .panel {
+      box-shadow: none !important;
+    }
+
+    body.game-started .panel,
+    body.game-started .side,
+    body.game-started .board,
+    body.game-started .controls .panel,
+    body.game-started .mobile-weather-card,
+    body.game-started .mobile-metrics,
+    body.game-started .player,
+    body.game-started .log p,
+    body.game-started .metric,
+    body.game-started .weather-table,
+    body.game-started .weather-card,
+    body.game-started .toast,
+    body.game-started .hint,
+    body.game-started .tile,
+    body.game-started .die,
+    body.game-started button,
+    body.game-started a.button-link {
+      box-shadow: none !important;
+    }
+
+    body.game-started .turn-head,
+    body.game-started .turn-head h2,
+    body.game-started .side h2,
+    body.game-started .side h3,
+    body.game-started .metric,
+    body.game-started .metric b,
+    body.game-started .metric span,
+    body.game-started .weather-info b,
+    body.game-started .toast,
+    body.game-started .hint,
+    body.game-started .log p,
+    body.game-started .player-name,
+    body.game-started .player-meta,
+    body.game-started .artifacts,
+    body.game-started .weather-info span,
+    body.game-started .mobile-metrics span {
+      color: var(--brand-ink) !important;
+    }
+
+    body.game-started .toast,
+    body.game-started .hint {
+      background: rgba(255, 255, 255, .94) !important;
+      border-color: var(--brand-line) !important;
+    }
+
+    body.game-started .board {
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .9), rgba(244, 241, 255, .84)),
+        rgba(255, 255, 255, .88) !important;
+      box-shadow: none !important;
+    }
+
+    body.game-started .tile.hidden {
+      background:
+        linear-gradient(145deg, rgba(82, 54, 175, .06), rgba(138, 219, 171, .08)),
+        rgba(255, 255, 255, .82) !important;
+    }
+
+    body.game-started .player.active,
+    body.game-started .mobile-team-player.active {
+      box-shadow: none !important;
+      outline: 2px solid var(--brand-violet);
+      outline-offset: -2px;
+    }
+
+    /* Quiet game controls: flat weather, softer movement, visible secondary actions. */
+    body.game-started .weather-deck::before,
+    body.game-started .weather-deck::after {
+      content: "" !important;
+      display: block !important;
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius);
+      border: 1px solid var(--brand-line) !important;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .92), rgba(138, 219, 171, .18)) !important;
+      box-shadow: none !important;
+    }
+
+    body.game-started .weather-deck::before {
+      transform: rotate(-4deg) translate(-5px, 5px) !important;
+    }
+
+    body.game-started .weather-deck::after {
+      transform: rotate(4deg) translate(5px, 3px) !important;
+    }
+
+    body.game-started .weather-deck,
+    body.game-started .weather-card,
+    body.game-started .mobile-weather-icon {
+      box-shadow: none !important;
+      filter: none !important;
+    }
+
+    body.game-started .weather-card {
+      border: 1px solid var(--brand-line) !important;
+    }
+
+    body.game-started .tile.reachable {
+      border: 2px solid var(--brand-violet) !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    body.game-started .tile.reachable::after {
+      background: rgba(138, 219, 171, .18) !important;
+      opacity: .38 !important;
+    }
+
+    body.game-started #endTurn,
+    body.game-started #endTurn.secondary.is-primary-action:not(:disabled),
+    body.game-started #endTurn.secondary.is-primary-action:not(:disabled):hover,
+    body.game-started #endTurn.secondary.is-primary-action:not(:disabled):focus,
+    body.game-started #endTurn.secondary.is-primary-action:not(:disabled):focus-visible,
+    body.game-started #endTurn.secondary.is-primary-action:not(:disabled):active {
+      color: var(--brand-violet) !important;
+      background: rgba(255, 255, 255, .94) !important;
+      border-color: var(--brand-violet) !important;
+      box-shadow: none !important;
+    }
+
+    body.game-started #endTurn.secondary.is-primary-action:not(:disabled):hover,
+    body.game-started #endTurn.secondary.is-primary-action:not(:disabled):focus,
+    body.game-started #endTurn.secondary.is-primary-action:not(:disabled):focus-visible {
+      background: rgba(244, 241, 255, .96) !important;
+    }
+
+    body.game-started .turn-head .rules-mini,
+    body.game-started .mobile-hud .rules-mini {
+      color: var(--brand-violet) !important;
+      background: rgba(255, 255, 255, .9) !important;
+      border-color: var(--brand-line) !important;
+      opacity: 1 !important;
+      box-shadow: none !important;
+    }
+
+    body:not(.game-started) #setupPanel h2,
+    body:not(.game-started) #setupPanel .field label,
+    body:not(.game-started) .role-card b,
+    body:not(.game-started) .role-details p,
+    body:not(.game-started) .scoreboard,
+    body:not(.game-started) .scoreboard *,
+    body:not(.game-started) input,
+    body:not(.game-started) select {
+      color: var(--brand-ink) !important;
+    }
+
+    body:not(.game-started) .role-card span,
+    body:not(.game-started) .role-details b {
+      color: rgba(21, 17, 42, .58) !important;
+    }
+
+    input::placeholder,
+    body:not(.game-started) input::placeholder {
+      color: rgba(21, 17, 42, .42) !important;
+      opacity: 1;
+    }
+
+    @media (max-width: 620px) {
+      html:has(body.game-started),
+      body.game-started {
+        background:
+          linear-gradient(120deg, rgba(255, 255, 255, .86), rgba(244, 241, 255, .8)),
+          url("assets/v-pokhod/game/cover.jpg") center/cover no-repeat fixed;
+      }
+
+      body.game-started::before {
+        background:
+          linear-gradient(120deg, rgba(255, 255, 255, .52), rgba(244, 241, 255, .38));
+      }
+
+      body.game-started .main {
+        background: transparent;
+      }
+
+      body.game-started .mobile-menu-toggle {
+        color: var(--brand-white);
+        background: var(--brand-violet);
+        border-color: var(--brand-violet);
+      }
+    }
   </style>
 </head>
 <body>

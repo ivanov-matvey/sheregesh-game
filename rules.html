@@ -474,6 +474,145 @@
         background-attachment: scroll;
       }
     }
+
+    /* Brandbook alignment: More Than a Trip / BChP visual system. */
+    @font-face {
+      font-family: "TT Fors";
+      src: url("brandbook/Шрифты/TT Fors Trial Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "TT Fors";
+      src: url("brandbook/Шрифты/TT Fors Trial Medium.ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "TT Fors";
+      src: url("brandbook/Шрифты/TT Fors Trial Bold.ttf") format("truetype");
+      font-weight: 950;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --brand-mint: #8ADBAB;
+      --brand-violet: #5236AF;
+      --brand-ink: #15112A;
+      --brand-soft: #F4F1FF;
+      --pine: var(--brand-mint);
+      --cedar: var(--brand-mint);
+      --snow: #ffffff;
+      --paper: #ffffff;
+      --line: rgba(82, 54, 175, .28);
+      --ink: var(--brand-ink);
+      --muted: rgba(21, 17, 42, .66);
+      --sun: var(--brand-violet);
+      --leaf: var(--brand-mint);
+      --shadow: 0 14px 34px rgba(82, 54, 175, .12);
+    }
+
+    html,
+    body {
+      color: var(--brand-ink);
+      font-family: "TT Fors", Inter, "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, .94), rgba(244, 241, 255, .84)),
+        url("brandbook/Паттерн/Паттерн_БЧП.png") center/520px repeat;
+    }
+
+    body::before {
+      background:
+        linear-gradient(135deg, rgba(138, 219, 171, .16), transparent 36%),
+        radial-gradient(circle at 92% 12%, rgba(82, 54, 175, .16), transparent 24%);
+    }
+
+    a {
+      color: var(--brand-violet);
+    }
+
+    .topbar,
+    section,
+    .card,
+    .hero p,
+    .topbar a,
+    .kicker,
+    table {
+      color: var(--brand-ink);
+      border: 1px solid rgba(82, 54, 175, .22);
+      background: rgba(255, 255, 255, .92);
+      box-shadow: var(--shadow);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    .topbar {
+      background: rgba(255, 255, 255, .96);
+    }
+
+    .brand,
+    .hero h1,
+    h2,
+    h3,
+    .hero p,
+    .card,
+    .kicker,
+    p,
+    li,
+    td {
+      color: var(--brand-ink);
+    }
+
+    .hero p,
+    .kicker,
+    .note {
+      color: var(--brand-ink);
+      background: linear-gradient(135deg, rgba(138, 219, 171, .9), rgba(255, 255, 255, .88));
+      border-color: rgba(82, 54, 175, .2);
+      box-shadow: 0 12px 26px rgba(82, 54, 175, .12);
+    }
+
+    .topbar a {
+      color: var(--brand-violet);
+      border: 1px solid var(--brand-violet);
+      background: #fff;
+      box-shadow: none;
+    }
+
+    .topbar a:hover {
+      color: #fff;
+      background: var(--brand-violet);
+    }
+
+    section::before,
+    .card::before {
+      background:
+        linear-gradient(135deg, rgba(138, 219, 171, .18), transparent 34%),
+        linear-gradient(315deg, rgba(82, 54, 175, .08), transparent 38%);
+    }
+
+    th {
+      color: #fff;
+      border-color: rgba(82, 54, 175, .24);
+      background: var(--brand-violet);
+    }
+
+    td {
+      border-color: rgba(82, 54, 175, .16);
+    }
+
+    tr:nth-child(even) td {
+      background: rgba(138, 219, 171, .16);
+    }
+
+    .table-scroll table {
+      background: #fff;
+    }
   </style>
 </head>
 <body>
