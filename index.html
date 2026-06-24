@@ -3060,7 +3060,7 @@
     body.game-started .turn-tools {
       grid-template-columns: 48px minmax(0, 1fr);
       gap: 10px;
-      margin: 0;
+      margin: 6px 0 0;
       align-items: center;
     }
 
@@ -3497,6 +3497,13 @@
         line-height: 1.08;
       }
 
+      body.game-started .action-panel button.is-primary-action:not(:disabled) {
+        color: #071613;
+        background: linear-gradient(135deg, rgba(255, 255, 255, .96), rgba(142, 247, 219, .78));
+        box-shadow: var(--button-shadow);
+        border-color: rgba(255, 255, 255, .34);
+      }
+
       body.game-started #rollStep {
         grid-column: 1;
         grid-row: 1;
@@ -3533,11 +3540,94 @@
         align-items: center !important;
         justify-content: center !important;
         color: rgba(248, 255, 251, .82);
-        background: rgba(255, 255, 255, .09);
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .035)),
+          rgba(7, 22, 19, .36);
+        border-color: rgba(255, 255, 255, .2);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12);
-        font-size: 12px;
+        font-size: 10px;
         line-height: 1.08;
       }
+    }
+
+    body.game-started #useRole,
+    body.game-started #trade,
+    body.game-started #endTurn:not(.is-primary-action) {
+      color: rgba(248, 255, 251, .9) !important;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .04)),
+        rgba(7, 22, 19, .34) !important;
+      border-color: rgba(255, 255, 255, .28) !important;
+      border-width: 1px !important;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .14) !important;
+    }
+
+    body.game-started #endTurn.is-primary-action:not(:disabled) {
+      color: #071613 !important;
+      background: linear-gradient(135deg, rgba(255, 255, 255, .96), rgba(142, 247, 219, .78)) !important;
+      border-color: rgba(255, 255, 255, .34) !important;
+      border-width: 1px !important;
+      border-style: solid !important;
+      outline: 0 !important;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .42) !important;
+    }
+
+    @media (max-width: 620px) {
+      body.game-started .mobile-secondary-actions {
+        margin-top: 12px !important;
+        padding-top: 10px;
+        border-top: 1px solid rgba(255, 255, 255, .18);
+      }
+    }
+
+    body:not(.game-started) #setupPanel {
+      border: 1px solid rgba(255, 255, 255, .24);
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .13), rgba(255, 255, 255, .045)),
+        rgba(7, 22, 19, .58);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, .38), inset 0 1px 0 rgba(255, 255, 255, .18);
+    }
+
+    body:not(.game-started) input,
+    body:not(.game-started) select,
+    body:not(.game-started) .role-card,
+    body:not(.game-started) .role-details p,
+    body:not(.game-started) .scoreboard {
+      border: 1px solid rgba(255, 255, 255, .22);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .035)),
+        rgba(7, 22, 19, .34);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12);
+    }
+
+    body:not(.game-started) .role-card:nth-child(2n),
+    body:not(.game-started) .role-card:nth-child(3n) {
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .035)),
+        rgba(7, 22, 19, .34);
+    }
+
+    body:not(.game-started) .role-icon {
+      border: 1px solid rgba(255, 255, 255, .34);
+      background: linear-gradient(145deg, rgba(143, 124, 255, .82), rgba(116, 242, 255, .54));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), 0 10px 22px rgba(0, 0, 0, .18);
+    }
+
+    body:not(.game-started) .setup-actions button,
+    body:not(.game-started) .setup-actions .button-link {
+      border-width: 1px;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, .2), inset 0 1px 0 rgba(255, 255, 255, .42);
+    }
+
+    body:not(.game-started) .setup-actions button.secondary,
+    body:not(.game-started) .setup-actions .button-link.secondary,
+    body:not(.game-started) .setup-actions .rules-action {
+      color: rgba(248, 255, 251, .9);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .04)),
+        rgba(7, 22, 19, .34);
+      border-color: rgba(255, 255, 255, .28);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .14);
     }
   </style>
 </head>
@@ -4901,6 +4991,7 @@
       $("useRole").disabled = !active || player.finished || state.rolling;
       $("trade").disabled = !active || player.finished || state.rolling;
       $("endTurn").disabled = !active || player.finished || state.rolling;
+      $("endTurn").classList.toggle("is-primary-action", active && state.rolled && !player.finished && !state.rolling);
     }
 
     function getActionHint(player, active) {
