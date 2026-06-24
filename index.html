@@ -295,6 +295,55 @@
       transform: translateY(-2px);
     }
 
+    #resumeGame.is-hidden {
+      display: none;
+    }
+
+    .scoreboard {
+      display: grid;
+      gap: 8px;
+      padding: 10px;
+      border: 3px solid var(--line);
+      border-radius: var(--radius);
+      background: #fffdf7;
+      box-shadow: 0 2px 0 rgba(106, 86, 56, .16);
+    }
+
+    .scoreboard h3 {
+      margin: 0;
+      color: var(--line);
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+
+    .score-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      padding: 7px 8px;
+      border: 2px solid rgba(106, 86, 56, .42);
+      border-radius: var(--radius);
+      background: var(--paper);
+      color: var(--line);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .score-row small {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-weight: 750;
+    }
+
+    .score-empty {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
     .rules {
       display: grid;
       gap: 9px;
@@ -358,8 +407,8 @@
 
     .role-card {
       display: grid;
-      grid-template-columns: 34px minmax(0, 1fr);
-      gap: 9px;
+      grid-template-columns: 58px minmax(0, 1fr);
+      gap: 11px;
       align-items: center;
       padding: 10px;
       border: 3px solid var(--line);
@@ -374,21 +423,56 @@
     .role-card span { color: var(--muted); font-size: 12px; }
 
     .player-name-input {
-      margin-top: 6px;
+      margin-top: 3px;
     }
 
-    .role-card select { margin-top: 5px; }
+    .role-card select { margin-top: 3px; }
+
+    .mini-label {
+      display: block;
+      margin-top: 7px;
+      color: var(--line);
+      font-size: 10px;
+      font-weight: 950;
+      text-transform: uppercase;
+    }
 
     .role-icon {
-      width: 34px;
-      height: 34px;
+      width: 58px;
+      height: 58px;
       display: grid;
       place-items: center;
       border-radius: var(--radius);
       background: #f2ead2;
-      font-size: 22px;
+      font-size: 34px;
       border: 3px solid var(--line);
       box-shadow: 0 2px 0 rgba(106, 86, 56, .18);
+    }
+
+    .role-details {
+      display: grid;
+      gap: 5px;
+      margin-top: 7px;
+    }
+
+    .role-details p {
+      margin: 0;
+      padding: 7px 8px;
+      border: 2px solid rgba(106, 86, 56, .44);
+      border-radius: var(--radius);
+      background: rgba(255, 253, 247, .74);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+      line-height: 1.25;
+    }
+
+    .role-details b {
+      display: block;
+      margin-bottom: 2px;
+      color: var(--line);
+      font-size: 10px;
+      text-transform: uppercase;
     }
 
     .status-grid {
@@ -609,6 +693,28 @@
       color: var(--line);
       font-size: 30px;
       box-shadow: 0 4px 0 var(--line);
+    }
+
+    .victory-burst {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 6px 0 4px;
+      font-size: 30px;
+    }
+
+    .victory-burst span {
+      display: inline-block;
+      animation: victoryPop .9s ease-in-out infinite alternate;
+    }
+
+    .victory-burst span:nth-child(2) { animation-delay: .14s; }
+    .victory-burst span:nth-child(3) { animation-delay: .28s; }
+    .victory-burst span:nth-child(4) { animation-delay: .42s; }
+
+    @keyframes victoryPop {
+      from { transform: translateY(2px) scale(.92) rotate(-4deg); }
+      to { transform: translateY(-5px) scale(1.08) rotate(5deg); }
     }
 
     .board-wrap {
@@ -1135,14 +1241,14 @@
         padding: 6px 8px;
       }
       .role-card {
-        grid-template-columns: 30px minmax(0, 1fr);
+        grid-template-columns: 48px minmax(0, 1fr);
         gap: 8px;
         padding: 8px;
       }
       .role-icon {
-        width: 30px;
-        height: 30px;
-        font-size: 18px;
+        width: 48px;
+        height: 48px;
+        font-size: 28px;
       }
       .role-card span { font-size: 11px; }
       .status-grid { grid-template-columns: 1fr 1fr; }
@@ -1266,7 +1372,7 @@
       .mobile-metrics {
         min-width: 0;
         display: grid;
-        grid-template-columns: .72fr .82fr 1.8fr;
+        grid-template-columns: .72fr .82fr .72fr 1.65fr;
         gap: 4px;
         height: 58px;
         padding: 6px;
@@ -1546,6 +1652,10 @@
       <section class="panel setup" id="setupPanel">
         <h2>Старт партии</h2>
         <div class="field">
+          <label for="teamName">Команда</label>
+          <input id="teamName" maxlength="24" placeholder="Название команды">
+        </div>
+        <div class="field">
           <label for="playerCount">Участники</label>
           <select id="playerCount">
             <option>2</option>
@@ -1556,11 +1666,11 @@
           </select>
         </div>
         <div class="field">
-          <label for="difficulty">Маршрут</label>
+          <label for="difficulty">Сложность маршрута</label>
           <select id="difficulty">
-            <option value="easy">Учебная тропа</option>
-            <option value="normal" selected>Кедровый маршрут</option>
-            <option value="hard">Большой подъём</option>
+            <option value="easy">Лёгкая — учебная тропа</option>
+            <option value="normal" selected>Средняя — кедровый маршрут</option>
+            <option value="hard">Сложная — большой подъём</option>
           </select>
         </div>
         <div class="field">
@@ -1573,10 +1683,12 @@
         </div>
         <div class="roles" id="setupRoles"></div>
         <div class="setup-actions">
+          <button id="resumeGame" class="secondary is-hidden" type="button">Продолжить поход</button>
           <button id="startTutorial">Пройти обучение</button>
           <button id="startGame" class="secondary">Обычная игра</button>
           <button type="button" class="button-link secondary rules-action" id="openRulesStart">Полные правила</button>
         </div>
+        <div class="scoreboard" id="scoreboard" aria-label="Рейтинг команд"></div>
       </section>
 
       <section class="panel">
@@ -1585,6 +1697,7 @@
           <div class="metric weather-metric"><b>Погода</b><span id="weatherNow">-</span></div>
           <div class="metric"><b>Раунд</b><span id="roundNow">-</span></div>
           <div class="metric"><b>История</b><span id="storyNow">0</span></div>
+          <div class="metric"><b>Ходы</b><span id="turnsNow">0</span></div>
           <div class="metric goal-metric"><b>Цель</b><span id="goalNow">База</span></div>
         </div>
         <div class="weather-table">
@@ -1614,6 +1727,7 @@
         <div class="mobile-metrics">
           <div><b>Раунд</b><span id="mobileRoundNow">-</span></div>
           <div><b>История</b><span id="mobileStoryNow">0</span></div>
+          <div><b>Ходы</b><span id="mobileTurnsNow">0</span></div>
           <div class="mobile-goal"><b>Цель</b><span id="mobileGoalNow">База</span></div>
         </div>
         <button type="button" class="rules-mini mobile-rules-button" id="openRulesMobile">📖 Правила</button>
@@ -1642,12 +1756,12 @@
           <div class="toast" id="turnText">Выберите участников и начните поход.</div>
           <div class="turn-tools">
             <div class="die-box">
-              <div class="die-label">Кубик шага</div>
+              <div class="die-label">Очки движения</div>
               <div class="die" id="stepDie">🎲</div>
             </div>
             <div class="action-panel">
               <button id="rollStep" disabled>Бросить шаг</button>
-              <button id="useRole" class="secondary" disabled>Роль</button>
+              <button id="useRole" class="secondary" disabled>Способность роли</button>
               <button id="trade" class="secondary" disabled>Обмен</button>
               <button id="endTurn" class="secondary" disabled>Передать ход</button>
             </div>
@@ -1718,6 +1832,7 @@
       weather: weather[1],
       weatherSuppressed: false,
       story: 0,
+      turns: 0,
       step: 0,
       lastRoll: 0,
       rolled: false,
@@ -1725,10 +1840,14 @@
       mapSize: 6,
       rolling: false,
       mode: "normal",
+      teamName: "",
       tutorialSeen: new Set(),
-      currentHint: "Начните партию. Игра сама назначит роли и покажет доступную карту.",
+      currentHint: "Начните партию. Игра покажет закрытую карту для исследования.",
       log: []
     };
+
+    const SAVE_KEY = "sheregesh-progress-v2";
+    const RATING_KEY = "sheregesh-rating-v1";
 
     const $ = (id) => document.getElementById(id);
     const setupRoles = $("setupRoles");
@@ -1749,7 +1868,9 @@
           <div class="role-icon" id="roleIcon${index}">${defaultRole.icon}</div>
           <div>
             <b>Участник ${index + 1}</b>
+            <label class="mini-label" for="playerName${index}">Имя</label>
             <input
+              id="playerName${index}"
               class="player-name-input"
               data-player="${index}"
               maxlength="18"
@@ -1757,28 +1878,209 @@
               aria-label="Имя участника ${index + 1}"
               value="${escapeHtml(previousNames[index] || "")}"
             >
-            <select class="role-select" data-player="${index}" aria-label="Роль участника ${index + 1}">
+            <label class="mini-label" for="roleSelect${index}">Роль</label>
+            <select id="roleSelect${index}" class="role-select" data-player="${index}" aria-label="Роль участника ${index + 1}">
               ${roles.map((role) => `<option value="${role.id}"${role.id === defaultRole.id ? " selected" : ""}>${role.icon} ${role.name}</option>`).join("")}
             </select>
-            <span id="roleHint${index}">${defaultRole.passive}</span>
+            <div class="role-details" id="roleHint${index}">
+              <p><b>Постоянная способность</b>${defaultRole.passive}</p>
+              <p><b>Особая способность</b>${defaultRole.special}</p>
+            </div>
           </div>
         `;
         const select = card.querySelector("select");
         select.addEventListener("change", () => {
           const role = roles.find(item => item.id === select.value);
           $(`roleIcon${index}`).textContent = role.icon;
-          $(`roleHint${index}`).textContent = role.passive;
+          $(`roleHint${index}`).innerHTML = `
+            <p><b>Постоянная способность</b>${role.passive}</p>
+            <p><b>Особая способность</b>${role.special}</p>
+          `;
         });
         setupRoles.appendChild(card);
       }
     }
 
     function escapeHtml(text) {
-      return text
+      return String(text || "")
         .replaceAll("&", "&amp;")
         .replaceAll('"', "&quot;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;");
+    }
+
+    function getTeamName() {
+      const entered = $("teamName") ? $("teamName").value.trim() : "";
+      if (entered) return entered;
+      if (state.teamName) return state.teamName;
+      const names = state.players.map(player => player.name).filter(Boolean);
+      return names.length ? names.join(", ") : "Команда Шерегеша";
+    }
+
+    function safeReadStorage(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch (error) {
+        return fallback;
+      }
+    }
+
+    function safeWriteStorage(key, value) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+      } catch (error) {
+        // Игра должна продолжать работать, даже если браузер запретил localStorage.
+      }
+    }
+
+    function removeStorage(key) {
+      try {
+        localStorage.removeItem(key);
+      } catch (error) {
+        // Нет доступа к localStorage: пропускаем очистку.
+      }
+    }
+
+    function hasSavedProgress() {
+      return Boolean(safeReadStorage(SAVE_KEY, null));
+    }
+
+    function serializePlayer(player) {
+      return {
+        id: player.id,
+        name: player.name,
+        roleId: player.role.id,
+        x: player.x,
+        y: player.y,
+        lastX: player.lastX,
+        lastY: player.lastY,
+        energy: player.energy,
+        tired: player.tired,
+        weatherShield: player.weatherShield,
+        clearUsed: player.clearUsed,
+        usedTerrainIgnore: player.usedTerrainIgnore,
+        visitedMid: player.visitedMid,
+        finished: player.finished,
+        artifacts: player.artifacts,
+        usedSpecial: player.usedSpecial,
+        usedPassiveRound: player.usedPassiveRound
+      };
+    }
+
+    function saveProgress() {
+      if (!state.started || state.gameOver) return;
+      safeWriteStorage(SAVE_KEY, {
+        started: state.started,
+        tiles: state.tiles,
+        players: state.players.map(serializePlayer),
+        current: state.current,
+        round: state.round,
+        weatherType: state.weather.type,
+        weatherSuppressed: state.weatherSuppressed,
+        story: state.story,
+        turns: state.turns,
+        step: state.step,
+        lastRoll: state.lastRoll,
+        rolled: state.rolled,
+        gameOver: state.gameOver,
+        mapSize: state.mapSize,
+        mode: state.mode,
+        teamName: state.teamName,
+        tutorialSeen: [...state.tutorialSeen],
+        currentHint: state.currentHint,
+        log: state.log,
+        places
+      });
+      updateResumeButton();
+    }
+
+    function loadProgress() {
+      const saved = safeReadStorage(SAVE_KEY, null);
+      if (!saved || !Array.isArray(saved.tiles) || !Array.isArray(saved.players)) {
+        showInfo("Сохранённая партия не найдена.");
+        updateResumeButton();
+        return;
+      }
+      places = saved.places || createPlaces(saved.mapSize || 6);
+      state.started = true;
+      state.tiles = saved.tiles;
+      state.players = saved.players.map(player => ({
+        ...player,
+        role: roles.find(role => role.id === player.roleId) || roles[0],
+        artifacts: Array.isArray(player.artifacts) ? player.artifacts : []
+      }));
+      state.current = saved.current || 0;
+      state.round = saved.round || 1;
+      state.weather = weather.find(item => item.type === saved.weatherType) || weather[1];
+      state.weatherSuppressed = Boolean(saved.weatherSuppressed);
+      state.story = saved.story || 0;
+      state.turns = saved.turns || 0;
+      state.step = saved.step || 0;
+      state.lastRoll = saved.lastRoll || 0;
+      state.rolled = Boolean(saved.rolled);
+      state.gameOver = Boolean(saved.gameOver);
+      state.mapSize = saved.mapSize || 6;
+      state.rolling = false;
+      state.mode = saved.mode || "normal";
+      state.teamName = saved.teamName || "";
+      state.tutorialSeen = new Set(saved.tutorialSeen || []);
+      state.currentHint = saved.currentHint || "Продолжайте поход.";
+      state.log = Array.isArray(saved.log) ? saved.log : [];
+      board.style.setProperty("--map-size", state.mapSize);
+      $("setupPanel").style.display = "none";
+      document.body.classList.add("game-started");
+      $("stepDie").textContent = state.rolled ? state.lastRoll : "🎲";
+      render();
+    }
+
+    function clearProgress() {
+      removeStorage(SAVE_KEY);
+      updateResumeButton();
+    }
+
+    function getRating() {
+      return safeReadStorage(RATING_KEY, []);
+    }
+
+    function addRatingEntry(stars) {
+      const entry = {
+        teamName: state.teamName || getTeamName(),
+        turns: state.turns,
+        round: state.round,
+        stars,
+        players: state.players.length,
+        date: new Date().toLocaleDateString("ru-RU")
+      };
+      const rating = [...getRating(), entry]
+        .sort((a, b) => a.turns - b.turns || a.round - b.round || b.stars - a.stars)
+        .slice(0, 8);
+      safeWriteStorage(RATING_KEY, rating);
+      renderScoreboard();
+    }
+
+    function renderScoreboard() {
+      const box = $("scoreboard");
+      if (!box) return;
+      const rating = getRating();
+      box.innerHTML = `
+        <h3>Рейтинг команд</h3>
+        ${rating.length
+          ? rating.map((entry, index) => `
+            <div class="score-row">
+              <div>${index + 1}. ${escapeHtml(entry.teamName)}<small>${entry.players} участн. · ${entry.date || ""}</small></div>
+              <div>${entry.turns} ход.</div>
+            </div>
+          `).join("")
+          : `<p class="score-empty">Победите командой, и здесь появится лучший результат по числу ходов.</p>`
+        }
+      `;
+    }
+
+    function updateResumeButton() {
+      const button = $("resumeGame");
+      if (!button) return;
+      button.classList.toggle("is-hidden", !hasSavedProgress());
     }
 
     function rngPick(items) {
@@ -1822,7 +2124,7 @@
           }
           tiles.push({
             x, y, type,
-            revealed: route.has(`${x},${y}`) || (x === places.base.x && y === places.base.y),
+            revealed: false,
             artifact: null,
             visited: false
           });
@@ -1917,19 +2219,22 @@
       state.current = 0;
       state.round = 1;
       state.story = 0;
+      state.turns = 0;
       state.step = 0;
       state.lastRoll = 0;
       state.rolled = false;
       state.gameOver = false;
       state.weatherSuppressed = false;
+      state.teamName = $("teamName").value.trim() || "";
       state.tutorialSeen = new Set();
       state.log = [];
       buildMap();
       createPlayers();
-      revealAround(places.base.x, places.base.y);
-      drawWeather();
+      tileAt(places.base.x, places.base.y).revealed = true;
       beginTurnEffects(currentPlayer());
-      log("Команда вышла из посёлка Шерегеш.");
+      drawWeather();
+      log("Команда вышла из посёлка Шерегеш. Стартовая точка открыта, остальной маршрут нужно исследовать.");
+      if (!state.teamName) state.teamName = getTeamName();
       $("setupPanel").style.display = "none";
       document.body.classList.add("game-started");
       render();
@@ -1944,7 +2249,7 @@
     function showTutorialIntro() {
       dialog.innerHTML = `
         <h2>Обучение: первый поход</h2>
-        <p><b>Сейчас игра будет объяснять каждый шаг.</b> Внизу появится жёлтая подсказка, а в важных моментах откроется короткое окно.</p>
+        <p><b>Сейчас игра будет объяснять каждый шаг.</b> Рядом с заголовком хода будет кнопка «?»: нажимайте её, чтобы открыть подсказку ещё раз.</p>
         <p><b>Ваша задача:</b> провести всех участников через гору Зелёную к вершине Мустаг.</p>
         <p><b>Первое действие:</b> посмотрите на активного игрока внизу и нажмите «Бросить шаг».</p>
         <div class="row"><button onclick="closeModal()">Начать обучение</button><button type="button" class="button-link secondary" onclick="showRulesPopup()">Полные правила</button></div>
@@ -2079,12 +2384,13 @@
       state.lastRoll = original;
       state.rolled = true;
       state.rolling = false;
-      log(`${player.name} бросает кубик: ${original}, доступный шаг: ${value}.`);
+      state.turns += 1;
+      log(`${player.name} бросает кубик: ${original}, очков движения: ${value}.`);
       render();
       tutorialPopup(
         "roll",
         "Бросок шага",
-        `Кубик дал ${original}. После погоды и бонусов у игрока ${value} очков движения. Теперь жёлтым подсвечены клетки, куда можно пойти.`
+        `Кубик дал ${original}. После погоды и бонусов у игрока ${value} очков движения. Подсвеченные соседние клетки — доступные направления.`
       );
     }
 
@@ -2115,6 +2421,7 @@
       if (!near) return false;
       if (!state.weatherSuppressed && state.weather.type === "wind" && tile.x === player.lastX && tile.y === player.lastY) return false;
       if (tile.type === "bog" && !player.artifacts.includes("gear") && !canIgnoreDifficult(player, tile) && state.lastRoll !== 6) return false;
+      if (tile.type === "mountain" && state.lastRoll !== 6) return false;
       return costFor(tile, player) <= state.step;
     }
 
@@ -2163,16 +2470,18 @@
       }
       const won = checkWin();
       render();
-      if (!reachedGoal) {
+      const shouldShowNoStep = !foundArtifact && !reachedMid && !reachedGoal && state.step <= 0 && !won;
+      if (!reachedGoal && !shouldShowNoStep) {
         tutorialPopup(
           "move",
           "Движение по клеткам",
-          `Игрок потратил ${cost} очков движения. Если очки ещё остались, можно кликнуть следующую жёлтую клетку; если нет, передайте ход.`
+          `Игрок потратил ${cost} очков движения. Если очки ещё остались, можно кликнуть следующую подсвеченную клетку; если нет, передайте ход.`
         );
       }
       if (foundArtifact) showArtifactPopup(player, foundArtifact);
       if (reachedMid) showGreenMountainPopup(player);
       if (reachedGoal) showMustagPopup(player, won);
+      if (shouldShowNoStep) showNoStepPopup(player);
       if (reachedGoal && !won) endTurn(true);
     }
 
@@ -2238,7 +2547,7 @@
         state.step += bonus;
         log(`Разведчик применил быстрый марш: +${bonus} к шагу.`);
         render();
-        tutorialPopup("role", "Особое действие роли", "Кнопка «Роль» применяет сильное действие персонажа. Обычно оно ограничено одним или двумя применениями за партию.");
+        tutorialPopup("role", "Способность роли", "Кнопка «Способность роли» применяет сильное действие персонажа. Обычно оно ограничено одним или двумя применениями за партию.");
       } else if (role.id === "researcher") {
         if (player.usedSpecial) return showInfo("Разведка карты уже использована.");
         chooseTile("Открыть любую плитку", state.tiles.filter(t => !t.revealed), (tile) => {
@@ -2247,7 +2556,7 @@
           state.story += 1;
           log("Исследователь открыл удалённую точку маршрута.");
           render();
-          tutorialPopup("role", "Особое действие роли", "Кнопка «Роль» применяет сильное действие персонажа. Обычно оно ограничено одним или двумя применениями за партию.");
+          tutorialPopup("role", "Способность роли", "Кнопка «Способность роли» применяет сильное действие персонажа. Обычно оно ограничено одним или двумя применениями за партию.");
         });
       } else if (role.id === "camp") {
         if (player.usedSpecial) return showInfo("Тёплый привал уже использован.");
@@ -2264,7 +2573,7 @@
           else target.weatherShield += 1;
           log(`Хранитель атмосферы отменит следующий негативный эффект у ${target.name}.`);
           render();
-          tutorialPopup("role", "Особое действие роли", "Кнопка «Роль» применяет сильное действие персонажа. Обычно оно ограничено одним или двумя применениями за партию.");
+          tutorialPopup("role", "Способность роли", "Кнопка «Способность роли» применяет сильное действие персонажа. Обычно оно ограничено одним или двумя применениями за партию.");
         });
       } else if (role.id === "memory") {
         if (player.usedSpecial) return showInfo("Памятный кадр уже использован.");
@@ -2288,7 +2597,7 @@
             checkWin();
             render();
             if (reachedMid) showGreenMountainPopup(target);
-            tutorialPopup("role", "Особое действие роли", "Кнопка «Роль» применяет сильное действие персонажа. Обычно оно ограничено одним или двумя применениями за партию.");
+            tutorialPopup("role", "Способность роли", "Кнопка «Способность роли» применяет сильное действие персонажа. Обычно оно ограничено одним или двумя применениями за партию.");
           });
         });
       }
@@ -2363,9 +2672,18 @@
         "На карте остались отметки тайги, ручьёв и снежных склонов Шерегеша.",
         "Каждая роль пригодилась: маршрут стал настоящим командным походом."
       ][Math.floor(Math.random() * 3)];
-      dialog.innerHTML = `<h2>Маршрут пройден</h2><p style="font-size:28px;margin:8px 0">${"⭐".repeat(stars)}${"☆".repeat(3 - stars)}</p><p>${story}</p><p><b>Раундов:</b> ${state.round}. <b>Жетонов истории:</b> ${state.story}.</p><div class="row"><button onclick="location.reload()">Новая партия</button><button class="secondary" onclick="closeModal()">Смотреть карту</button></div>`;
+      addRatingEntry(stars);
+      clearProgress();
+      dialog.innerHTML = `
+        <h2>Ура, победа!</h2>
+        <div class="victory-burst" aria-hidden="true"><span>⭐</span><span>🏁</span><span>⛰️</span><span>⭐</span></div>
+        <p style="font-size:28px;margin:8px 0;text-align:center">${"⭐".repeat(stars)}${"☆".repeat(3 - stars)}</p>
+        <p>${story}</p>
+        <p><b>Команда:</b> ${escapeHtml(state.teamName || getTeamName())}. <b>Ходов:</b> ${state.turns}. <b>Раундов:</b> ${state.round}. <b>Жетонов истории:</b> ${state.story}.</p>
+        <div class="row"><button onclick="location.reload()">Новая партия</button><button class="secondary" onclick="closeModal()">Смотреть карту</button></div>
+      `;
       modal.classList.add("open");
-      log(`Победа команды: ${stars} звезды.`);
+      log(`Победа команды: ${stars} звезды, ${state.turns} ходов.`);
       return true;
     }
 
@@ -2420,6 +2738,19 @@
       modal.classList.add("open");
     }
 
+    function showNoStepPopup(player) {
+      if (modal.classList.contains("open")) return;
+      dialog.innerHTML = `
+        <h2>Очки движения закончились</h2>
+        <p>${player.name} потратил все очки движения. Теперь нужно передать ход следующему участнику.</p>
+        <div class="row">
+          <button onclick="closeModal(); endTurn();">Передать ход</button>
+          <button class="secondary" onclick="closeModal()">Смотреть карту</button>
+        </div>
+      `;
+      modal.classList.add("open");
+    }
+
     function showGreenMountainPopup(player) {
       dialog.classList.add("place-dialog");
       dialog.innerHTML = `
@@ -2460,8 +2791,9 @@
             <b>${player.name} дошёл до финальной вершины.</b><br>
             Факт: Мустаг — одна из заметных вершин Горной Шории рядом с Шерегешем. Название часто связывают со снежной горой: даже в тёплый сезон вершина ассоциируется с суровым горным рельефом и панорамами тайги.
           </div>
+          ${teamComplete ? `<div class="victory-burst" aria-hidden="true"><span>⭐</span><span>🏁</span><span>⛰️</span><span>⭐</span></div>` : ""}
           <p class="place-next">${teamComplete
-            ? `Вся команда завершила маршрут. Итог: ${"⭐".repeat(stars)}${"☆".repeat(3 - stars)}.`
+            ? `Ура, победа! Вся команда завершила маршрут за ${state.turns} ходов. Итог: ${"⭐".repeat(stars)}${"☆".repeat(3 - stars)}.`
             : "Этот участник завершил маршрут. Остальным тоже нужно посетить гору Зелёную и дойти до Мустагa."
           }</p>
           <div class="row">
@@ -2577,6 +2909,7 @@
       const weatherText = state.started ? `${state.weatherSuppressed ? "🏕️ " : state.weather.icon} ${state.weatherSuppressed ? "Привал" : state.weather.name}` : "-";
       const roundText = state.started ? state.round : "-";
       const storyText = state.story;
+      const turnsText = state.started ? state.turns : 0;
       const finishedMid = state.players.filter(p => p.visitedMid).length;
       const finishedGoal = state.players.filter(p => p.finished).length;
       const goalText = state.started ? `${finishedMid}/${state.players.length} Зелёная · ${finishedGoal}/${state.players.length} Мустаг` : "База";
@@ -2587,13 +2920,18 @@
       $("weatherNow").textContent = weatherText;
       $("roundNow").textContent = roundText;
       $("storyNow").textContent = storyText;
+      $("turnsNow").textContent = turnsText;
       $("goalNow").textContent = goalText;
       $("mobileRoundNow").textContent = roundText;
       $("mobileStoryNow").textContent = storyText;
+      $("mobileTurnsNow").textContent = turnsText;
       $("mobileGoalNow").textContent = mobileGoalText;
       $("mobileWeatherIcon").textContent = weatherIcon;
       $("mobileWeatherTitle").textContent = weatherTitle;
       $("mobileWeatherEffect").textContent = weatherEffect;
+      $("weatherCard").textContent = weatherIcon;
+      $("weatherCardTitle").textContent = weatherTitle;
+      $("weatherCardText").textContent = weatherEffect;
     }
 
     function renderTurn() {
@@ -2601,7 +2939,7 @@
       const active = state.started && !state.gameOver;
       $("turnTitle").textContent = active ? `${player.name}: ${player.role.icon} ${player.role.name}` : state.gameOver ? "Маршрут завершён" : "Партия не начата";
       $("turnText").textContent = active
-        ? isTutorial() ? `Шаг: ${state.rolling ? "кубик катится" : state.rolled ? state.step : "бросок не сделан"}. ${player.role.passive}` : `Шаг: ${state.rolling ? "кубик катится" : state.rolled ? state.step : "бросок не сделан"}.`
+        ? isTutorial() ? `Очки движения: ${state.rolling ? "кубик катится" : state.rolled ? state.step : "бросок не сделан"}. Способность: ${player.role.passive}` : `Очки движения: ${state.rolling ? "кубик катится" : state.rolled ? state.step : "бросок не сделан"}.`
         : state.gameOver ? "Команда дошла до вершины." : "Выберите участников и начните поход.";
       state.currentHint = getActionHint(player, active);
       $("openHintTurn").classList.toggle("hidden", !isTutorial() || !active);
@@ -2612,14 +2950,14 @@
     }
 
     function getActionHint(player, active) {
-      if (!active) return state.gameOver ? "Партия завершена. Можно смотреть карту или начать новую через обновление страницы." : "Начните партию. Игра сама назначит роли и покажет доступную карту.";
+      if (!active) return state.gameOver ? "Партия завершена. Можно смотреть карту или начать новую через обновление страницы." : "Начните партию. Игра покажет закрытую карту для исследования.";
       if (player.finished) return `${player.name} уже на финише и больше не тратит ходы команды.`;
       if (state.rolling) return "Кубик катится. Когда он остановится, появятся очки хода и подсветятся доступные клетки.";
-      if (!state.rolled) return "Сейчас нажмите «Бросить шаг». После броска соседние доступные клетки подсветятся жёлтым.";
+      if (!state.rolled) return "Сейчас нажмите «Бросить шаг». После броска появятся очки движения и подсветятся доступные соседние клетки.";
       const reachable = state.tiles.filter(tile => isReachable(tile, player));
-      if (reachable.length) return `Можно идти. Кликните по жёлтой соседней клетке. Осталось очков движения: ${state.step}.`;
-      if (player.artifacts.length) return "Подходящих клеток нет или шаг закончился. Можно передать артефакт через «Обмен» или завершить ход.";
-      return "Подходящих клеток нет или шаг закончился. Нажмите «Передать ход».";
+      if (reachable.length) return `Можно идти. Кликните по подсвеченной соседней клетке. Осталось очков движения: ${state.step}.`;
+      if (player.artifacts.length) return "Подходящих клеток нет или очки движения закончились. Можно передать артефакт через «Обмен» или завершить ход.";
+      return "Подходящих клеток нет или очки движения закончились. Нажмите «Передать ход».";
     }
 
     function renderLog() {
@@ -2632,6 +2970,7 @@
       renderStatus();
       renderTurn();
       renderLog();
+      saveProgress();
     }
 
     function refreshPreviewMap() {
@@ -2654,6 +2993,8 @@
     $("playerCount").addEventListener("change", renderSetupRoles);
     $("difficulty").addEventListener("change", refreshPreviewMap);
     $("mapSize").addEventListener("change", refreshPreviewMap);
+    $("teamName").addEventListener("input", () => { state.teamName = $("teamName").value.trim(); });
+    $("resumeGame").addEventListener("click", loadProgress);
     $("startTutorial").addEventListener("click", () => startGame("tutorial"));
     $("startGame").addEventListener("click", () => startGame("normal"));
     $("openRulesStart").addEventListener("click", showRulesPopup);
@@ -2670,8 +3011,11 @@
       if (event.target === modal) closeModal();
     });
     window.closeModal = closeModal;
+    window.endTurn = endTurn;
 
     renderSetupRoles();
+    renderScoreboard();
+    updateResumeButton();
     buildMap();
     drawBoard();
     animateMapGeneration();
