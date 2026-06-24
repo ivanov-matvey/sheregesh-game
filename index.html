@@ -704,6 +704,14 @@
       box-shadow: 0 4px 0 var(--line);
     }
 
+    .artifact-popup-icon img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      border-radius: inherit;
+    }
+
     .victory-burst {
       display: flex;
       justify-content: center;
@@ -4568,6 +4576,78 @@
       border: 1px solid var(--brand-line) !important;
     }
 
+    body.game-started .weather-table {
+      position: relative;
+      margin-top: 14px !important;
+      padding: 20px 12px 12px !important;
+      border: 2px solid rgba(82, 54, 175, .82) !important;
+      border-radius: 12px !important;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, .98), rgba(244, 241, 255, .92)),
+        rgba(255, 255, 255, .96) !important;
+      box-shadow:
+        0 0 0 3px rgba(82, 54, 175, .12),
+        0 10px 24px rgba(21, 17, 42, .1) !important;
+    }
+
+    body.game-started .weather-table::before {
+      content: "Погода раунда";
+      position: absolute;
+      top: -10px;
+      left: 12px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      color: #fff;
+      background: var(--brand-violet);
+      font-size: .66rem;
+      font-weight: 950;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    body.game-started .weather-card,
+    body.game-started .mobile-weather-icon {
+      border-color: rgba(82, 54, 175, .9) !important;
+      box-shadow: 0 8px 18px rgba(82, 54, 175, .18) !important;
+    }
+
+    body.game-started .weather-info b {
+      color: var(--brand-violet) !important;
+      font-weight: 950;
+    }
+
+    body.game-started .weather-info span {
+      color: var(--brand-ink) !important;
+      font-weight: 850;
+    }
+
+    body.game-started .mobile-weather-card {
+      position: relative;
+      padding-top: 16px !important;
+      border: 2px solid rgba(82, 54, 175, .82) !important;
+      border-radius: 12px !important;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, .98), rgba(244, 241, 255, .92)) !important;
+      box-shadow:
+        0 0 0 3px rgba(82, 54, 175, .12),
+        0 8px 18px rgba(21, 17, 42, .1) !important;
+    }
+
+    body.game-started .mobile-weather-card::before {
+      content: "Погода";
+      position: absolute;
+      top: -10px;
+      left: 10px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      color: #fff;
+      background: var(--brand-violet);
+      font-size: .64rem;
+      font-weight: 950;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
     body.game-started .tile.reachable {
       border: 2px solid var(--brand-violet) !important;
       outline: none !important;
@@ -5480,7 +5560,7 @@
           <h2>Правила</h2>
           <button type="button" class="secondary modal-close" aria-label="Закрыть" onclick="closeModal()"></button>
         </div>
-        <iframe class="rules-frame" src="rules.html" title="Полные правила игры"></iframe>
+        <iframe class="rules-frame" src="rules.html?v=assets-20260625" title="Полные правила игры"></iframe>
       `;
       dialog.classList.add("rules-dialog");
       modal.classList.add("open");
@@ -6258,7 +6338,7 @@
       dialog.innerHTML = `
         <div class="artifact-popup">
           <div class="artifact-popup-head">
-            <div class="artifact-popup-icon">${artifact.icon}</div>
+            <div class="artifact-popup-icon"><img src="${artifactImage(artifact.id)}" alt=""></div>
             <div>
               <h2>Артефакт найден</h2>
               <p><b>${player.name}</b> забирает: <b>${artifact.name}</b>.</p>

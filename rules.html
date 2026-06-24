@@ -64,6 +64,15 @@
       margin-right: auto;
       color: var(--line);
       font-weight: 950;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
     }
 
     .topbar a {
@@ -169,6 +178,60 @@
     }
 
     .card h3 { margin-top: 0; }
+
+    .asset-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      font-weight: 900;
+    }
+
+    .asset-icon {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      border: 2px solid rgba(82, 54, 175, .24);
+      border-radius: 7px;
+      object-fit: cover;
+      background: #fff;
+      box-shadow: 0 2px 0 rgba(82, 54, 175, .16);
+    }
+
+    .asset-icon.role {
+      width: 48px;
+      height: 48px;
+      flex-basis: 48px;
+      border-radius: 8px;
+    }
+
+    .card h3 .asset-label {
+      align-items: center;
+    }
+
+    .weather-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 74px;
+      min-height: 30px;
+      padding: 4px 8px;
+      border: 2px solid rgba(82, 54, 175, .28);
+      border-radius: 7px;
+      color: #fff;
+      background: #5236af;
+      font-size: 12px;
+      font-weight: 950;
+      text-transform: uppercase;
+      box-shadow: 0 2px 0 rgba(82, 54, 175, .16);
+    }
+
+    .weather-chip.clear { background: #d9a93a; color: #4b3b27; }
+    .weather-chip.cloudy { background: #7d8396; }
+    .weather-chip.rain { background: #2f6fb5; }
+    .weather-chip.heat { background: #d75b36; }
+    .weather-chip.wind { background: #5794a7; }
+    .weather-chip.fog { background: #8b86a3; }
 
     .kicker {
       display: inline-flex;
@@ -618,7 +681,7 @@
 <body>
   <nav class="topbar">
     <div class="topbar-inner">
-      <div class="brand">⛰️ Экспедиция Шерегеш · правила</div>
+      <div class="brand"><img src="assets/v-pokhod/game/logo.png" alt="">Экспедиция Шерегеш · правила</div>
       <a href="#goal">Цель</a>
       <a href="#turn">Ход</a>
       <a href="#roles">Роли</a>
@@ -735,11 +798,11 @@
           <tr><th>Клетка</th><th>Стоимость</th><th>Правило</th><th>Что помогает</th></tr>
         </thead>
         <tbody>
-          <tr><td>🟩 Поляна</td><td>1</td><td>Обычная простая клетка.</td><td>Не требуется.</td></tr>
-          <tr><td>🌲 Тайга</td><td>1</td><td>Скрытая местность: соседние закрытые клетки вокруг игрока автоматически не открываются.</td><td>Компас открывает соседние клетки вокруг владельца и снимает скрытость тайги.</td></tr>
-          <tr><td>💧 Ручей</td><td>2</td><td>Переправа стоит дороже обычной клетки.</td><td>Плавсредство снижает стоимость до 1.</td></tr>
-          <tr><td>🟫 Болото</td><td>6</td><td>Вход только на натуральной 6, если нет снаряжения или способности Исследователя.</td><td>Снаряжение снижает стоимость до 2. Исследователь раз за ход игнорирует один эффект сложной местности.</td></tr>
-          <tr><td>⛰️ Подъём</td><td>6</td><td>После входа на подъём ход участника заканчивается. Есть небольшой шанс получить усталость.</td><td>Натуральная 6 не требуется, но нужно 6 очков движения. Исследователь после входа может игнорировать один эффект сложной местности.</td></tr>
+          <tr><td><span class="asset-label"><img class="asset-icon" src="assets/v-pokhod/game/terrain_plain.jpg" alt="">Поляна</span></td><td>1</td><td>Обычная простая клетка.</td><td>Не требуется.</td></tr>
+          <tr><td><span class="asset-label"><img class="asset-icon" src="assets/v-pokhod/game/terrain_forest_conifer.jpg" alt="">Тайга</span></td><td>1</td><td>Скрытая местность: соседние закрытые клетки вокруг игрока автоматически не открываются.</td><td>Компас открывает соседние клетки вокруг владельца и снимает скрытость тайги.</td></tr>
+          <tr><td><span class="asset-label"><img class="asset-icon" src="assets/v-pokhod/game/terrain_water.jpg" alt="">Ручей</span></td><td>2</td><td>Переправа стоит дороже обычной клетки.</td><td>Плавсредство снижает стоимость до 1.</td></tr>
+          <tr><td><span class="asset-label"><img class="asset-icon" src="assets/v-pokhod/game/terrain_bog.jpg" alt="">Болото</span></td><td>6</td><td>Вход только на натуральной 6, если нет снаряжения или способности Исследователя.</td><td>Снаряжение снижает стоимость до 2. Исследователь раз за ход игнорирует один эффект сложной местности.</td></tr>
+          <tr><td><span class="asset-label"><img class="asset-icon" src="assets/v-pokhod/game/terrain_mountain.jpg" alt="">Подъём</span></td><td>6</td><td>После входа на подъём ход участника заканчивается. Есть небольшой шанс получить усталость.</td><td>Натуральная 6 не требуется, но нужно 6 очков движения. Исследователь после входа может игнорировать один эффект сложной местности.</td></tr>
         </tbody>
       </table>
       </div>
@@ -754,12 +817,12 @@
           <tr><th>Погода</th><th>Эффект</th><th>Как защититься</th></tr>
         </thead>
         <tbody>
-          <tr><td>☀️ Ясно</td><td>Первый шаг каждого участника в раунде получает +1.</td><td>Это бонус, защиты не нужно.</td></tr>
-          <tr><td>☁️ Облачно</td><td>Нет эффекта.</td><td>Не требуется.</td></tr>
-          <tr><td>🌧️ Дождь</td><td>Болото и подъём стоят на 1 очко дороже.</td><td>Хранитель лагеря может отменить погоду на раунд.</td></tr>
-          <tr><td>🔥 Жара</td><td>Если игрок начинает бросок на открытой местности без головного убора, шаг уменьшается на 1. Минимум остаётся 1.</td><td>Головной убор.</td></tr>
-          <tr><td>🌬️ Ветер</td><td>Нельзя вернуться на клетку, с которой игрок только что пришёл.</td><td>Планируйте маршрут заранее.</td></tr>
-          <tr><td>🌫️ Туман</td><td>Шаг уменьшается на 1, минимум остаётся 1.</td><td>Хранитель лагеря может отменить погоду на раунд.</td></tr>
+          <tr><td><span class="weather-chip clear">Ясно</span></td><td>Первый шаг каждого участника в раунде получает +1.</td><td>Это бонус, защиты не нужно.</td></tr>
+          <tr><td><span class="weather-chip cloudy">Облачно</span></td><td>Нет эффекта.</td><td>Не требуется.</td></tr>
+          <tr><td><span class="weather-chip rain">Дождь</span></td><td>Болото и подъём стоят на 1 очко дороже.</td><td>Хранитель лагеря может отменить погоду на раунд.</td></tr>
+          <tr><td><span class="weather-chip heat">Жара</span></td><td>Если игрок начинает бросок на открытой местности без головного убора, шаг уменьшается на 1. Минимум остаётся 1.</td><td>Головной убор.</td></tr>
+          <tr><td><span class="weather-chip wind">Ветер</span></td><td>Нельзя вернуться на клетку, с которой игрок только что пришёл.</td><td>Планируйте маршрут заранее.</td></tr>
+          <tr><td><span class="weather-chip fog">Туман</span></td><td>Шаг уменьшается на 1, минимум остаётся 1.</td><td>Хранитель лагеря может отменить погоду на раунд.</td></tr>
         </tbody>
       </table>
       </div>
@@ -769,12 +832,12 @@
       <h2>8. Роли участников</h2>
       <p>У каждой роли есть постоянная логика и особое действие. Особые действия ограничены, поэтому их стоит использовать в нужный момент.</p>
       <div class="grid">
-        <div class="card"><h3>🧭 Разведчик</h3><p><b>Постоянно:</b> в начале хода открывает соседнюю закрытую клетку.</p><p><b>Особое:</b> «Быстрый марш» — один раз за партию добавляет второй бросок к текущему шагу.</p></div>
-        <div class="card"><h3>🔬 Исследователь</h3><p><b>Постоянно:</b> раз в свой ход игнорирует один эффект сложной местности.</p><p><b>Особое:</b> «Разведка карты» — один раз открывает любую закрытую клетку.</p></div>
-        <div class="card"><h3>🏕️ Хранитель лагеря</h3><p><b>Постоянно:</b> в начале хода снимает усталость с одного участника, если она есть.</p><p><b>Особое:</b> «Тёплый привал» — один раз отменяет погоду до конца раунда.</p></div>
-        <div class="card"><h3>🎶 Хранитель атмосферы</h3><p><b>Постоянно:</b> раз в раунд даёт +1 к следующему броску другому участнику.</p><p><b>Особое:</b> два раза за партию отменяет негативный эффект у выбранного игрока.</p></div>
-        <div class="card"><h3>📸 Хранитель впечатлений</h3><p><b>Постоянно:</b> открытие новых клеток приносит больше жетонов истории.</p><p><b>Особое:</b> «Памятный кадр» — один раз тратит 3 жетона истории и даёт командный бонус к следующим броскам.</p></div>
-        <div class="card"><h3>⛑️ Спасатель</h3><p><b>Постоянно:</b> в начале своего хода отменяет усталость у любого участника, если она есть.</p><p><b>Особое:</b> «Спасательная операция» — один раз перемещает любого участника на соседнюю открытую клетку. На старте несёт снаряжение.</p></div>
+        <div class="card"><h3><span class="asset-label"><img class="asset-icon role" src="assets/v-pokhod/game/01_razvedchik.png" alt="">Разведчик</span></h3><p><b>Постоянно:</b> в начале хода открывает соседнюю закрытую клетку.</p><p><b>Особое:</b> «Быстрый марш» — один раз за партию добавляет второй бросок к текущему шагу.</p></div>
+        <div class="card"><h3><span class="asset-label"><img class="asset-icon role" src="assets/v-pokhod/game/02_issledovatel.png" alt="">Исследователь</span></h3><p><b>Постоянно:</b> раз в свой ход игнорирует один эффект сложной местности.</p><p><b>Особое:</b> «Разведка карты» — один раз открывает любую закрытую клетку.</p></div>
+        <div class="card"><h3><span class="asset-label"><img class="asset-icon role" src="assets/v-pokhod/game/03_hranitel_lagerya.png" alt="">Хранитель лагеря</span></h3><p><b>Постоянно:</b> в начале хода снимает усталость с одного участника, если она есть.</p><p><b>Особое:</b> «Тёплый привал» — один раз отменяет погоду до конца раунда.</p></div>
+        <div class="card"><h3><span class="asset-label"><img class="asset-icon role" src="assets/v-pokhod/game/04_hranitel_atmosfery.png" alt="">Хранитель атмосферы</span></h3><p><b>Постоянно:</b> раз в раунд даёт +1 к следующему броску другому участнику.</p><p><b>Особое:</b> два раза за партию отменяет негативный эффект у выбранного игрока.</p></div>
+        <div class="card"><h3><span class="asset-label"><img class="asset-icon role" src="assets/v-pokhod/game/05_hranitel_vpechatleniy.png" alt="">Хранитель впечатлений</span></h3><p><b>Постоянно:</b> открытие новых клеток приносит больше жетонов истории.</p><p><b>Особое:</b> «Памятный кадр» — один раз тратит 3 жетона истории и даёт командный бонус к следующим броскам.</p></div>
+        <div class="card"><h3><span class="asset-label"><img class="asset-icon role" src="assets/v-pokhod/game/06_spasatel.png" alt="">Спасатель</span></h3><p><b>Постоянно:</b> в начале своего хода отменяет усталость у любого участника, если она есть.</p><p><b>Особое:</b> «Спасательная операция» — один раз перемещает любого участника на соседнюю открытую клетку. На старте несёт снаряжение.</p></div>
       </div>
     </section>
 
@@ -787,10 +850,10 @@
           <tr><th>Артефакт</th><th>Эффект</th><th>Кому особенно полезен</th></tr>
         </thead>
         <tbody>
-          <tr><td>🧭 Компас</td><td>Открывает соседние клетки вокруг владельца и позволяет видеть соседей в тайге.</td><td>Любому игроку на краю неизвестной зоны.</td></tr>
-          <tr><td>🛶 Плавсредство</td><td>Ручей стоит 1 очко вместо 2.</td><td>Игроку, который прокладывает путь через воду.</td></tr>
-          <tr><td>🧢 Головной убор</td><td>Игнорирует штраф жары.</td><td>Игроку, которому нужно далеко идти в текущем раунде.</td></tr>
-          <tr><td>🎒 Снаряжение</td><td>Болото стоит 2 очка вместо 6.</td><td>Игроку рядом с болотами или сложной центральной частью карты.</td></tr>
+          <tr><td><span class="asset-label"><img class="asset-icon" src="assets/v-pokhod/game/item_compass.jpg" alt="">Компас</span></td><td>Открывает соседние клетки вокруг владельца и позволяет видеть соседей в тайге.</td><td>Любому игроку на краю неизвестной зоны.</td></tr>
+          <tr><td><span class="asset-label"><img class="asset-icon" src="assets/v-pokhod/game/item_raft.jpg" alt="">Плавсредство</span></td><td>Ручей стоит 1 очко вместо 2.</td><td>Игроку, который прокладывает путь через воду.</td></tr>
+          <tr><td><span class="asset-label"><img class="asset-icon" src="assets/v-pokhod/game/item_hat.jpg" alt="">Головной убор</span></td><td>Игнорирует штраф жары.</td><td>Игроку, которому нужно далеко идти в текущем раунде.</td></tr>
+          <tr><td><span class="asset-label"><img class="asset-icon" src="assets/v-pokhod/game/item_gear.jpg" alt="">Снаряжение</span></td><td>Болото стоит 2 очка вместо 6.</td><td>Игроку рядом с болотами или сложной центральной частью карты.</td></tr>
         </tbody>
       </table>
       </div>
