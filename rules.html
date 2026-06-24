@@ -195,6 +195,16 @@
       font-size: 14px;
     }
 
+    .table-scroll {
+      max-width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .table-scroll table {
+      min-width: 680px;
+    }
+
     th, td {
       padding: 10px;
       border: 2px solid var(--line);
@@ -303,9 +313,12 @@
       h3 {
         font-size: 17px;
       }
-      table {
-        display: block;
-        overflow-x: auto;
+      .table-scroll {
+        margin-top: 10px;
+        border-radius: var(--radius);
+      }
+      .table-scroll table {
+        margin-top: 0;
       }
       th, td {
         padding: 8px;
@@ -578,6 +591,7 @@
 
     <section id="terrain">
       <h2>6. Типы местности</h2>
+      <div class="table-scroll">
       <table>
         <thead>
           <tr><th>Клетка</th><th>Стоимость</th><th>Правило</th><th>Что помогает</th></tr>
@@ -590,11 +604,13 @@
           <tr><td>⛰️ Подъём</td><td>2</td><td>Вход только на натуральной 6. После входа на подъём движение останавливается. Есть небольшой шанс получить усталость.</td><td>Нужна натуральная 6 на кубике. Исследователь после входа может игнорировать один эффект сложной местности.</td></tr>
         </tbody>
       </table>
+      </div>
     </section>
 
     <section id="weather">
       <h2>7. Погода</h2>
       <p>В начале каждого раунда тянется одна погода. Она действует на всю команду до следующего раунда.</p>
+      <div class="table-scroll">
       <table>
         <thead>
           <tr><th>Погода</th><th>Эффект</th><th>Как защититься</th></tr>
@@ -608,6 +624,7 @@
           <tr><td>🌫️ Туман</td><td>Шаг уменьшается на 1, минимум остаётся 1.</td><td>Хранитель лагеря может отменить погоду на раунд.</td></tr>
         </tbody>
       </table>
+      </div>
     </section>
 
     <section id="roles">
@@ -626,6 +643,7 @@
     <section id="artifacts">
       <h2>9. Артефакты</h2>
       <p>Артефакты лежат на карте. Когда игрок заходит на клетку с артефактом, он автоматически забирает его.</p>
+      <div class="table-scroll">
       <table>
         <thead>
           <tr><th>Артефакт</th><th>Эффект</th><th>Кому особенно полезен</th></tr>
@@ -637,6 +655,7 @@
           <tr><td>🎒 Снаряжение</td><td>Болото стоит 2 очка вместо 6.</td><td>Игроку рядом с болотами или сложной центральной частью карты.</td></tr>
         </tbody>
       </table>
+      </div>
     </section>
 
     <section id="coop">
@@ -654,6 +673,7 @@
     <section id="finish">
       <h2>11. Финал и рейтинг</h2>
       <p>Партия заканчивается, когда все участники дошли до Мустагa после посещения горы Зелёной.</p>
+      <div class="table-scroll">
       <table>
         <thead>
           <tr><th>Рейтинг</th><th>Условие</th></tr>
@@ -664,6 +684,7 @@
           <tr><td>⭐</td><td>Команда завершила маршрут за 13 или больше раундов.</td></tr>
         </tbody>
       </table>
+      </div>
       <p>Проигрыша нет. Если команда идёт медленно, она всё равно может завершить поход, просто получит меньше звёзд.</p>
     </section>
 

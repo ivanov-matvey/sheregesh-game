@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#071613">
+  <meta name="theme-color" content="#123b35">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Экспедиция Шерегеш</title>
   <style>
     :root {
@@ -25,6 +26,7 @@
       --button-shadow: 0 7px 0 var(--line), 0 12px 18px rgba(106, 86, 56, .18);
       --radius: 8px;
       --map-size: 6;
+      --system-bar-bg: #123b35;
     }
 
     * { box-sizing: border-box; }
@@ -1134,11 +1136,51 @@
       gap: 8px;
     }
 
+    .dialog-head,
     .rules-dialog-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
+    }
+
+    .dialog-head h2,
+    .rules-dialog-head h2 {
+      margin: 0;
+    }
+
+    .dialog-head + * {
+      margin-top: 12px;
+    }
+
+    .modal-close {
+      width: 42px;
+      height: 42px;
+      min-height: 42px;
+      padding: 0;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, .28) !important;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18) !important;
+    }
+
+    .modal-close::before,
+    .modal-close::after {
+      content: "";
+      grid-area: 1 / 1;
+      width: 18px;
+      height: 2px;
+      border-radius: 999px;
+      background: currentColor;
+    }
+
+    .modal-close::before {
+      transform: rotate(45deg);
+    }
+
+    .modal-close::after {
+      transform: rotate(-45deg);
     }
 
     .rules-frame {
@@ -1718,7 +1760,7 @@
     }
 
     html {
-      background: #071613;
+      background: var(--system-bar-bg);
     }
 
     body {
@@ -3182,6 +3224,47 @@
       line-height: 1;
     }
 
+    body.game-started .player.active,
+    .mobile-team-player.active {
+      border-color: rgba(142, 247, 219, .9) !important;
+      background:
+        linear-gradient(135deg, rgba(142, 247, 219, .26), rgba(255, 255, 255, .09)),
+        rgba(7, 22, 19, .72) !important;
+      box-shadow:
+        0 0 0 1px rgba(142, 247, 219, .74),
+        0 0 24px rgba(116, 242, 255, .24),
+        inset 0 1px 0 rgba(255, 255, 255, .24) !important;
+    }
+
+    body.game-started .player.active .avatar,
+    .mobile-team-player.active .avatar {
+      color: #071613;
+      background: linear-gradient(135deg, rgba(255, 255, 255, .96), rgba(142, 247, 219, .88));
+      border-color: rgba(255, 255, 255, .72);
+    }
+
+    body.game-started .player.active .player-name,
+    .mobile-team-player.active .player-name {
+      color: #f8fffb;
+    }
+
+    body.game-started .player.active .player-name::after,
+    .mobile-team-player.active .player-name::after {
+      content: " ходит";
+      display: inline-flex;
+      margin-left: 6px;
+      padding: 1px 5px;
+      border: 1px solid rgba(142, 247, 219, .68);
+      border-radius: 999px;
+      color: #071613;
+      background: rgba(142, 247, 219, .88);
+      font-size: 9px;
+      line-height: 1.1;
+      font-weight: 950;
+      text-transform: uppercase;
+      vertical-align: middle;
+    }
+
     body.game-started .main {
       grid-template-rows: minmax(0, 1fr) 104px;
     }
@@ -3277,6 +3360,33 @@
     }
 
     @media (max-width: 620px) {
+      html:has(body.game-started) {
+        background: var(--system-bar-bg);
+      }
+
+      body.game-started {
+        background: var(--system-bar-bg);
+      }
+
+      body.game-started::before {
+        background:
+          linear-gradient(120deg, rgba(7, 22, 19, .84), rgba(9, 27, 39, .55) 48%, rgba(22, 168, 121, .18)),
+          url("assets/v-pokhod/game/cover.jpg") center/cover no-repeat;
+        z-index: 0;
+      }
+
+      body.game-started::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: env(safe-area-inset-top);
+        background: var(--system-bar-bg);
+        pointer-events: none;
+        z-index: 3;
+      }
+
       body.game-started .side {
         display: none;
       }
@@ -3288,9 +3398,10 @@
       }
 
       body.game-started .main {
+        --mobile-controls-height: 178px;
         height: 100dvh;
         display: grid;
-        grid-template-rows: auto minmax(0, 1fr) auto;
+        grid-template-rows: auto minmax(0, 1fr) var(--mobile-controls-height);
         gap: 8px;
         padding: max(8px, env(safe-area-inset-top)) 8px max(8px, env(safe-area-inset-bottom));
         overflow: hidden;
@@ -3298,9 +3409,10 @@
 
       body.game-started .mobile-hud {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) 102px;
+        grid-template-columns: minmax(0, 1fr) 58px;
         gap: 8px;
         align-items: start;
+        position: relative;
       }
 
       .mobile-metrics {
@@ -3335,14 +3447,79 @@
         font-size: 12px;
       }
 
-      body.game-started .mobile-hud .rules-mini {
+      body.game-started .mobile-menu-toggle {
+        display: grid;
+        place-items: center;
         height: 58px;
         min-height: 58px;
-        padding: 4px 12px;
-        font-size: 12px;
+        width: 58px;
+        padding: 0;
         color: rgba(248, 255, 251, .82);
         background: rgba(255, 255, 255, .14);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16);
+      }
+
+      .mobile-menu-icon,
+      .mobile-menu-icon::before,
+      .mobile-menu-icon::after {
+        display: block;
+        width: 22px;
+        height: 2px;
+        border-radius: 999px;
+        background: currentColor;
+      }
+
+      .mobile-menu-icon {
+        position: relative;
+        margin: auto;
+      }
+
+      .mobile-menu-icon::before,
+      .mobile-menu-icon::after {
+        content: "";
+        position: absolute;
+        left: 0;
+      }
+
+      .mobile-menu-icon::before {
+        top: -7px;
+      }
+
+      .mobile-menu-icon::after {
+        top: 7px;
+      }
+
+      .mobile-menu-popover {
+        position: absolute;
+        top: 66px;
+        right: 0;
+        z-index: 8;
+        display: none;
+        width: min(210px, calc(100vw - 16px));
+        padding: 7px;
+        border: 1px solid rgba(255, 255, 255, .28);
+        border-radius: var(--radius);
+        background:
+          linear-gradient(145deg, rgba(255, 255, 255, .18), rgba(255, 255, 255, .06)),
+          rgba(7, 22, 19, .9);
+        box-shadow: 0 18px 44px rgba(0, 0, 0, .42), inset 0 1px 0 rgba(255, 255, 255, .16);
+        backdrop-filter: blur(22px) saturate(1.25);
+        -webkit-backdrop-filter: blur(22px) saturate(1.25);
+      }
+
+      .mobile-menu-popover.open {
+        display: grid;
+        gap: 6px;
+      }
+
+      .mobile-menu-popover button {
+        min-height: 42px;
+        padding: 8px 10px;
+        color: rgba(248, 255, 251, .9);
+        background: rgba(255, 255, 255, .1);
+        border-color: rgba(255, 255, 255, .24);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12);
+        font-size: 11px;
       }
 
       body.game-started .mobile-weather-card {
@@ -3370,12 +3547,20 @@
 
       body.game-started .board-wrap {
         min-height: 0;
+        width: 100%;
+        height: 100%;
         display: grid;
         place-items: center;
+        overflow: hidden;
+        container-type: size;
       }
 
       body.game-started .board {
-        width: min(calc(100vw - 16px), calc(100dvh - 306px));
+        width: min(
+          calc(100vw - 16px),
+          max(0px, calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - var(--mobile-controls-height) - 132px))
+        );
+        width: calc(min(100cqw, 100cqh) - 10px);
         max-width: none;
         min-width: 0;
         max-height: 100%;
@@ -3408,6 +3593,8 @@
         position: static;
         display: block;
         min-height: 0;
+        height: var(--mobile-controls-height);
+        overflow: hidden;
       }
 
       body.game-started .controls .panel {
@@ -3525,11 +3712,7 @@
       }
 
       body.game-started .mobile-secondary-actions {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        column-gap: 4px !important;
-        row-gap: 0 !important;
-        margin-top: 7px !important;
+        display: none !important;
       }
 
       body.game-started .mobile-secondary-actions button {
@@ -3562,14 +3745,19 @@
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, .14) !important;
     }
 
-    body.game-started #endTurn.is-primary-action:not(:disabled) {
+    body.game-started #endTurn.secondary.is-primary-action:not(:disabled),
+    body.game-started #endTurn.secondary.is-primary-action:not(:disabled):hover,
+    body.game-started #endTurn.secondary.is-primary-action:not(:disabled):focus,
+    body.game-started #endTurn.secondary.is-primary-action:not(:disabled):focus-visible,
+    body.game-started #endTurn.secondary.is-primary-action:not(:disabled):active {
+      appearance: none !important;
+      -webkit-appearance: none !important;
       color: #071613 !important;
       background: linear-gradient(135deg, rgba(255, 255, 255, .96), rgba(142, 247, 219, .78)) !important;
-      border-color: rgba(255, 255, 255, .34) !important;
-      border-width: 1px !important;
-      border-style: solid !important;
-      outline: 0 !important;
+      border: 1px solid rgba(255, 255, 255, .34) !important;
+      outline: none !important;
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, .42) !important;
+      filter: none !important;
     }
 
     @media (max-width: 620px) {
@@ -3720,7 +3908,16 @@
           <div><b>Ходы</b><span id="mobileTurnsNow">0</span></div>
           <div class="mobile-goal"><b>Цель</b><span id="mobileGoalNow">База</span></div>
         </div>
-        <button type="button" class="rules-mini mobile-rules-button" id="openRulesMobile">Правила</button>
+        <div class="mobile-menu">
+          <button type="button" class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Меню" aria-expanded="false">
+            <span class="mobile-menu-icon" aria-hidden="true"></span>
+          </button>
+          <div class="mobile-menu-popover" id="mobileMenuPopover">
+            <button type="button" id="openRulesMobile">Правила</button>
+            <button type="button" id="openTeamMobile">Команда</button>
+            <button type="button" id="openLogMobile">Журнал</button>
+          </div>
+        </div>
         <div class="mobile-weather-card" aria-label="Текущая погода">
           <div class="mobile-weather-icon" id="mobileWeatherIcon">?</div>
           <div>
@@ -3756,10 +3953,7 @@
               <button id="endTurn" class="secondary" disabled>Передать ход</button>
             </div>
           </div>
-          <div class="mobile-secondary-actions">
-            <button type="button" class="secondary" id="openTeamMobile">Команда</button>
-            <button type="button" class="secondary" id="openLogMobile">Журнал</button>
-          </div>
+          <div class="mobile-secondary-actions"></div>
         </div>
       </section>
     </main>
@@ -4252,7 +4446,7 @@
       dialog.innerHTML = `
         <div class="rules-dialog-head">
           <h2>Правила</h2>
-          <button type="button" class="secondary" onclick="closeModal()">Закрыть</button>
+          <button type="button" class="secondary modal-close" aria-label="Закрыть" onclick="closeModal()"></button>
         </div>
         <iframe class="rules-frame" src="rules.html" title="Полные правила игры"></iframe>
       `;
@@ -4627,7 +4821,7 @@
       const giver = currentPlayer();
       if (!giver.artifacts.length) return showInfo("У текущего игрока нет артефактов для обмена.");
       choosePlayer("Кому передать артефакт?", state.players.filter(p => p.id !== giver.id), (receiver) => {
-        dialog.innerHTML = `<h2>Выберите артефакт</h2><div class="choices"></div><div class="row" style="margin-top:12px"><button class="secondary" onclick="closeModal()">Закрыть</button></div>`;
+        dialog.innerHTML = `<div class="dialog-head"><h2>Выберите артефакт</h2><button type="button" class="secondary modal-close" aria-label="Закрыть" onclick="closeModal()"></button></div><div class="choices"></div>`;
         const box = dialog.querySelector(".choices");
         giver.artifacts.forEach((artifactId) => {
           const artifact = artifacts.find(a => a.id === artifactId);
@@ -4708,7 +4902,7 @@
     }
 
     function choosePlayer(title, players, cb) {
-      dialog.innerHTML = `<h2>${title}</h2><div class="choices"></div><div class="row" style="margin-top:12px"><button class="secondary" onclick="closeModal()">Закрыть</button></div>`;
+      dialog.innerHTML = `<div class="dialog-head"><h2>${title}</h2><button type="button" class="secondary modal-close" aria-label="Закрыть" onclick="closeModal()"></button></div><div class="choices"></div>`;
       const box = dialog.querySelector(".choices");
       players.forEach((player) => {
         const item = document.createElement("div");
@@ -4722,7 +4916,7 @@
 
     function chooseTile(title, tiles, cb) {
       if (!tiles.length) return showInfo("Нет доступных клеток.");
-      dialog.innerHTML = `<h2>${title}</h2><div class="choices"></div><div class="row" style="margin-top:12px"><button class="secondary" onclick="closeModal()">Закрыть</button></div>`;
+      dialog.innerHTML = `<div class="dialog-head"><h2>${title}</h2><button type="button" class="secondary modal-close" aria-label="Закрыть" onclick="closeModal()"></button></div><div class="choices"></div>`;
       const box = dialog.querySelector(".choices");
       tiles.forEach((tile) => {
         const data = terrain[tile.type];
@@ -4828,7 +5022,7 @@
       const player = state.started && !state.gameOver ? currentPlayer() : null;
       const text = getActionHint(player, state.started && !state.gameOver);
       state.currentHint = text;
-      dialog.innerHTML = `<h2>Подсказка обучения</h2><p>${text}</p><div class="row"><button onclick="closeModal()">Закрыть</button></div>`;
+      dialog.innerHTML = `<div class="dialog-head"><h2>Подсказка обучения</h2><button type="button" class="secondary modal-close" aria-label="Закрыть" onclick="closeModal()"></button></div><p>${text}</p>`;
       modal.classList.add("open");
     }
 
@@ -4837,9 +5031,11 @@
         ? state.log.map(normalizeLogEntry).sort((a, b) => b.time - a.time).map(item => item.text)
         : ["Журнал появится после начала партии."];
       dialog.innerHTML = `
-        <h2>Журнал похода</h2>
+        <div class="dialog-head">
+          <h2>Журнал похода</h2>
+          <button type="button" class="secondary modal-close" aria-label="Закрыть" onclick="closeModal()"></button>
+        </div>
         <div class="log-popup">${items.map(item => `<p>${item}</p>`).join("")}</div>
-        <div class="row" style="margin-top:12px"><button onclick="closeModal()">Закрыть</button></div>
       `;
       modal.classList.add("open");
     }
@@ -4859,9 +5055,11 @@
         </div>
       `).join("") : "<p>Команда появится после начала партии.</p>";
       dialog.innerHTML = `
-        <h2>Команда</h2>
+        <div class="dialog-head">
+          <h2>Команда</h2>
+          <button type="button" class="secondary modal-close" aria-label="Закрыть" onclick="closeModal()"></button>
+        </div>
         <div class="team-popup">${items}</div>
-        <div class="row" style="margin-top:12px"><button onclick="closeModal()">Закрыть</button></div>
       `;
       modal.classList.add("open");
     }
@@ -5038,6 +5236,18 @@
       }, 1200);
     }
 
+    function setMobileMenu(open) {
+      const menu = $("mobileMenuPopover");
+      const toggle = $("mobileMenuToggle");
+      if (!menu || !toggle) return;
+      menu.classList.toggle("open", open);
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+
+    function closeMobileMenu() {
+      setMobileMenu(false);
+    }
+
     $("playerCount").addEventListener("change", renderSetupRoles);
     $("difficulty").addEventListener("change", refreshPreviewMap);
     $("mapSize").addEventListener("change", refreshPreviewMap);
@@ -5047,16 +5257,25 @@
     $("startGame").addEventListener("click", () => startGame("normal"));
     $("openRulesStart").addEventListener("click", showRulesPopup);
     $("openRulesTurn").addEventListener("click", showRulesPopup);
-    $("openRulesMobile").addEventListener("click", showRulesPopup);
+    $("mobileMenuToggle").addEventListener("click", (event) => {
+      event.stopPropagation();
+      setMobileMenu(!$("mobileMenuPopover").classList.contains("open"));
+    });
+    $("openRulesMobile").addEventListener("click", () => { closeMobileMenu(); showRulesPopup(); });
     $("openHintTurn").addEventListener("click", showHintPopup);
-    $("openLogMobile").addEventListener("click", showLogPopup);
-    $("openTeamMobile").addEventListener("click", showTeamPopup);
+    $("openLogMobile").addEventListener("click", () => { closeMobileMenu(); showLogPopup(); });
+    $("openTeamMobile").addEventListener("click", () => { closeMobileMenu(); showTeamPopup(); });
     $("rollStep").addEventListener("click", rollStep);
     $("useRole").addEventListener("click", useRole);
     $("trade").addEventListener("click", openTrade);
     $("endTurn").addEventListener("click", endTurn);
     modal.addEventListener("click", (event) => {
       if (event.target === modal) closeModal();
+    });
+    document.addEventListener("click", (event) => {
+      if (!$("mobileMenuPopover")?.classList.contains("open")) return;
+      if (event.target.closest(".mobile-menu")) return;
+      closeMobileMenu();
     });
     window.closeModal = closeModal;
     window.endTurn = endTurn;
