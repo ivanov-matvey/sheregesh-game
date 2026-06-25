@@ -5124,6 +5124,27 @@
       { id: "gear", icon: "🎒", name: "Снаряжение", text: "Болото стоит 2 очка вместо 6.", details: "Позволяет проходить болото без натуральной 6. Стоимость болота для владельца снижается до 2 очков движения." }
     ];
 
+    const forestFacts = [
+      {
+        id: "pihta",
+        name: "Пихта сибирская",
+        image: "assets/v-pokhod/game/pihta.jpg",
+        text: "Пихта сибирская — дерево, самый распространённый в России вид рода Пихта семейства Сосновые. Растёт преимущественно в кедровых, еловых и смешанных лесах, реже встречается в лиственничных лесах и редколесьях. Иногда образует чистые насаждения — пихтовники."
+      },
+      {
+        id: "cheremsha",
+        name: "Черемша",
+        image: "assets/v-pokhod/game/cheremsha.jpg",
+        text: "Черемша — многолетнее травяное растение семейства Амариллисовые. Её молодые листья, стебли и луковицы имеют острый чесночный вкус и аромат, а ранней весной становятся ценным источником витаминов."
+      },
+      {
+        id: "kandik",
+        name: "Кандык сибирский",
+        image: "assets/v-pokhod/game/kandik.jpg",
+        text: "Кандык сибирский — уязвимый реликтовый вид, переживший последнее оледенение, и одно из самых раннецветущих растений Сибири. Он занесён в Красную книгу России и большинство региональных Красных книг."
+      }
+    ];
+
     const siteUrl = "https://ivanov-matvey.github.io/sheregesh-game/";
     let victoryShareResult = null;
     let victoryShareImageUrl = "";
@@ -5157,6 +5178,8 @@
       tutorialSeen: new Set(),
       currentHint: "Начните партию. Игра покажет закрытую карту для исследования.",
       pendingSelection: null,
+      pendingForestFact: null,
+      shownForestFacts: [],
       log: []
     };
 
@@ -5305,6 +5328,7 @@
         mode: state.mode,
         teamName: state.teamName,
         tutorialSeen: [...state.tutorialSeen],
+        shownForestFacts: state.shownForestFacts,
         currentHint: state.currentHint,
         log: state.log,
         places
@@ -5342,6 +5366,8 @@
       state.mode = saved.mode || "normal";
       state.teamName = saved.teamName || "";
       state.tutorialSeen = new Set(saved.tutorialSeen || []);
+      state.pendingForestFact = null;
+      state.shownForestFacts = Array.isArray(saved.shownForestFacts) ? saved.shownForestFacts : [];
       state.currentHint = saved.currentHint || "Продолжайте поход.";
       state.log = Array.isArray(saved.log) ? saved.log : [];
       board.style.setProperty("--map-size", state.mapSize);
@@ -5552,6 +5578,8 @@
       state.weatherSuppressed = false;
       state.teamName = $("teamName").value.trim() || "";
       state.tutorialSeen = new Set();
+      state.pendingForestFact = null;
+      state.shownForestFacts = [];
       state.log = [];
       buildMap();
       createPlayers();
@@ -5653,9 +5681,28 @@
       return state.players.some(p => p.role.id === "memory") ? 2 : 1;
     }
 
+    function queueForestFact(tile) {
+      if (!state.started || state.pendingForestFact || !tile || tile.type !== "forest") return;
+      const shown = new Set(state.shownForestFacts || []);
+      const available = forestFacts.filter(fact => !shown.has(fact.id));
+      if (!available.length) return;
+      state.pendingForestFact = rngPick(available);
+      state.shownForestFacts.push(state.pendingForestFact.id);
+      window.setTimeout(showPendingForestFact, 120);
+    }
+
+    function showPendingForestFact() {
+      if (!state.pendingForestFact || modal.classList.contains("open")) return;
+      const fact = state.pendingForestFact;
+      state.pendingForestFact = null;
+      showForestFactPopup(fact);
+      saveProgress();
+    }
+
     function revealRoleTile(tile, message) {
       tile.revealed = true;
       state.story += storyForReveal();
+      queueForestFact(tile);
       log(message);
       render();
     }
@@ -5861,6 +5908,7 @@
       if (!tile.revealed) {
         tile.revealed = true;
         state.story += storyForReveal();
+        queueForestFact(tile);
         log(`Открыта новая точка маршрута: ${terrain[tile.type].name}.`);
       }
       tile.visited = true;
@@ -5950,14 +5998,17 @@
 
     function revealAround(x, y) {
       let revealed = 0;
+      let forestTile = null;
       neighbors(x, y).forEach(([nx, ny]) => {
         const tile = tileAt(nx, ny);
         if (!tile.revealed) {
           tile.revealed = true;
           revealed += 1;
           if (state.started) state.story += storyForReveal();
+          if (!forestTile && tile.type === "forest") forestTile = tile;
         }
       });
+      queueForestFact(forestTile);
       return revealed;
     }
 
@@ -6383,6 +6434,27 @@
       modal.classList.add("open");
     }
 
+    function showForestFactPopup(fact) {
+      dialog.classList.add("place-dialog");
+      dialog.innerHTML = `
+        <div class="place-popup">
+          <h2>${fact.name}</h2>
+          <img
+            class="place-photo"
+            src="${fact.image}"
+            alt="${fact.name}"
+            loading="lazy"
+          >
+          <div class="place-fact">${fact.text}</div>
+          <p class="place-next">Такие растения встречаются в природных сообществах Горной Шории и окрестностей Шерегеша.</p>
+          <div class="row">
+            <button onclick="closeModal()">Продолжить поход</button>
+          </div>
+        </div>
+      `;
+      modal.classList.add("open");
+    }
+
     function showNoStepPopup(player) {
       if (modal.classList.contains("open")) return;
       dialog.innerHTML = `
@@ -6499,6 +6571,7 @@
       modal.classList.remove("open");
       dialog.classList.remove("rules-dialog");
       dialog.classList.remove("place-dialog");
+      window.setTimeout(showPendingForestFact, 0);
     }
 
     function log(text) {
