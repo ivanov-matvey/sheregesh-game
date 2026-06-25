@@ -5176,6 +5176,7 @@
       mode: "normal",
       teamName: "",
       tutorialSeen: new Set(),
+      tutorialIntroPending: false,
       currentHint: "Начните партию. Игра покажет закрытую карту для исследования.",
       pendingSelection: null,
       pendingForestFact: null,
@@ -5366,6 +5367,7 @@
       state.mode = saved.mode || "normal";
       state.teamName = saved.teamName || "";
       state.tutorialSeen = new Set(saved.tutorialSeen || []);
+      state.tutorialIntroPending = false;
       state.pendingForestFact = null;
       state.shownForestFacts = Array.isArray(saved.shownForestFacts) ? saved.shownForestFacts : [];
       state.currentHint = saved.currentHint || "Продолжайте поход.";
@@ -5567,6 +5569,7 @@
       }
       state.started = true;
       state.mode = mode;
+      state.tutorialIntroPending = mode === "tutorial";
       state.current = 0;
       state.round = 1;
       state.story = 0;
@@ -5593,7 +5596,7 @@
       beginTurnEffects(currentPlayer());
       animateMapGeneration();
       animateStartLogo();
-      if (isTutorial() && !state.pendingSelection) window.setTimeout(showTutorialIntro, 1850);
+      if (isTutorial()) window.setTimeout(showTutorialIntro, 1850);
     }
 
     function isTutorial() {
@@ -5601,11 +5604,14 @@
     }
 
     function showTutorialIntro() {
+      state.tutorialIntroPending = false;
+      state.tutorialSeen.add("intro");
       dialog.innerHTML = `
         <h2>Обучение: первый поход</h2>
-        <p><b>Сейчас игра будет объяснять каждый шаг.</b> Рядом с заголовком хода будет кнопка «?»: нажимайте её, чтобы открыть подсказку ещё раз.</p>
-        <p><b>Ваша задача:</b> провести всех участников через гору Зелёную к вершине Мустаг.</p>
-        <p><b>Первое действие:</b> посмотрите на активного игрока внизу и нажмите «Бросить кубик».</p>
+        <p><b>Сейчас игра будет объяснять реальные действия партии.</b> Кнопка «?» рядом с ходом открывает актуальную подсказку в любой момент.</p>
+        <p><b>Цель:</b> каждый участник должен сначала посетить гору Зелёную, а затем финишировать на Мустаге. Победа засчитывается только всей команде.</p>
+        <p><b>Как начинается ход:</b> иногда сначала срабатывает пассивная способность роли, например Разведчик выбирает закрытую соседнюю клетку. Если на карте есть подсвеченный выбор, кликните его; если выбора нет — нажмите «Бросить кубик».</p>
+        <p><b>Прогресс сохраняется автоматически</b> после обычных действий, поэтому партию можно продолжить позже с экрана старта.</p>
         <div class="row"><button onclick="closeModal()">Начать обучение</button><button type="button" class="button-link secondary" onclick="showRulesPopup()">Полные правила</button></div>
       `;
       modal.classList.add("open");
@@ -5625,6 +5631,7 @@
 
     function tutorialPopup(key, title, text) {
       if (!isTutorial() || state.tutorialSeen.has(key) || state.gameOver) return;
+      if (state.tutorialIntroPending) return;
       if (modal.classList.contains("open")) return;
       state.tutorialSeen.add(key);
       dialog.innerHTML = `<h2>${title}</h2><p>${text}</p><div class="row"><button onclick="closeModal()">Понятно</button></div>`;
@@ -5717,6 +5724,7 @@
       };
       state.currentHint = title;
       render();
+      tutorialPopup("mapSelection", "Выбор на карте", "Некоторые роли и действия просят выбрать клетку прямо на поле. Доступные варианты подсвечены рамкой: кликните одну из таких клеток, чтобы продолжить ход.");
     }
 
     function startPlayerSelection(title, players, cb) {
@@ -5729,6 +5737,7 @@
       };
       state.currentHint = title;
       render();
+      tutorialPopup("playerSelection", "Выбор участника", "Некоторые способности помогают конкретному участнику. На карте подсвечиваются фишки доступных игроков: выберите одну из них.");
     }
 
     function finishPendingSelection() {
@@ -5857,7 +5866,7 @@
       tutorialPopup(
         "roll",
         "Бросок шага",
-        `Кубик дал ${original}. После погоды и бонусов у игрока ${value} очков движения. Подсвеченные соседние клетки — доступные направления.`
+        `Кубик дал ${original}. После погоды, поддержки и штрафов у игрока ${value} очков движения. Подсвеченные соседние клетки можно пройти сейчас; стоимость зависит от местности и артефактов.`
       );
     }
 
@@ -5955,7 +5964,7 @@
         tutorialPopup(
           "move",
           "Движение по клеткам",
-          `Игрок потратил ${cost} очков движения. Если очки ещё остались, можно кликнуть следующую подсвеченную клетку; если нет, передайте ход.`
+          `Игрок потратил ${cost} очков движения. Закрытая клетка открывается при входе и даёт жетоны истории. Если очки ещё остались, можно идти дальше по подсвеченным клеткам; если нет — передайте ход.`
         );
       }
       if (foundArtifact) showArtifactPopup(player, foundArtifact);
@@ -6031,7 +6040,7 @@
         state.step += bonus;
         log(`Разведчик применил быстрый марш: +${bonus} к шагу.`);
         render();
-        tutorialPopup("role", "Способность роли", "Кнопка «Способность роли» применяет сильное действие персонажа. Обычно оно ограничено одним или двумя применениями за партию.");
+        tutorialPopup("role", "Способность роли", "Кнопка «Способность роли» применяет сильное действие текущего персонажа. У каждой роли эффект разный, а число применений ограничено партией.");
       } else if (role.id === "researcher") {
         if (player.usedSpecial) return showInfo("Разведка карты уже использована.");
         startTileSelection("Разведка карты: выберите на карте одну закрытую плитку.", state.tiles.filter(t => !t.revealed), (tile) => {
@@ -6040,7 +6049,7 @@
           state.story += storyForReveal();
           log("Исследователь открыл удалённую точку маршрута.");
           render();
-          tutorialPopup("role", "Способность роли", "Кнопка «Способность роли» применяет сильное действие персонажа. Обычно оно ограничено одним или двумя применениями за партию.");
+          tutorialPopup("role", "Способность роли", "Кнопка «Способность роли» применяет сильное действие текущего персонажа. У каждой роли эффект разный, а число применений ограничено партией.");
         });
       } else if (role.id === "camp") {
         if (player.usedSpecial) return showInfo("Тёплый привал уже использован.");
@@ -6057,7 +6066,7 @@
           else target.weatherShield += 1;
           log(`Хранитель атмосферы отменит следующий негативный эффект у ${target.name}.`);
           render();
-          tutorialPopup("role", "Способность роли", "Кнопка «Способность роли» применяет сильное действие персонажа. Обычно оно ограничено одним или двумя применениями за партию.");
+          tutorialPopup("role", "Способность роли", "Кнопка «Способность роли» применяет сильное действие текущего персонажа. У каждой роли эффект разный, а число применений ограничено партией.");
         });
       } else if (role.id === "memory") {
         if (player.usedSpecial) return showInfo("Памятный кадр уже использован.");
@@ -6086,7 +6095,7 @@
             if (foundArtifact) showArtifactPopup(target, foundArtifact);
             if (reachedMid) showGreenMountainPopup(target);
             if (reachedGoal && !won) showMustagPopup(target, won);
-            tutorialPopup("role", "Способность роли", "Кнопка «Способность роли» применяет сильное действие персонажа. Обычно оно ограничено одним или двумя применениями за партию.");
+            tutorialPopup("role", "Способность роли", "Кнопка «Способность роли» применяет сильное действие текущего персонажа. У каждой роли эффект разный, а число применений ограничено партией.");
           });
         });
       }
@@ -6150,8 +6159,11 @@
       beginTurnEffects(currentPlayer());
       if (auto) log(`${finishedPlayer.name}: ход автоматически передан следующему участнику.`);
       render();
+      if (auto) {
+        tutorialPopup("autoEndTurn", "Автоматическая передача хода", "На подъёме или после финиша участника ход может завершиться автоматически. Игра сразу передаёт управление следующему активному игроку.");
+      }
       if (!auto) tutorialPopup("endTurn", "Передача хода", "Ход перешёл к следующему участнику. Следите, чтобы каждый сначала посетил гору Зелёную, а потом дошёл до Мустагa.");
-      if (!auto && newRound) tutorialPopup("newRound", "Новый раунд и погода", `Начался новый раунд. Новая погода: ${state.weather.icon} ${state.weather.name}. Она действует на всю команду.`);
+      if (!auto && newRound) tutorialPopup("newRound", "Новый раунд и погода", `Начался новый раунд. Новая погода: ${state.weather.icon} ${state.weather.name}. Она действует на всю команду; некоторые роли и артефакты могут смягчить её эффект.`);
     }
 
     function buildVictoryShareText(result) {
