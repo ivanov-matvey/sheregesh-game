@@ -5864,7 +5864,7 @@
     function costFor(tile, player) {
       let cost = terrain[tile.type].cost;
       if (tile.x === places.mid.x && tile.y === places.mid.y) cost = 4;
-      if (tile.x === places.goal.x && tile.y === places.goal.y) cost = 6;
+      if (tile.x === places.goal.x && tile.y === places.goal.y) cost = 5;
       if (tile.type === "water" && player.artifacts.includes("raft")) cost = 1;
       if (tile.type === "bog" && player.artifacts.includes("gear")) cost = 2;
       if (!state.weatherSuppressed && state.weather.type === "rain" && isDifficult(tile) && !player.weatherShield) cost += 1;
