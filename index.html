@@ -4686,6 +4686,35 @@
       box-shadow: none !important;
     }
 
+    @media (max-width: 620px) {
+      body.game-started .main {
+        --mobile-controls-height: 188px;
+      }
+
+      body.game-started .turn-head h2,
+      body.game-started .turn-head .toast {
+        max-width: 100%;
+        min-width: 0 !important;
+      }
+
+      body.game-started .turn-head h2 {
+        white-space: normal !important;
+        overflow-wrap: anywhere !important;
+        line-height: 1.06 !important;
+      }
+
+      body.game-started .turn-head .toast {
+        display: block !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        overflow-wrap: anywhere !important;
+        word-break: normal !important;
+        line-height: 1.12 !important;
+        max-height: 2.4em;
+      }
+    }
+
     body:not(.game-started) #setupPanel h2,
     body:not(.game-started) #setupPanel .field label,
     body:not(.game-started) .role-card b,
@@ -5085,7 +5114,7 @@
       { icon: "🌧️", name: "Дождь", effect: "Сложная местность стоит на 1 дороже.", type: "rain" },
       { icon: "🔥", name: "Жара", effect: "На открытой местности без головного убора шаг -1.", type: "heat" },
       { icon: "🌬️", name: "Ветер", effect: "Нельзя возвращаться на предыдущую клетку.", type: "wind" },
-      { icon: "🌫️", name: "Туман", effect: "Шаг -1, минимум 1.", type: "fog" }
+      { icon: "🌫️", name: "Туман", effect: "После броска игрок получает на 1 очко движения меньше. Минимум — 1.", type: "fog" }
     ];
 
     const artifacts = [
@@ -5787,6 +5816,8 @@
 
     function costFor(tile, player) {
       let cost = terrain[tile.type].cost;
+      if (tile.x === places.mid.x && tile.y === places.mid.y) cost = 4;
+      if (tile.x === places.goal.x && tile.y === places.goal.y) cost = 6;
       if (tile.type === "water" && player.artifacts.includes("raft")) cost = 1;
       if (tile.type === "bog" && player.artifacts.includes("gear")) cost = 2;
       if (!state.weatherSuppressed && state.weather.type === "rain" && isDifficult(tile) && !player.weatherShield) cost += 1;
